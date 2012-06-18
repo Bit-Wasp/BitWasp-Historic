@@ -1,2 +1,0 @@
-Unset error message in register page, possibly username..
-	- fixed, had to define an error for alpha_dash rule, will build into ./system/ defaults.

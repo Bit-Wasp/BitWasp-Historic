@@ -1,0 +1,75 @@
+class 'user' 
+ - for looking up individual users, etc. not much in it
+
+class 'users'
+ - handles login/logout, registration
+
+model 'sessions_model' and library 'my_session'
+ - takes over from standard CI session class
+ - keep track of inactivity, etc
+ - refresh session info in the database. no need to store IP or useragent, so we use our own class.
+ - upon login, need to createSession(userhash), then simply including library will maintain the data
+ - login when already logged in, will check for inactivity. 
+ -                 $this->my_session->checkAuth('login'); or 'vendor' or 'admin' to restrict page access
+ - trying not to use username in the database or session, no need to have it. 
+
+class 'currencies'
+ - started putting the symbol onto the products pages
+
+library 'my_captcha'
+ - our own captcha class, uses the built in one for the image.
+ - tracks users with a unique captcha key held in a session, rather than an IP address.
+ 
+library layout
+ - include this library when the data['title'] data['page'] variables are set
+ - just call library, constructor does everything with data array, remaining info goes to the view.
+ - this function is the only function to call this->load->view()
+ - 'do not repeat yourself'
+ - looks up session info for appropriate header (buyer/seller/admin/not logged in)
+
+class 'pages'
+ - sorted out 404's
+
+started populating form_validation rules in application/config/form_validation.php so everything is global
+			form validation errors in application/language/english/form_validation_lang.php
+
+library 'my_image' 
+ - links in with images_model
+ - returns the base64 string from the DB, identified by the filename of the original image.
+ - possibly some sort of redundancy for IE browsers which can't use base64 in <img> tags, keep cleaned 
+	images in a folder for access. encourage better browsers!
+
+model 'images'
+ - used to pull encoded images from the DB. 
+
+model 'products'
+ - moved the product images function to here. Product controller calls its model to get image filenames, which calls
+	images model for the base64 text. 
+
+next to do:
+	- review of security of what's been done so far!
+	secure uploads, finish images class
+	account info
+	categories
+	add listings - there are PHP functions for scrubbing metadata!
+	instant messaging system
+	bitcoin integration ***
+	move applications, system, etc out from DOCUMENT_ROOT
+
+--------------------------------------
+-- Notes from Review -----------------
+--------------------------------------
+
+ - The sessions lib is being included in multiple locations throughout the code. As it going to be used
+   almost universally it can instead be included in /application/config/autoload.php 
+
+ - Similarly $this->my_session->checkAuth is being performed in a number of different locations which
+   makes it easier for it to be left out and result in security issues. We should look at drawing out
+   structure of each control and decide which functionality should be implemented where. Any duplicated
+   code should be refactored to avoid repeating ourselves.
+
+ - What is the purpose of the home controller, it looks like it just duplicates the image class.
+   
+ - What are the differences between the user and the users class, These are interacting with one model, 
+   so shouldn't they be one class? We can extend the class if needed rather than creating extra controllers.
+	

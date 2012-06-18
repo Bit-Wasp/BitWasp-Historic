@@ -1,0 +1,75 @@
+<?php
+
+class Captcha {
+
+	public function __construct(){
+		// delete captcha info over two hours
+		$CI = &get_instance();
+		$CI->db->where('time <',time()-7200);
+		$CI->db->delete('captchas');
+
+	}
+
+	public function checkCode(){
+		$CI = &get_instance();
+		$CI->load->model('captcha_model');
+		$CI->load->library('my_session');
+		
+		$key = $CI->my_session->userdata('captchaKey');
+		if(isset($key)){
+			$code = $this->input->post('ccode');
+			if( isset($code)){
+				$getCaptcha = $CI->captcha_model->getCode($CI->my_session->userdata('captchaKey'));
+				if($getCaptcha === NULL){
+					// captcha has expired
+					return NULL;
+				} 
+
+				if($getCaptcha == $CI->input->post('captcha')){
+					// captcha matches that in database, success!
+					return TRUE;
+				} else {
+					return FALSE;
+				}
+			}
+		}
+	}
+
+	public function captchaCode(){
+		$randKey = '';
+		for($i = 0; $i < rand(10,20); $i++){
+			$randKey .= rand(1,999);
+		} 
+		return md5($randKey);
+	}
+
+	public function generateCaptcha($characters='5'){
+		$CI = &get_instance();
+		$CI->load->model('captcha_model');
+		$CI->load->library('my_session');
+		$CI->load->helper('');
+
+		/* list all possible characters, similar looking characters and vowels have been removed */
+		$possible = '23456789bcdfghjkmnpqrstvwxyz';
+		$characters = '';
+		$i = 0;
+		while ($i < $characters){
+			$characters .= substr($possible, mt_rand(0, strlen($possible)-1), 1);
+			$i++;
+		}
+		$randomKey = $this->captchaCode();
+		$CI->my_session->set_userdata('captchaKey',$randomKey);
+		$CI->captcha_model->setCaptcha($randomKey,$characters);
+		return $randomKey;
+
+	}
+
+	public function checkCaptcha($post){
+		if($post['captcha'] = $post['ccode']){
+			return 'Success';
+  		} else {
+			return 'Mismatch, try again';
+		}
+	}
+
+};

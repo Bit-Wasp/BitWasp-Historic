@@ -1,3 +1,0 @@
-You are using Bitwasp!<br />
-<br />
-<?=anchor('products','Click here for Items', 'Items');?>

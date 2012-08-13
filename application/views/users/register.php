@@ -2,6 +2,7 @@
                 <?php echo form_open('users/register'); ?>
 
 <fieldset>
+<?php if(isset($returnMessage)) echo $returnMessage; ?><br />
 <?php echo validation_errors(); ?>
 
 <label for='username'>Username</label>

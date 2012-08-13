@@ -5,14 +5,13 @@ class Users_Model extends CI_Model {
 	public function __construct() {
 		parent::__construct();
 		$this->load->library('session');
-//		$this->load->library('user_session');
 	}
 
 	public function getLoginInfo($userName = FALSE){
 		if($userName === FALSE){
 			return NULL;
 		} else {
-			$this->db->select('userSalt, userHash, userRole');
+			$this->db->select('id,userSalt, userHash, userRole');
 			$query = $this->db->get_where('users', array('userName' => $userName));
 
 			if($query->num_rows() > 0){
@@ -23,13 +22,8 @@ class Users_Model extends CI_Model {
 		}
 	}
 
-	public function addUser($user, $pass, $salt, $hash){
-		$userdata = array(	'userName' => $user,
-					'password' => $pass,
-					'timeRegistered' => time(),
-					'userSalt' => $salt,
-					'userHash' => $hash );
-		$query = $this->db->insert('users',$userdata);
+	public function addUser($userData){
+		$query = $this->db->insert('users',$userData);
 		if($query){
 			return TRUE;
 		} else {
@@ -39,12 +33,12 @@ class Users_Model extends CI_Model {
 
 	public function setLastLog($username){
 		$userdata = array('lastLog' => time());
-		$this->db->where('username');
-		$query = $this->db->insert('users',$userdata);
+		$this->db->where('username',$username);
+		$query = $this->db->update('users',$userdata);
 		if($query){
-			return true;
+			return TRUE;
 		} else {
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -58,5 +52,86 @@ class Users_Model extends CI_Model {
 			return FALSE;
 		}
 	}
+
+
+
+        //Load the requested user from the database by their userhash.
+        public function get_user($userHash = FALSE)
+        {
+
+                //If no user is specified, return nothing.
+                if ($userHash === FALSE)
+                {
+                        return NULL;
+                }
+
+                //Otherwise, load the user which corresponds to this hash.
+                $this->db->select('id, userName, userRole, userHash, rating, timeRegistered');
+                $query = $this->db->get_where('users', array('userHash' => $userHash));
+		if($query->num_rows() > 0){
+	                return $query->row_array();
+		} else {
+			return false;
+		}
+        }
+
+        //Load the requested user from the database by their userhash.
+        public function get_user_by_name($userName = FALSE)
+        {
+
+                //If no user is specified, return nothing.
+                if ($userName === FALSE)
+                {
+                        return NULL;
+                }
+
+                //Otherwise, load the user which corresponds to this hash.
+                $this->db->select('id, userName, userRole, userHash, rating, timeRegistered');
+                $query = $this->db->get_where('users', array('userName' => $userName));
+		if($query->num_rows() > 0){
+	                return $query->row_array();
+		} else {
+			return false;
+		}
+        }
+
+        public function get_user_by_id($id = FALSE)
+        {
+
+                //If no user is specified, return nothing.
+                if ($id === FALSE)
+                {
+                        return NULL;
+                }
+
+                //Otherwise, load the user which corresponds to this ID.
+                $this->db->select('id, userName, userRole, userHash, rating');
+                $query = $this->db->get_where('users', array('id' => $id));
+                return $query->row_array(); //Return 1 result
+        }
+
+	//Retrive this users public key.
+        public function get_pubKey_by_id($id = FALSE)
+        {
+
+                //If no user is specified, return nothing.
+                if ($id === FALSE)
+                {
+                        return NULL;
+                }
+
+                //Otherwise, load the public key which corresponds to this ID.
+                $this->db->select('key');
+                $query = $this->db->get_where('publicKeys', array('userId' => $id));
+		if ($query->num_rows() > 0) {
+			$result = $query->row_array();
+			return $result['key'];
+		}
+		return NULL;
+        }
+
+
+
+
 
 }

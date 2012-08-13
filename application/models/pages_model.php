@@ -3,6 +3,19 @@ class Pages_model extends CI_Model {
 
 	public function __construct(){}
 
+	public function getAuthLevel($URI){
+		$this->db->select('authLevel')
+			 ->where(array('URI' => $URI));
+		$query = $this->db->get('pageAuthorization');
+		if($query->num_rows() > 0){
+			$row = $query->row_array();
+			return $row['authLevel'];
+		} else {
+			// default be logged in!
+			return false;
+		}
+	}
+
 	//Load the requested user from the database by their userhash.
 	public function get_page($slug = FALSE)
 	{
@@ -23,3 +36,5 @@ class Pages_model extends CI_Model {
 	}
 
 }
+
+

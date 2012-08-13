@@ -4,7 +4,8 @@
 <head>
         <meta charset="utf-8">
         <title><?php echo $title ?> | Bitwasp :: Anonymous Online Marketplace</title>
-         <link rel="stylesheet" type="text/css" href="<?=base_url(); ?>assets/style.css" />
+        <link rel="stylesheet" type="text/css" href="<?=base_url(); ?>assets/style.css" />
+	<?=$header_meta; ?>
 </head>
 <body>
 

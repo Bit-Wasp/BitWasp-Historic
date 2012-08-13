@@ -38,33 +38,56 @@
 |
 */
 
-//Redirect to product listing and individual product page
-$route['listings'] = 'listings/index';
-
-
-$route['users'] = 'users';
-$route['users/login'] = 'users';
+$route['users'] = 'users/login';
+$route['users/login'] = 'users/login';
 $route['users/logout'] = 'users/logout';
 $route['users/register'] = 'users/register';
 $route['users/logoutInactivity'] = 'users/logoutInactivity';
 
 // Show show specific products, and all.
-$route['product/(:any)'] = 'products/view/$1';
-$route['products'] = 'products';
+$route['items'] = 'items';
+$route['item/(:any)'] = 'items/view/$1';
+$route['item'] = 'items';
+
+$route['listings'] = 'items/manage';
+$route['listings/create'] = 'items/create';
+$route['listings/remove/(:any)'] = 'items/remove/$1';
+$route['listings/edit/(:any)'] = 'items/edit/$1';
+$route['listings/images/(:any)'] = 'items/images/$1';
+$route['listings/imageUpload/(:any)'] = 'items/imageUpload/$1';
+$route['listings/imageRemove/(:any)'] = 'items/imageRemove/$1';
+$route['listings/mainImage/(:any)'] = 'items/mainImage/$1';
+
+$route['orders'] = 'orders/index';
+$route['order/(:any)'] = 'orders/orderItem/$1';
+
+$route['messages'] = 'messages/inbox';
+$route['messages/inbox'] = 'messages/inbox';
+$route['messages/send/(:any)'] = 'messages/send/$1';
+$route['messages/send'] = 'messages/send';
+$route['message/(:any)'] = 'messages/read/$1';
 
 // Error class
-$route['error/forbidden'] = 'error/forbidden';
+$route['error/(:any)'] = 'error/$1';
 
 // Display a particular user
-$route['user/(:any)'] = 'user/view/$1';
+//$route['user'] = 'user/me';
+$route['user/(:any)'] = 'users/view/$1';
+// $route['user'] = 'users';
 
 //Show products under a particular category
-$route['cat/(:any)'] = 'products/cat/$1';
+$route['cat/(:any)'] = 'items/cat/$1';
 
-$route['admin'] = 'admin/dashboard';
+$route['home'] = 'home/index';
+
+// Admin panel, yet to be added
+$route['admin'] = 'admin/index';
+$route['admin/category/add'] = 'admin/addCategory';
+$route['admin/category/remove'] = 'admin/removeCategory';
+$route['admin/category/fixOrphans'] = 'admin/fixOrphans';
 
 //Redirect pages as default
-$route['default_controller'] = 'users';
+$route['default_controller'] = 'users/login';
 $route['(:any)'] = 'pages/view/$1';
 
 $route['404_override'] = '';

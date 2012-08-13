@@ -1,55 +1,60 @@
 <?php
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 class Images_model extends CI_Model {
 
 	public function __construct(){
 		parent::__construct();
 	}
 
-	public function base64image($filename){
-		$query = $this->db->select('encoded')
-				->where('filename',$filename)
+	public function imageFromDB($imageHash){
+		$query = $this->db->select('encoded, height, width')
+				->where('imageHash',$imageHash)
 				->get('images');
-		if($query->num_rows() !== 0){
-			$result = $query->row_array();
-			return $result['encoded'];
-		} else {
-			return FALSE;
-		}
-	}
-
-	//Load the requested product's images from the database
-	public function get_product_images($productID = FALSE, $mainPhoto = FALSE)
-	{
 	
-		//If no product ID is given or no images are found for that product. Show the default image.
-		if ($productID === FALSE)
-		{
-			$query = $this->db->get_where('productPhotos', array('id' => 1));
-			$result = $query->row_array();
-			$data = $this->base64image($result);
-			return $data;
+		$result = array();
+
+		if($query->num_rows() !== 0){
+			// Image exists, return encoded base64. 
+			$result = $query->row_array(); 
+		} else {
+			$result = NULL;
 		}
 
-		//Check if only the main image is requested
-		if($mainPhoto == 1)
-		{
-			$this->db->select('mainPhotoID');
-			$query = $this->db->get_where('products', array('id' => $productID));
-			$result = $query->row_array();
+		return $result;
+	}
 
-			$query = $this->db->get_where('productPhotos', array('id' => $result['mainPhotoID']));			
-			$array = $query->row_array();
-
-                        return $this->base64image($array['imageName']);
-		} 
-		else { //Load an array of all images for current product
-			$query = $this->db->get_where('productPhotos', array('productID' => $productID));
-			$array = $query->result_array();
-			$i = 0;
-			foreach($array as $entry){
-				$result[$i++] = $this->base64image($entry['imageName']);
+	public function removeImage($imageHash){
+		$query = $this->db->get_where('images',array('imageHash' => $imageHash));
+		if($query->num_rows() > 0){
+			$this->db->where('imageHash',$imageHash);
+			$delete = $this->db->delete('images');
+			if(!$delete){
+				return FALSE;
+			} else {
+				return TRUE;
 			}
-			return $result;
+		} else {
+			return NULL;
 		}
 	}
+
+	public function addBase64Image($imageHash){
+		$query = $this->db->select('encoded')
+				  ->where('imageHash',$imageHash)
+				  ->get('images');
+		if($query->num_rows() !== 0){
+			return FALSE;
+		} else {
+			$insertArray = array(	'encoded' => $this->my_image->simpleImageEncode($identifier),
+						'imageHash' => $imageHash  );
+			if($this->db->insert('images',$insertArray)){
+				return TRUE;				
+			} else {
+				return FALSE;
+			}			
+		}
+	}
+
+
 }

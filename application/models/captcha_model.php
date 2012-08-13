@@ -1,4 +1,6 @@
 <?php
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 class Captcha_model extends CI_Model {
 
 	public function __construct(){	}
@@ -13,7 +15,6 @@ class Captcha_model extends CI_Model {
 
 
 	public function getCode($key){
-
 		$this->db->select('characters')
 			->from('captchas')
 			->where('key',$key);

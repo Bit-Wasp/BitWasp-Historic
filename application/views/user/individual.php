@@ -3,7 +3,8 @@
 
                         <div id="main">
 Date Registered: <?php echo date('j / F / Y ',$user['timeRegistered']); ?><br />
-Rating: <?=$user['rating'] ?>
+Rating: <?=$user['rating'] ?><br />
+<?=anchor('messages/send/'.$user['userHash'],'Message this user');?>
                         </div>
 
                         <div class="clear"></div>

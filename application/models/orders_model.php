@@ -8,7 +8,7 @@ class Orders_model extends CI_Model {
 		$this->load->model('items_model');
 	}
 
-	public function nextStep($orderID){
+	public function nextStep($orderID,$fromStep){
 		$orderInfo = $this->getOrderByID($orderID);
 		if($orderInfo === NULL){
 			return NULL;
@@ -17,6 +17,9 @@ class Orders_model extends CI_Model {
 			$this->db->where('id',$orderID);
 			$query = $this->db->get('orders');
 			$result = $query->result();
+			if($result[0]->step !== $fromStep){
+				return NULL;
+			}
 			$this->db->where('id',$orderID);
 			$query = $this->db->update('orders',array('step' => ($result[0]->step+1)));
 			if($query){
@@ -33,17 +36,26 @@ class Orders_model extends CI_Model {
 
 		if($sellerHash !== NULL && $this->users_model->get_user($sellerHash) !== FALSE){
 			$getOrders = $this->db->get_where('orders',array('buyerHash' => $buyer,
-									 'sellerHash' => $sellerHash));
-			
+									 'sellerHash' => $sellerHash)
+							);
 		} else {
 			$getOrders = $this->db->get_where('orders',array('buyerHash' => $buyer));
 		}
 
-		$orders = array();
-		if($getOrders->num_rows() > 0){
+		$orders = $this->buildOrderArray($getOrders);
+		
+		if($orders === FALSE){
+			return NULL;
+		} else {
+			return $orders;
+		}
+	}	
+
+	public function buildOrderArray($order){
+		if($order->num_rows() > 0){
 			$i = 0;
-			foreach($getOrders->result() as $result){
 				//print_r($result);
+			foreach($order->result() as $result){
 				
 				$tmp = $result->items;
 				$items = explode(":", $tmp);
@@ -53,29 +65,57 @@ class Orders_model extends CI_Model {
 					$array = explode("-", $item);
 					$itemInfo[$j] = $this->items_model->getInfo($array[0]);
 					$itemInfo[$j++]['quantity'] = $array[1];
-					
 				}
-				$orders[$i++] = array(	'seller' => $this->users_model->get_user($result->sellerHash),
+
+				if($result->step == '0'){
+					$stepMessage = anchor('order/place/'.$result->sellerHash,'Place Order');
+				} else if($result->step == '1'){
+					$stepMessage = 'Vendor awaiting payment.';
+				} else if($result->step == '2'){
+					$stepMessage = 'Awaiting dispatch.';
+				} else if($result->step == '3'){
+					$stepMessage = "Completed. ".anchor('order/review/'.$result->sellerHash,'Please Review');
+				} else {//Error..
+					$stepMessage = 'Gone on too long!';
+				}
+
+				$orders[$i++] = array(	'id' => $result->id,
+							'seller' => $this->users_model->get_user($result->sellerHash),
+							'buyer' => $this->users_model->get_user($result->buyerHash),
 							'totalPrice' => $result->totalPrice,
 							'currency' => $result->currency,
 							'currencySymbol' => $this->currency_model->get_symbol($result->currency),
 							'time' => $result->time,
+							'dispTime' => $this->general->displayTime($result->time),
 							'items' => $itemInfo,
-							'step' => $result->step ); 
+							'step' => $result->step,
+							'progress' => $stepMessage );
 				unset($itemInfo);
 			}
 //			print_r($orders);
 			return $orders;
 		} else {
-			return NULL;
+			return FALSE;
 		}
-	}	
+	}
+
+	public function ordersByStep($userID,$step){
+		$query = $this->db->get_where('orders', array('sellerHash' => $userID,
+							  'step' => $step ) );
+		$orders = $this->buildOrderArray($query);
+
+		if($orders === FALSE){
+			return NULL;
+		} else {
+			return $orders;
+		}
+	}
 
 	public function check($buyer,$seller){
 		$query = $this->db->get_where('orders',array(	'buyerHash' => $buyer,
 								'sellerHash' => $seller));
 		if($query->num_rows() > 0){
-			return $query->row_array();
+			return $this->buildOrderArray($query);
 		} else {
 			return NULL;
 		}

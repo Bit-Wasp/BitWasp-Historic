@@ -1,4 +1,6 @@
 <?php
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 class Currency_model extends CI_Model {
 
 	public function __construct(){}
@@ -6,7 +8,7 @@ class Currency_model extends CI_Model {
 	public function get_symbol($id){
 		$query = $this->db->get_where('currencies', array('id' => $id));
 		$result = $query->row_array();
-		//print_r($result);
+		print_r($result);
 		if(isset($result)){
 			return $result['symbol'];
 		} else {

@@ -19,6 +19,7 @@ class Messages_model extends CI_Model {
 	public function messages($userId){
 		$this->load->model('users_model');
 		$this->db->where('toId',$userId);
+		$this->db->order_by('id DESC');
 		$query = $this->db->get('messages');
 
 		$array = array();

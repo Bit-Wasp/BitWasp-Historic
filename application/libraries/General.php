@@ -36,5 +36,21 @@ class General {
 		return $hash;
 	}
 
+	public function displayTime($timestamp){
+		$currentTime = time();
+		$difference = $currentTime-$timestamp;
+
+		if($difference < 86400){
+			return "yesterday";
+		}
+		if($difference > 86400 && $difference < 172800){
+			return "two days ago";
+		}
+		if($difference > 31536000) {
+			return date('j F Y');
+		} else {
+			return date('j F');
+		}
+	}
 };
 

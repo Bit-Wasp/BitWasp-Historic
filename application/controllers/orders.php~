@@ -122,13 +122,14 @@ class Orders extends CI_Controller {
 								'encrypted' => '0',
 								'time' => time() );
 
-					$data['title'] = 'Order Placed';
-					$data['page'] = 'orders/index';
-					$data['returnMessage'] = 'Your order has been placed. Please authorize payment to this sellers account to continue.';
-					$data['orders'] = $this->orders_model->myOrders();
+					if($this->messages_model->addMessage($messageArray) === TRUE){
 
-					if($this->messages_model->addMessage($messageArray) !== FALSE){
-						$data['returnMessage'] = "Unable to send a message to {$currentOrder[0]['buyer']['userName']}";
+						$data['title'] = 'Order Placed';
+						$data['page'] = 'orders/index';
+						$data['returnMessage'] = 'Your order has been placed. Please authorize payment to this sellers account to continue.';
+						$data['orders'] = $this->orders_model->myOrders();	
+					} else {
+						echo "Unable to send seller a message..";
 					}
 
 				} else {
@@ -147,12 +148,6 @@ class Orders extends CI_Controller {
 		$this->load->library('layout',$data);
 	}
 
-	public function review(){
-		$data['title'] = 'Soon to come..';
-		$data['page'] = 'orders/review';
-		$data['returnMessage'] = 'This content will come soon..';
-		$this->load->library('layout',$data);
-	}
 
 
 };

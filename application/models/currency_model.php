@@ -8,7 +8,7 @@ class Currency_model extends CI_Model {
 	public function get_symbol($id){
 		$query = $this->db->get_where('currencies', array('id' => $id));
 		$result = $query->row_array();
-		//print_r($result);
+		
 		if(isset($result)){
 			return $result['symbol'];
 		} else {

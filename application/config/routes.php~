@@ -62,14 +62,13 @@ $route['listings/mainImage/(:any)'] = 'items/mainImage/$1';
 
 // Control a buyers orders
 $route['orders'] = 'orders/index';
-$route['order/review/(:any)'] = 'orders/review/$1';
 $route['order/place/(:any)'] = 'orders/place/$1';
 $route['order/(:any)'] = 'orders/orderItem/$1';
 
 // Seller confirms a payment
 $route['payment/confirm/(:any)'] = 'items/confirmPayment/$1';
 // Seller confirms item dispatch
-$route['dispatch/confirm/(:any)'] = 'items/confirmDispatch/$1';
+$route['dispatch/confirm/(:any)'] = '';
 
 // Messages 
 $route['messages'] = 'messages/inbox';

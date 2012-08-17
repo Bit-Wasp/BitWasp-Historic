@@ -109,7 +109,6 @@ class Items extends CI_Controller {
 				$data['dispatchOrders'] = $this->orders_model->ordersByStep($sellerHash,2);
 			}
 		}
-		$this->load->library('layout',$data);
 	}
 
 

@@ -3,7 +3,7 @@ $config = array(
 		'addCategory'	=>	array(
 						array(	'field' => 'name',
 							'label' => 'Name',
-							'rules' => 'htmlentities|trim|alpha_dash|required|min_length[2]|is_unique[categories.name]'
+							'rules' => 'htmlentities|trim|required|min_length[2]|is_unique[categories.name]'
 							),
 						array(	'field' => 'description',
 							'label' => 'Description',

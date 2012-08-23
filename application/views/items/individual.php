@@ -14,12 +14,12 @@
 			| <?=anchor('order/'.$item['itemHash'], 'Purchase Item'); ?></div><?php } ?>
 			<div class="clear"></div>
 		</div>
-		<div class="itemImgs">
+		<ul class="itemImgs">
 			<?php foreach ($item['itemImgs'] as $image): ?>
-			  <img src="data:image/jpeg;base64,<?=$image['encoded'];?>" title="<?=$item['name']; ?>" width="<?=$image['width'];?>">
+			  <li><img class="productImg" src="data:image/jpeg;base64,<?=$image['encoded'];?>" title="<?=$item['name']; ?>" width="<?=$image['width'];?>" /></li>
 			<?php endforeach ?>
 			<div class="clear"></div>
-		</div>
+		</ul>
 		<div class="clear"></div>
 	</div>
 

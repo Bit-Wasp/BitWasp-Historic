@@ -66,7 +66,6 @@ class Items extends CI_Controller {
 			$data['returnMessage'] = 'This order does not exist.';
 			$data['orders'] = $this->orders_model->myOrders();
 		} else {
-			//
 			if($this->orders_model->nextStep($orderInfo[0]['id'],'2') === TRUE){
 	
 				$messageHash = $this->general->uniqueHash('messages','messageHash');
@@ -75,7 +74,7 @@ class Items extends CI_Controller {
 						        'fromId' => $orderInfo[0]['seller']['id'],
 						        'messageHash' => $messageHash,
 							'orderID' => $orderInfo[0]['id'],
-							'subject' => "Ready for dispatch: ".$orderInfo[0]['id'],
+							'subject' => "Order has been dispatched: ".$orderInfo[0]['id'],
 							'message' => nl2br($messageText),
 							'encrypted' => '0',
 							'time' => time() );

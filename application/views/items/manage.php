@@ -36,36 +36,55 @@
 		<div class="clear"></div>
 
 	<?php if(count($newOrders) > 0){ ?>
-		<a name="payment">Currently awaiting payment:</a> 
-
-		<?php foreach($newOrders as $order): ?>
-			<br />
-			<?=anchor("user/".$order['buyer']['userHash'], $order['buyer']['userName']); ?> (<?=$order['dispTime'];?>)<br />
-			<?php foreach($order['items'] as $item):?>
-				<?=$item['quantity']." x ".$item['name'];?><br />
+		<h3>Currently awaiting payment:</h3> 
+		<table class="orderlist">
+			<tr class="orderHeader">
+				<td>Buyer</td>
+				<td>Items</td>
+				<td>Total Price</td>
+				<td>Progress</td>
+				<td></td>
+			</tr>
+			<?php foreach($newOrders as $order): ?>
+			<tr>
+				<td><?=anchor("user/".$order['buyer']['userHash'], $order['buyer']['userName']); ?></td>
+				<td>
+					<ul><?php foreach($order['items'] as $item):?>
+						<li><?=$item['quantity']." x ".$item['name'];?></li>
+					<?php endforeach; ?></ul>
+				</td>
+				<td><?=$order['currencySymbol'].$order['totalPrice'];?></td>
+				<td><?=anchor('payment/confirm/'.$order['buyer']['userHash'], 'Click to confirm payment.');?></td>
+				<td><?=$order['dispTime'];?></td>
+			</tr>
 			<?php endforeach; ?>
-			Total Price: <?=$order['currencySymbol'].$order['totalPrice'];?><br />
-			<?=anchor('payment/confirm/'.$order['buyer']['userHash'], 'Click to confirm payment.');?><br />
-		<?php endforeach;
-
-	}
-	?>
+		</table>
+	<?php }	?>
 		<div class="clear"></div>
 	<?php if(count($dispatchOrders) > 0){ ?>
-		<br />
-		<a name="dispatch">Orders for dispatch:</a> 		
-
-		<?php foreach($dispatchOrders as $order): ?>
-			<br />
-			<?=anchor("user/".$order['buyer']['userHash'], $order['buyer']['userName']); ?> (<?=$order['dispTime'];?>)<br />
-			<?php foreach($order['items'] as $item):?>
-				<?=$item['quantity']." x ".$item['name'];?><br />
+		<h3>Orders for dispatch:</h3> 		
+		<table class="orderlist">
+			<tr class="orderHeader">
+				<td>Buyer</td>
+				<td>Items</td>
+				<td>Total Price</td>
+				<td>Progress</td>
+				<td></td>
+			</tr>
+			<?php foreach($dispatchOrders as $order): ?>
+			<tr>
+				<td><?=anchor("user/".$order['buyer']['userHash'], $order['buyer']['userName']); ?></td>
+				<td>
+					<ul><?php foreach($order['items'] as $item):?>
+						<li><?=$item['quantity']." x ".$item['name'];?></li>
+					<?php endforeach; ?></ul>
+				</td>
+				<td><?=$order['currencySymbol'].$order['totalPrice'];?></td>
+				<td><?=anchor('dispatch/confirm/'.$order['buyer']['userHash'], 'Click to confirm dispatch.');?></td>
+				<td><?=$order['dispTime'];?></td>
+			</tr>
 			<?php endforeach; ?>
-			Total Price: <?=$order['currencySymbol'].$order['totalPrice'];?><br />
-			<?=anchor('dispatch/confirm/'.$order['buyer']['userHash'], 'Click to confirm dispatch.');?>
-		<?php endforeach;
-
-	}
-	?>
+		</table>
+	<? } ?>
 
 	</div>

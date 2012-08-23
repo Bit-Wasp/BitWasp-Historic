@@ -40,16 +40,20 @@ class General {
 		$currentTime = time();
 		$difference = $currentTime-$timestamp;
 
-		if($difference < 86400){
-			return "yesterday";
-		}
-		if($difference > 86400 && $difference < 172800){
-			return "two days ago";
-		}
-		if($difference > 31536000) {
-			return date('j F Y');
+		if ($difference < 60) {
+			return 'less than a minute ago';
+		} else if($difference < 120) {
+			return 'about a minute ago';
+		} else if($difference < (60*60)) {
+			return round($difference / 60) . ' minutes ago';
+		} else if($difference < (120*60)) {
+			return 'about an hour ago';
+		} else if($difference < (24*60*60)) {
+			return 'about ' . ($difference / 3600) . ' hours ago';
+		} else if($difference < (48*60*60)) {
+			return '1 day ago';
 		} else {
-			return date('j F');
+			return date('j F Y');
 		}
 	}
 };

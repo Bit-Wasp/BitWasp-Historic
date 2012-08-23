@@ -110,9 +110,11 @@ class Orders extends CI_Controller {
 						$messageText.= "{$currentOrder[0]['items'][$i]['quantity']} x {$currentOrder[0]['items'][$i]['name']}\n";
 					}
 
-					$messageText.= "Total price: {$currentOrder[0]['currencySymbol']}{$currentOrder[0]['totalPrice']}";
+					$messageText .= "Total price: {$currentOrder[0]['currencySymbol']}{$currentOrder[0]['totalPrice']}";
 
 					$messageHash = $this->general->uniqueHash('messages','messageHash');
+					$threadHash = $this->general->uniqueHash('messages','threadHash');
+
 					$messageArray = array(  'toId' => $currentOrder[0]['seller']['id'],
 							        'fromId' => $currentOrder[0]['buyer']['id'],
 							        'messageHash' => $messageHash,
@@ -120,14 +122,16 @@ class Orders extends CI_Controller {
 								'subject' => "New Order from ".$currentOrder[0]['buyer']['userName'],
 								'message' => nl2br($messageText),
 								'encrypted' => '0',
-								'time' => time() );
+								'time' => time(),
+								'threadHash' => $threadHash
+					);
 
 					$data['title'] = 'Order Placed';
 					$data['page'] = 'orders/index';
 					$data['returnMessage'] = 'Your order has been placed. Please authorize payment to this sellers account to continue.';
 					$data['orders'] = $this->orders_model->myOrders();
 
-					if($this->messages_model->addMessage($messageArray) !== FALSE){
+					if($this->messages_model->addMessage($messageArray) !== TRUE){
 						$data['returnMessage'] = "Unable to send a message to {$currentOrder[0]['buyer']['userName']}";
 					}
 

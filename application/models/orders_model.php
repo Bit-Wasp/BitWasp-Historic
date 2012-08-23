@@ -34,6 +34,7 @@ class Orders_model extends CI_Model {
 		$this->load->model('users_model');
 		$buyer = $this->my_session->userdata('userHash');
 
+		$this->db->order_by('time DESC');
 		if($sellerHash !== NULL && $this->users_model->get_user(array('userHash' => $sellerHash)) !== FALSE){
 			$getOrders = $this->db->get_where('orders',array('buyerHash' => $buyer,
 									 'sellerHash' => $sellerHash)
@@ -112,8 +113,10 @@ class Orders_model extends CI_Model {
 	}
 
 	public function check($buyer,$seller){
+		//Check there is no ongoing orders between this buyer and vendor
 		$query = $this->db->get_where('orders',array(	'buyerHash' => $buyer,
-								'sellerHash' => $seller));
+								'sellerHash' => $seller,
+								'step !=' => 3));
 		if($query->num_rows() > 0){
 			return $this->buildOrderArray($query);
 		} else {

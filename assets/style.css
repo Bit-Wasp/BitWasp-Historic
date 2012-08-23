@@ -1,3 +1,63 @@
+/*************************************
+*********** Reset Styles *************
+*************************************/
+
+html, body, div, span, applet, object, iframe,
+h1, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+
+body {
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*************************************
+******* Begin main stylesheet ********
+*************************************/
+
+
 ::selection{ background-color: #E13300; color: white; }
 ::moz-selection{ background-color: #E13300; color: white; }
 ::webkit-selection{ background-color: #E13300; color: white; }
@@ -136,12 +196,43 @@ code {
 	width: 300px:
 }
 
+.itemImg {
+	text-align: center;
+}
+
+.itemImgs li{
+	float: left;
+	margin: 20px;
+}
+
 /*************************************
-*** Style for main product listing ***
+***** Style for message listing  *****
 *************************************/
 
 .messageUnread, .messageUnread a{
 	font-weight: bold;
+}
+
+/*************************************
+****** Style for orders listing  *****
+*************************************/
+
+.orderlist {
+	width: 80%;
+}
+
+.orderlist, .orderlist th, .orderlist td {
+	border-collapse:collapse;
+	text-align: left;
+	border: 1px solid black;
+}
+
+.orderlist tr.orderHeader {
+	font-weight:bold;
+}
+
+.orderlist td {
+	padding: 5px;
 }
 
 /*************************************

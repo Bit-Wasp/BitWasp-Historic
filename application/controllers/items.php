@@ -563,18 +563,27 @@ class Items extends CI_Controller {
 	// URI: listings/remove/
 	// Auth: Vendor
 	public function remove($itemHash){
-		$userHash = $this->my_session->userdata('userHash');
-		$remove = $this->items_model->remove($itemHash,$userHash);
-		if($remove === TRUE){
-			$data['returnMessage'] = 'Your item has been removed.';
-		} else {
-			$data['returnMessage'] = 'Unable to remove this product.';
-		}
-		$data['title'] = 'Item Removed';
-		$data['page'] = 'items/manage';
-		$hash = $this->my_session->userdata('userHash');
-		$data['items'] = $this->items_model->userListings($hash);
+		$itemInfo = $this->items_model->get_items($itemHash);
 
+		//Check if the current user is allowed to remove this item
+		if($this->my_session->userdata('userHash') == $itemInfo['sellerID']){
+			$remove = $this->items_model->remove($itemHash,$userHash);
+			if($remove === TRUE){
+				$data['returnMessage'] = 'Your item has been removed.';
+			} else {
+				$data['returnMessage'] = 'Unable to remove this product.';
+			}
+
+			//Item has been removed. Show the users other items
+			$data['title'] = 'Item Removed';
+			$data['page'] = 'items/error';
+			$hash = $this->my_session->userdata('userHash');
+		} else {
+			// Current user is not the seller of this item. Give them an errror and display their items.
+			$data['title'] = 'Remove Item';
+			$data['page'] = 'items/error';
+			$data['returnMessage'] = 'You are not authorized to delete this image.';
+		}
 		$this->load->library('layout',$data);
 	}
 

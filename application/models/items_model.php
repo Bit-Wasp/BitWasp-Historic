@@ -91,13 +91,12 @@ class Items_model extends CI_Model {
 	// Delete the item from the items table.
 	public function remove($itemHash, $userHash){
 		// Get images for that item.
-		$query = $this->db->get_where('itemPhotos', array('itemHash' => $itemHash, 'userHash' => $userHash));
+		$query = $this->db->get_where('itemPhotos', array('itemHash' => $itemHash));
 
 		// Check if there are any images, and remove them.
 		if($query->num_rows() > 0){
 			foreach($query->result_array() as $row){
 				$this->removeImage($row['imageHash']);
-				$this->images_model->removeImage($row['imageHash']);
 			}
 		}
 

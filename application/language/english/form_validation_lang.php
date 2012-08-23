@@ -9,3 +9,5 @@ $lang['is_unique'] = "This %s is already taken. Please choose another.";
 $lang['min_length'] = "Minimum length of %s is %s";
 $lang['max_length'] = "Maximum length of %s is %s";
 $lang['matches'] = "%s must match %s";
+$lang['integer'] = "%s must be an integer";
+$lang['decimal'] = "%s must be a decimal number";

@@ -47,7 +47,7 @@ $config = array(
 							),
 						array( 'field' => 'price',
 							'label' => 'Price',
-							'rules' => 'required|trim|integer'		
+							'rules' => 'required|trim|decimal'		
 							)
 					),
 		'removeCategory'=>	array(

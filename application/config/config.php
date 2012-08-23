@@ -16,6 +16,21 @@
 */
 $config['base_url']	= 'http://localhost/';
 
+
+/*
+|--------------------------------------------------------------------------
+| Bitcoin RPC Configuration
+|--------------------------------------------------------------------------
+|
+| The bitcoind should be running on this system. Please ensure you have
+| a strong username and password combination for the RPC interface and
+| that it only listening on the localhost.
+|
+*/
+$config['bitcoind_rpc_username']	= 'username';
+$config['bitcoind_rpc_password']	= 'password';
+$config['bitcoind_rpc_host']		= '127.0.0.1:8332';
+
 /*
 |--------------------------------------------------------------------------
 | Index File

@@ -27,6 +27,9 @@ class Users extends CI_Controller {
 		// Load the user info from the database.
                 $data['user'] = $this->users_model->get_user(array('userHash' => $userHash));
 
+		//Load users public key from the databsae
+		$data['user']['publicKey'] = $this->users_model->get_pubKey_by_id($data['user']['id']);
+
 		// Check the entry exists.
 		if($data['user'] !== null && $data['user'] !== false){
 			// user exists

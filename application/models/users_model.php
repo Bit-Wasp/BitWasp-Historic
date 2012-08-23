@@ -85,8 +85,7 @@ class Users_Model extends CI_Model {
         {
 
                 //If no user is specified, return nothing.
-                if ($id === FALSE)
-                {
+                if ($id === FALSE) {
                         return NULL;
                 }
 

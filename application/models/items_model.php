@@ -60,7 +60,7 @@ class Items_model extends CI_Model {
 		}
 	}
 
-	// Load listings for the specified user.
+	// Load  items for the specified user.
 	public function userListings($userHash){
 		$query = $this->db->get_where('items',array('sellerID' => $userHash));
 		$result = $query->result_array();

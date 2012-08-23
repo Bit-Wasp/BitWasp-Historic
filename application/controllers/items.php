@@ -1,5 +1,5 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Items extends CI_Controller {
 
@@ -16,9 +16,14 @@ class Items extends CI_Controller {
 	// Auth: Login
 	public function index()	{
 		//Load the latest items, default is 20.
-		$data['items'] = $this->items_model->getLatest();
 		$data['title'] = 'Items';
 		$data['page'] = 'items/index';
+		$data['items'] = $this->items_model->getLatest();
+		
+		//Check if there are no matching items
+		if(empty($data['items'])){
+			$data['returnMessage'] = "No matching items have been found. Please return soon.";
+		}
 		$this->load->library('layout',$data);
 	}
 
@@ -608,7 +613,7 @@ class Items extends CI_Controller {
 		{
 			$data['page'] = 'items/index';
 			$data['title'] = 'Not Found';
-			$data['returnMessage'] = 'That category cannot be found.';
+			$data['returnMessage'] = 'That category cannot be found. The latest products are listed below.';
 			$data['items'] = $this->items_model->getLatest();
 			// Whoops, we don't have that category
 		} elseif(is_array($data['items'])){
@@ -617,7 +622,7 @@ class Items extends CI_Controller {
 		} else {
 			$data['title'] = $data['category']['name'];
 			$data['page'] = 'items/index';
-			$data['returnMessage'] = 'That category is empty.';
+			$data['returnMessage'] = 'That category is empty. The latest products are listed below.';
 			$data['items'] = $this->items_model->getLatest();
 		}
 		$this->load->library('layout',$data);

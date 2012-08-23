@@ -19,8 +19,14 @@ class Layout  extends CI_Controller {
 			$CI->load->view($headerFile,$data);
 
 			$CI->load->model('categories_model');
-			$categories = $CI->categories_model->getCategories();	
-			$category_data['cats'] = $this->createMenu($categories);
+			$categories = $CI->categories_model->getCategories();
+
+			//Check if there are categories to display
+			if(!empty($categories))	{
+				$category_data['cats'] = $this->createMenu($categories);
+			} else {
+				$category_data['cats'] = "No Categories";
+			}
 		} else {
 			$CI->load->view('templates/loginHeader',$data);
 			$category_data['cats'] = NULL;

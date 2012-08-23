@@ -135,6 +135,15 @@ code {
 	float: right;
 	width: 300px:
 }
+
+/*************************************
+*** Style for main product listing ***
+*************************************/
+
+.messageUnread, .messageUnread a{
+	font-weight: bold;
+}
+
 /*************************************
 ********* Style for footer ***********
 *************************************/

@@ -15,7 +15,7 @@
                         <li><?=anchor('home', 'Home', 'title="Home"');?></li>
                         <li><?=anchor('items', 'Items', 'title="Items"');?></li>
                         <li><?=anchor('listings', 'Your Listings', 'title="Your Listings"');?></li>
-                        <li><?=anchor('messages', 'Messages', 'title="Messages"');?></li>
+                        <li><?=anchor('messages', 'Messages ('.$unreadMessages.')', 'title="Messages"');?></li>
                         <li><?=anchor('users/logout', 'Logout', 'title="Logout"');?></li>
                 </ul>
                 <div class="clear"></div>

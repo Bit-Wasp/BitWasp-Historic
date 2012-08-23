@@ -9,22 +9,9 @@
 <?=$message;?>
 <?php if($isEncrypted){ echo '</pre>'; } ?>
 </td></tr>
+<tr><td><?=anchor('message/reply/'.$messageHash, "Reply");?> <?=anchor('message/delete/'.$messageHash, 'Delete');?></td><td></td></tr>
 </table>
 </fieldset>
 
-<?php echo form_open('messages/send'); ?>
-
-<?php if(isset($returnMessage)) echo $returnMessage; ?><br />
-
-<input type="hidden" name="recipient" value="<?=$fromUser['userName'];?>"  /> <br />
-<input type="hidden" name="subject" value="<?=$subject;?>"  /> <br />
-
-<label for="message">Message</label>
-<textarea name="message">
-</textarea><br />
-
-<br /><br />
-<label for="submit"><input type='submit' value='Send' /></label><br />
-</form>
-
+<?=anchor('messages','Return to your inbox', array('class'=>'returnLink'));?>
 </div>

@@ -74,8 +74,11 @@ $route['dispatch/confirm/(:any)'] = 'items/confirmDispatch/$1';
 // Messages 
 $route['messages'] = 'messages/inbox';
 $route['messages/inbox'] = 'messages/inbox';
+$route['message/delete/(:any)'] = 'messages/delete/$1';
 $route['messages/send/(:any)'] = 'messages/send/$1';
 $route['messages/send'] = 'messages/send';
+$route['message/reply/(:any)'] = 'messages/send/$1';
+$route['message/reply'] = 'messages/reply';
 $route['message/(:any)'] = 'messages/read/$1';
 
 // Error class

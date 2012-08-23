@@ -1,6 +1,6 @@
         <div id="sendMessage" class="mainContent">
 	<h2>Create Message</h2>
-<?php echo form_open('messages/send', array('name'=>'sendMessageForm')); ?>
+<?php echo form_open('messages/send', array('name'=>'sendMessageForm'), $hiddenFields); ?>
 
 <fieldset>
 <?php if(isset($returnMessage)) echo $returnMessage; ?><br />
@@ -9,7 +9,7 @@
 <input type="text" name="recipient" value="<?=$to; ?>" size="12" /> <br />
 
 <label for="subject">Subject</label> 
-<input type="text" name="subject" value="<?=set_value('subject'); ?>" size='12' /> <br />
+<input type="text" name="subject" value="<? if(isset($subject)){ echo $subject; } ?>" size='12' /> <br />
 
 <label for="message">Message</label>
 <textarea name="message">

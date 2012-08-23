@@ -16,6 +16,30 @@ class Messages_model extends CI_Model {
 		}
 	}
 
+	public function getMessageByThread($threadHash, $count = FALSE){
+
+		$query = $this->db->get_where('messages',array('threadHash'=>$threadHash));
+		
+		if($count==TRUE){
+			return $this->db->count_all_results();
+		} else {
+			if($query->num_rows() > 0){
+				return  $query->row_array();
+			} else {
+				return NULL;
+			}
+		}
+	}
+
+	public function getUnread($userID){
+		$query = $this->db->get_where('messages',array('toId'=>$userID, 'viewed'=>0));
+		if($query->num_rows() > 0){
+			return $query->num_rows();
+		} else {
+			return 0;
+		}
+	}
+
 	public function messages($userId){
 		$this->load->model('users_model');
 		$this->db->where('toId',$userId);
@@ -28,9 +52,10 @@ class Messages_model extends CI_Model {
 				$fromUser = $this->users_model->get_user(array('id' => $result->fromId));
 				array_push($array,array('id' =>	$result->id,
 							'messageHash' => $result->messageHash,
-							'fromUser' => $this->users_model->get_user(array('id' => $result->fromId)), //Return info about sender
+							'fromUser' => $fromUser, //Return info about sender
 							'subject' => $result->subject,
 							'message' => $result->message,
+							'viewed' => $result->viewed,
 							'time' => $result->time ));
 			}
 
@@ -51,6 +76,23 @@ class Messages_model extends CI_Model {
 		}
 	}
 
-};
+	public function deleteMessage($messageHash){
+		//Delete message from the database
+		$this->db->delete('messages', array('messageHash' => $messageHash));
+		return TRUE;
+	}
 
+	//Update message when it is read
+	public function setMessageViewed($messageID){
+		$query = $this->db->where('id', $messageID);
+		$query = $this->db->update('messages', array('viewed' => 1));
+		if($query){
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+
+};
 

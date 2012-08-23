@@ -22,6 +22,45 @@ class Messages extends CI_Controller {
 		$this->load->library('layout',$data);
 	}
 
+	//Delete a message.
+	public function delete($messageHash){
+
+		$userId = $this->my_session->userdata('id');
+
+		//Check if user wants to delete all messages
+		if($messageHash == "all") {
+			$userMessages = $this->messages_model->messages($userId); //Load all messages for current user
+			if($userMessages){
+				foreach($userMessages as $message) {
+					$this->messages_model->deleteMessage($message['messageHash']);
+				}
+			}
+			$data['title'] = 'Messages Deleted';
+			$data['page'] = 'messages/deletedSuccess';
+			$data['returnMessage'] = 'All messages have been permentantly deleted!';
+		//Otherwise user wants to delete a specific message		
+		} else {
+			$messageInfo = $this->messages_model->getMessage($messageHash);
+			if($messageInfo==NULL){ //Could not find this message, throw an error
+				$data['title'] = 'Message Not Found';
+				$data['page'] = 'messages/notFound';
+				$data['returnMessage'] = 'This message cannot be found.';
+	 		} else {
+				if(($messageInfo['fromId']==$userId)||($messageInfo['toId']==$userId)){ //User owns this message, delete ie
+					$this->messages_model->deleteMessage($messageHash);
+					$data['title'] = 'Message Deleted';
+					$data['page'] = 'messages/deletedSuccess';
+					$data['returnMessage'] = 'This message has been deleted!';
+				} else {
+					$data['title'] = 'Forbidden';
+					$data['returnMessage'] = 'You do not have permission to delete this messsage!';
+					$data['page'] = 'messages/deleteNoPermission';
+				}
+			}
+		}
+		$this->load->library('layout',$data);
+	}
+
 	public function read($messageHash){
 		$messageInfo = $this->messages_model->getMessage($messageHash); //Look up the requested message
 		if($messageInfo === NULL){  //Display an error if there is no matching message
@@ -37,14 +76,17 @@ class Messages extends CI_Controller {
 		} else { //There is matching messages, begin outputting
 			if($this->my_session->userdata('id') == $messageInfo['toId'] ||
 			   $this->my_session->userdata('id') == $messageInfo['fromId'] ){ //Show messages from or too the current user.
-				$this->load->library('form_validation');
+
+				//Mark the message as read
+				$this->messages_model->setMessageViewed($messageInfo['id']);
 			
 				$data['title'] = substr($messageInfo['subject'], 0, 40).'...';	
 				$data['page'] = 'messages/read';
 
 				$data['fromUser'] = $this->users_model->get_user(array('id' => $messageInfo['fromId']));
 				$data['subject'] = $messageInfo['subject'];
-				$data['message'] = $messageInfo['message'];	
+				$data['message'] = $messageInfo['message'];
+				$data['messageHash'] = $messageInfo['messageHash'];
 			
 				if($messageInfo['encrypted']==1){ $data['isEncrypted']=1; } else { $data['isEncrypted'] = 0; } //Check if message is encrypted.
 
@@ -65,13 +107,26 @@ class Messages extends CI_Controller {
 		//Include the required files for clientside encryption
 		$data['header_meta'] = $this->load->view('messages/encryptionHeader', NULL, true);
 		$data['returnMessage'] = '';
-	
+
 		$this->load->library('form_validation');
 		$data['title'] = 'Send Message';
 		$data['page'] = 'messages/send';
-	
-		//Check if the provided user hash matches a user.
-		if($toHash !== NULL){ //A user was specified
+		$data['hiddenFields'] = array();
+
+
+		//Check if the user is replying to a message
+		$messageReply = $this->messages_model->getMessage($toHash); //Look up the requested message
+		if(isset($messageReply)) { //The user is replying to an existing message
+			$fromUser = $this->users_model->get_user(array('id' => $messageReply['fromId']));
+			//Forward thread hash to the form.
+			$data['hiddenFields'] = array('threadHash' => $messageReply['threadHash']);
+			$data['to'] = $fromUser['userName'];
+			$data['subject'] = $messageReply['subject'];
+		}
+
+
+		//Otherwise check if the provided user hash matches a user load their username.
+		elseif($toHash !== NULL){ //A user was specified
 			$recipient = $this->users_model->get_user(array('userHash' => $toHash));
 			if($recipient['userName'] === NULL){ //Check if a user is found with the specified userHash
 				$data['returnMessage'] = 'The requested user could not be found.';
@@ -79,7 +134,9 @@ class Messages extends CI_Controller {
 			} else { //A matching user was found.
 				$data['to'] = $recipient['userName'];
 			}
-		} else { //If no user was specified try use the submitted value
+
+		//If no user hash was specified try use the submitted value
+		} else {
 			$data['to'] = $this->input->post('recipient');
 		}
 
@@ -89,17 +146,32 @@ class Messages extends CI_Controller {
 
 		//Need to check if provided username is valid
                 if ($this->form_validation->run('sendmessage') == FALSE){
-			//Submitted form didn't pass validation
-
+			//Submitted form didn't pass validation, display it again
+			if($this->input->post('subject')!='') {	
+				$data['subject'] = $this->input->post('subject');
+			}
                 } else  {
 			//Add message to database
 			if($recipient!==FALSE){ //Check if recipient is found.
 
-				if ('-----BEGIN' !== FALSE) { //Check if the message appears to be encrypted.
+				//Check if the message appears to be encrypted.
+				$checkEncrypt = stripos($this->input->post('message'), '-----BEGIN');
+				if ($checkEncrypt!== FALSE) {
 				    $isEncrypted = 1;
 				} else {  $isEncrypted = 0; }
 
 				$messageHash = $this->general->uniqueHash('messages','messageHash');
+
+				//Check if this is a message is a reply to an existing conversation
+				if($this->input->post('threadHash')){
+					//Check if this is a valid threadHash
+					$threadHash = $this->input->post('threadHash');
+					if($this->messages_model->getMessageByThread($threadHash, TRUE)<=0) { //This thread has no messages
+						$threadHash = $this->general->uniqueHash('messages','threadHash'); //Create new thread
+					}
+				} else {
+					$threadHash = $this->general->uniqueHash('messages','threadHash');
+				}
 
 				$messageArray = array(  'toId' => $recipient['id'],
 				        'fromId' => $this->my_session->userdata('id'),
@@ -107,14 +179,16 @@ class Messages extends CI_Controller {
 					'orderID' => 0,
 					'subject' => $this->input->post('subject'),
 					'message' => $this->input->post('message'),
-					'encrypted' => 0,
-					'time' => time());
+					'encrypted' => $isEncrypted,
+					'time' => time(),
+					'threadHash' => $threadHash,
+					);
 
 				$this->messages_model->addMessage($messageArray);
 
 				$data['returnMessage'] = 'Message has been sent.';
 				$data['title'] = 'Message Sent';
-			        $data['page'] = 'messages/inbox'; 
+			        $data['page'] = 'messages/sentSuccess'; 
 			}
                 }
                 $this->load->library('Layout',$data);

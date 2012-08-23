@@ -15,6 +15,8 @@ class Layout  extends CI_Controller {
 		}
 
 		if($CI->session->userdata('logged_in') === TRUE){
+			$CI->load->model('messages_model');
+			$data['unreadMessages'] = $CI->messages_model->getUnread($CI->session->userdata('id'));
 			$headerFile = 'templates/'.strtolower($CI->my_session->userdata('userRole')).'Header';
 			$CI->load->view($headerFile,$data);
 

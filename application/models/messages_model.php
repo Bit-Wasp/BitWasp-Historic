@@ -25,10 +25,10 @@ class Messages_model extends CI_Model {
 		$array = array();
 		if($query->num_rows() > 0){
 			foreach($query->result() as $result){ //Loop through messages
-				$fromUser = $this->users_model->get_user_by_id($result->fromId);
+				$fromUser = $this->users_model->get_user(array('id' => $result->fromId));
 				array_push($array,array('id' =>	$result->id,
 							'messageHash' => $result->messageHash,
-							'fromUser' => $this->users_model->get_user_by_id($result->fromId), //Return info about sender
+							'fromUser' => $this->users_model->get_user(array('id' => $result->fromId)), //Return info about sender
 							'subject' => $result->subject,
 							'message' => $result->message,
 							'time' => $result->time ));

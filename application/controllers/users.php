@@ -25,7 +25,7 @@ class Users extends CI_Controller {
 
         public function view($userHash){
 		// Load the user info from the database.
-                $data['user'] = $this->users_model->get_user($userHash);
+                $data['user'] = $this->users_model->get_user(array('userHash' => $userHash));
 
 		// Check the entry exists.
 		if($data['user'] !== null && $data['user'] !== false){

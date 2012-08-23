@@ -99,7 +99,7 @@ class Categories_model extends CI_Model {
 			{
 				//Load the main image, and information about the vendor and currency.
 				$item['itemImgs'] = $this->items_model->get_item_images($item['itemHash'],1);
-				$item['vendor'] = $this->users_model->get_user($item['sellerID']);
+				$item['vendor'] = $this->users_model->get_user(array('userHash' => $item['sellerID']));
 				$item['symbol'] = $this->currency_model->get_symbol($item['currency']);
 			}
 			return $result;

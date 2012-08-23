@@ -42,7 +42,7 @@ class Messages extends CI_Controller {
 				$data['title'] = substr($messageInfo['subject'], 0, 40).'...';	
 				$data['page'] = 'messages/read';
 
-				$data['fromUser'] = $this->users_model->get_user_by_id($messageInfo['fromId']);
+				$data['fromUser'] = $this->users_model->get_user(array('id' => $messageInfo['fromId']));
 				$data['subject'] = $messageInfo['subject'];
 				$data['message'] = $messageInfo['message'];	
 			
@@ -72,7 +72,7 @@ class Messages extends CI_Controller {
 	
 		//Check if the provided user hash matches a user.
 		if($toHash !== NULL){ //A user was specified
-			$recipient = $this->users_model->get_user($toHash);
+			$recipient = $this->users_model->get_user(array('userHash' => $toHash));
 			if($recipient['userName'] === NULL){ //Check if a user is found with the specified userHash
 				$data['returnMessage'] = 'The requested user could not be found.';
 				$data['to'] = '';
@@ -83,7 +83,7 @@ class Messages extends CI_Controller {
 			$data['to'] = $this->input->post('recipient');
 		}
 
-		$recipient = $this->users_model->get_user_by_name($data['to']);
+		$recipient = $this->users_model->get_user(array('userName' => $data['to']));
 		$data['publickey'] = $this->users_model->get_pubKey_by_id($recipient['id']);
 		if($data['publickey']!=''){ $data['returnMessage'] .= 'This message will be encrypted automatically if you have javascript enabled.<br />';  }
 

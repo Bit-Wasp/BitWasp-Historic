@@ -34,7 +34,7 @@ class Orders_model extends CI_Model {
 		$this->load->model('users_model');
 		$buyer = $this->my_session->userdata('userHash');
 
-		if($sellerHash !== NULL && $this->users_model->get_user($sellerHash) !== FALSE){
+		if($sellerHash !== NULL && $this->users_model->get_user(array('userHash' => $sellerHash)) !== FALSE){
 			$getOrders = $this->db->get_where('orders',array('buyerHash' => $buyer,
 									 'sellerHash' => $sellerHash)
 							);
@@ -80,8 +80,8 @@ class Orders_model extends CI_Model {
 				}
 
 				$orders[$i++] = array(	'id' => $result->id,
-							'seller' => $this->users_model->get_user($result->sellerHash),
-							'buyer' => $this->users_model->get_user($result->buyerHash),
+							'seller' => $this->users_model->get_user(array('userHash'=> $result->sellerHash)),
+							'buyer' => $this->users_model->get_user(array('userHash'=> $result->buyerHash)),
 							'totalPrice' => $result->totalPrice,
 							'currency' => $result->currency,
 							'currencySymbol' => $this->currency_model->get_symbol($result->currency),

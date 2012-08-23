@@ -32,7 +32,7 @@ class Orders extends CI_Controller {
 			$data['returnMessage'] = 'That item was not found.';
 			$data['orders'] = $this->orders_model->myOrders();
 		} else {
-			$userInfo = $this->users_model->get_user($this->my_session->userdata('userHash'));
+			$userInfo = $this->users_model->get_user(array('userHash' => $this->my_session->userdata('userHash')));
 			
 			$currentOrder = $this->orders_model->check($userInfo['userHash'],$itemInfo['sellerID']);
 			if($currentOrder === NULL){

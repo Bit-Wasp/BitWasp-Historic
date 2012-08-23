@@ -72,7 +72,7 @@ class Items_model extends CI_Model {
 			//Load the main image for this item
 			$item['itemImgs'] = $this->get_item_images($item['itemHash'],1);
 			//Load the vendors information
-			$item['vendor'] = $this->users_model->get_user($item['sellerID']);
+			$item['vendor'] = $this->users_model->get_user(array('userHash' => $item['sellerID']));
 			$item['symbol'] = $this->currency_model->get_symbol($item['currency']);
 		}
 		return $result;
@@ -125,7 +125,7 @@ class Items_model extends CI_Model {
 			//Load the main image for this item
 			$item['itemImgs'] = $this->get_item_images($item['itemHash'],1);
 			//Load the vendors information
-			$item['vendor'] = $this->users_model->get_user($item['sellerID']);
+			$item['vendor'] = $this->users_model->get_user(array('userHash' => $item['sellerID']));
 			$item['symbol'] = $this->currency_model->get_symbol($item['currency']);
 		}
 		return $result;
@@ -155,7 +155,7 @@ class Items_model extends CI_Model {
 
 			//Load the vendors information
 			$this->load->model('users_model');
-			$result['vendor'] = $this->users_model->get_user($result['sellerID']);
+			$result['vendor'] = $this->users_model->get_user(array('userHash' => $result['sellerID']));
 			
 			return $result;
 		} else { //No matching items found

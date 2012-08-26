@@ -51,25 +51,26 @@ $route['item/(:any)'] = 'items/view/$1';
 $route['item'] = 'items';
 
 // Edit a sellers listings
-$route['listings'] = 'items/manage';
-$route['listings/create'] = 'items/create';
-$route['listings/remove/(:any)'] = 'items/remove/$1';
-$route['listings/edit/(:any)'] = 'items/edit/$1';
-$route['listings/images/(:any)'] = 'items/images/$1';
-$route['listings/imageUpload/(:any)'] = 'items/imageUpload/$1';
-$route['listings/imageRemove/(:any)'] = 'items/imageRemove/$1';
-$route['listings/mainImage/(:any)'] = 'items/mainImage/$1';
+$route['listings'] = 'listings/manage';
+$route['listings/create'] = 'listings/create';
+$route['listings/remove/(:any)'] = 'listings/remove/$1';
+$route['listings/edit/(:any)'] = 'listings/edit/$1';
+$route['listings/images/(:any)'] = 'listings/images/$1';
+$route['listings/imageUpload/(:any)'] = 'listings/imageUpload/$1';
+$route['listings/imageRemove/(:any)'] = 'listings/imageRemove/$1';
+$route['listings/mainImage/(:any)'] = 'listings/mainImage/$1';
 
 // Control a buyers orders
 $route['orders'] = 'orders/index';
 $route['order/review/(:any)'] = 'orders/review/$1';
 $route['order/place/(:any)'] = 'orders/place/$1';
 $route['order/(:any)'] = 'orders/orderItem/$1';
+$route['order/recount'] = 'orders/recount';
 
 // Seller confirms a payment
-$route['payment/confirm/(:any)'] = 'items/confirmPayment/$1';
+$route['payment/confirm/(:any)'] = 'listings/confirmPayment/$1';
 // Seller confirms item dispatch
-$route['dispatch/confirm/(:any)'] = 'items/confirmDispatch/$1';
+$route['dispatch/confirm/(:any)'] = 'listings/confirmDispatch/$1';
 
 // Messages 
 $route['messages'] = 'messages/inbox';

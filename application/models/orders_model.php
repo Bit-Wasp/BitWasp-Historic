@@ -68,6 +68,7 @@ class Orders_model extends CI_Model {
 					$itemInfo[$j++]['quantity'] = $array[1];
 				}
 
+
 				if($result->step == '0'){
 					$stepMessage = anchor('order/place/'.$result->sellerHash,'Place Order');
 				} else if($result->step == '1'){
@@ -112,11 +113,18 @@ class Orders_model extends CI_Model {
 		}
 	}
 
-	public function check($buyer,$seller){
+	public function check($buyer,$seller,$step=NULL){
 		//Check there is no ongoing orders between this buyer and vendor
+		if($step == NULL){
+			$key = 'step !=';
+			$val = 3;
+		} else {
+			$key = 'step';
+			$val = $step;
+		}
 		$query = $this->db->get_where('orders',array(	'buyerHash' => $buyer,
 								'sellerHash' => $seller,
-								'step !=' => 3));
+								$key => $val));
 		if($query->num_rows() > 0){
 			return $this->buildOrderArray($query);
 		} else {
@@ -136,52 +144,101 @@ class Orders_model extends CI_Model {
 	public function getOrderByID($id){
 		$query = $this->db->get_where('orders', array('id' => $id));
 		if($query->num_rows() > 0){
-			return $query->row_array();
+			return $this->buildOrderArray($query);
 		} else {
 			return NULL;
 		}
 	}
 
-	public function updateOrder($orderInfo){
-		$info = $this->getOrderByID($orderInfo['id']);
-
-		$items = explode(':',$info['items']);
-		$found = false;
-		$newItems = '';
-		$place = 0;
-		foreach($items as $item){
-			$order = explode('-', $item);
-			$quantity = $order[1];
-			$hash = $order[0];
+	public function updateOrder($newInfo){
+		// Get current order
+		$currentOrder = $this->getOrderByID($newInfo['id']);
 		
-			if($hash == $orderInfo['itemHash']){
-				$quantity = ($order[1]+1);
-				$found = true;
+		// Build a list of new items.
+		$found = false;			// Is the item currently in the order?
+		$newItems = '';			
+		$place = 0;			// Placeholder for formatting.
+
+		if(count($currentOrder)>0){
+			// Loop through each item in the order
+			foreach($currentOrder[0]['items'] as $item){
+				
+				// Check if the item is found on the list.
+				if($item['itemHash'] == $newInfo['itemHash']){
+					$quantity = ($newInfo['quantity']);
+					$found = true;
+				} else {
+					$quantity = $item['quantity'];
+				}
+	
+				// Check the submitted quantity is greater than 0. 
+				if($quantity > 0){
+					if($place++ !== 0)
+						$newItems .= ":";
+					// Add the itemHash and quantity.
+					$newItems.= $item['itemHash']."-".$quantity;
+				}
+				
 			}
-			if($place++ !== 0)
-				$newItems .= ":";
+			// Finish off new items, add the item if it's not already held in the order.
+			if($found === false){
+				if($newInfo['quantity'] > 0)
+					$newItems.= ":".$newInfo['itemHash']."-".$newInfo['quantity'];
+			}
+	
+		
+	
+			if(!empty($newItems)){
+				// Regenerate the total price.
+				$splitNewItems = explode(":",$newItems);
+				$totalPrice = 0;
+				foreach($splitNewItems as $item){
+					$info = explode("-",$item);
+					$quantity = $info[1];
+					$itemInfo = $this->items_model->getInfo($info[0]);
+					$totalPrice += $quantity*$itemInfo['price'];
+				
+				}	
 
-			$newItems.= $hash."-".$quantity;
+				$order = array( 'items' => $newItems,
+					'totalPrice' => $totalPrice,
+					'time' => time() );
+	
+				$this->db->where('id',$currentOrder[0]['id']);
+				if($this->db->update('orders',$order)){
+					return TRUE;
+				} else {
+					return FALSE;
+				}
+			} else {
+				$this->db->where('id',$currentOrder[0]['id']);
+				if($this->db->delete('orders')){
+					return 'DROP';
+				}
+			}
 		}
-
-		if($found === false){
-			$newItems.= ":".$orderInfo['itemHash']."-1";
-		}
-
-		$order = array( 'items' => $newItems,
-				'totalPrice' => $info['totalPrice']+$orderInfo['price'],
-				'currency' => $orderInfo['currency'],
-				'time' => time() );
-
-		$this->db->where('id',$info['id']);
-		if($this->db->update('orders',$order)){
-			return TRUE;
-		} else {
-			return FALSE;
-		}
+		return NULL;
 	}
 
 
+	public function getQuantity($itemHash){
+		
+		// Determine buyerHash and sellerHash
+		$buyerHash = $this->my_session->userdata('userHash');
+		$itemInfo = $this->items_model->getInfo($itemHash);
+		$sellerHash = $itemInfo['sellerID'];
+
+		// Load order information
+		$getOrder = $this->check($buyerHash,$sellerHash);
+	
+		foreach($getOrder[0]['items'] as $item){
+			if($item['itemHash'] == $itemHash){
+				return $item['quantity'];
+			}
+		}
+	
+		return NULL;
+	}
 };
 
 

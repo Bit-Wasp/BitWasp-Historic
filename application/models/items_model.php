@@ -78,39 +78,6 @@ class Items_model extends CI_Model {
 		return $result;
 	}
 
-	// Add item to the table.
-	public function addItem($array){
-		$query = $this->db->insert('items',$array);
-		if($query){
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	// Delete the item from the items table.
-	public function remove($itemHash, $userHash){
-		// Get images for that item.
-		$query = $this->db->get_where('itemPhotos', array('itemHash' => $itemHash));
-
-		// Check if there are any images, and remove them.
-		if($query->num_rows() > 0){
-			foreach($query->result_array() as $row){
-				$this->removeImage($row['imageHash']);
-			}
-		}
-
-		// Remove the item from the table.
-		$array = array( 'itemHash' => $itemHash,
-				'sellerID' => $userHash);
-
-		if($this->db->delete('items',$array)){
-			return TRUE;
-		} else {
-			return FALSE;
-		}
-		
-	}
 
 	public function getLatest($count = 20){
 		// Display most recent items.
@@ -163,55 +130,11 @@ class Items_model extends CI_Model {
 		}
 	}
 
-	// Remove the image from itemPhotos.
-	public function removeImage($imageHash){
-		$this->db->where('imageHash',$imageHash);
-		$delete = $this->db->delete('itemPhotos');
-		if($delete){
-			return TRUE;
-		} else {
-			return FALSE;
-		}
-	}
-
-	// Set mainphoto as imagehash, or pull another image for the item.
-	public function fixMainPhoto($itemHash, $imageHash = null){
-		// Check if we are updating it, or repairing a removed file.
-		if($imageHash !== null){
-			// Update the item with the specificied image hash.
-			$this->db->where('itemHash',$itemHash);
-			if($this->db->update('items',array('mainPhotoHash' => $imageHash)))
-				return TRUE;
-		} else { 
-			// Find another image for the product.
-			$this->db->where('itemHash',$itemHash);
-			$query = $this->db->get('itemPhotos');
-			if($query->num_rows() > 0){
-				// Update the item with the newimage.
-				$row = $query->row_array();
-				$this->db->where('itemHash',$itemHash);
-				if($this->db->update('items',array('mainPhotoHash' => $row['imageHash'])))
-					return TRUE;
-			} 
-		}
-		return FALSE;
-	}
-
-	// Load an array of information about the image.
-	public function getImageInfo($imageHash){
-		$this->db->where('imageHash',$imageHash);
-		$query = $this->db->get('itemPhotos');
-		if($query->num_rows() > 0){
-			return $query->row_array();
-		} else {
-			return NULL;
-		}
-	}
 
 
 	//Get the images for a particular item
 	public function get_item_images($itemHash = FALSE, $mainPhoto = FALSE){
-
+		$this->load->library('my_image');
 	        //If no item ID is given or no images are found for that item. Show the default image.
 	        if ($itemHash === FALSE) {
 	                $query = $this->db->get_where('itemPhotos', array('id' => 0));

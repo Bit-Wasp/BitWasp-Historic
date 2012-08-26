@@ -14,16 +14,56 @@ class Orders extends CI_Controller {
 
 	// URI: orders
 	public function index(){
+		$this->load->library('form_validation');
 		$data['title'] = 'Orders';
 		$data['page'] = 'orders/index';
 		$data['orders'] = $this->orders_model->myOrders();
 		$this->load->library('layout',$data);
 	}
 	
+	public function recount(){
+		$this->load->library('form_validation');
+		$list = $this->input->post('quantity');
+		//print_r($list);
+		$buyerHash = $this->my_session->userdata('userHash');
+		
+		$orders = array();
+		$sellerCount = 0;
+		$sellerKeys = array_keys($list);
+		$itemCount = 0;
+		
+		$count = 0;
+		foreach($list as $byseller){
+			$count = 0;
+			$keys = array_keys($byseller);
+			foreach($byseller as $quantity){
+			
+				$itemHash = $keys[$count];
+				$itemInfo = $this->items_model->getInfo($itemHash);
+				
+				$currentOrder = $this->orders_model->check($buyerHash,$itemInfo['sellerID']);
 
+				$updateOrder = array(	'id' => $currentOrder[0]['id'],
+							'itemHash' => $itemInfo['itemHash'],
+							'quantity' => $quantity);
+				if($this->orders_model->updateOrder($updateOrder) === TRUE){
+					$data['returnMessage'] = "Your order has been updated.";
+				} else {
+					$data['returnMessage'] = 'Unable to update your order.';
+				}
+				$count++;
+			}
+			
+		}
+		$data['title'] = 'Orders';
+		$data['page'] = 'orders/index';
+		$data['orders'] = $this->orders_model->myOrders();
+		$this->load->library('layout',$data);
+	}
 	
 	// URI: order/
 	public function orderItem($itemHash){
+		$this->load->library('form_validation');
 		$itemInfo = $this->items_model->getInfo($itemHash);
 		if($itemInfo === NULL){
 			// Item not fond
@@ -47,49 +87,48 @@ class Orders extends CI_Controller {
 				if($this->orders_model->createOrder($placeOrder)){
 					// Order placed.
 					$data['title'] = 'Order Placed';
-					$data['page'] = 'orders/index';
 					$data['returnMessage'] = 'Your order has been created.';
-					$data['orders'] = $this->orders_model->myOrders();
 			
 				} else {
-					// Unable to place this order!
+					// Unable to make this order!
 					$data['title'] = 'Orders';
-					$data['page'] = 'orders/index';
 					$data['returnMessage'] = 'Unable to add this item to your order, please try again.';
-					$data['orders'] = $this->orders_model->myOrders();
 				}
 			} else {
+				// There is currently an order to that Vendor.
 				if($currentOrder[0]['step'] == '0'){
-					$placeOrder = array(	'id' => $currentOrder[0]['id'],
-								'price' => $itemInfo['price'],
-								'currency' => $itemInfo['currency'],
-								'itemHash' => $itemHash );
+				
+					$currentQuantity = $this->orders_model->getQuantity($itemHash);
 
-					if($this->orders_model->updateOrder($placeOrder)){
+					$updateOrder = array(	'id' => $currentOrder[0]['id'],
+								'itemHash' => $itemHash,
+								'quantity' =>  $currentQuantity+1);
+
+					if($this->orders_model->updateOrder($updateOrder)){
 						// Order updated with new information
 						$data['title'] = 'Item Added';
-						$data['page'] = 'orders/index';
 						$data['returnMessage'] = 'The item has been added to your order.';
-						$data['orders'] = $this->orders_model->myOrders();
+
 					} else {
 						$data['title'] = 'Orders';
-						$data['page'] = 'orders/index';
 						$data['returnMessage'] = 'Unable to add this item to your order, please try again.';
-						$data['orders'] = $this->orders_model->myOrders();	
+
 					}
 				} else {
 					$data['title'] = 'Order already placed';
-					$data['page'] = 'orders/index';
 					$data['returnMessage'] = 'This order has already been placed. Please contact your vendor to discuss any further changes.';
-					$data['orders'] = $this->orders_model->myOrders();	
+
 				}
 			}
 		}
+		$data['page'] = 'orders/index';
+		$data['orders'] = $this->orders_model->myOrders();	
 		$this->load->library('layout',$data);
 	}
 
 	// URI: order/place/
 	public function place($sellerHash){
+		$this->load->library('form_validation');
 		$this->load->model('messages_model');
 		$currentUser = $this->my_session->userdata('userHash');
 		$currentOrder = $this->orders_model->check($currentUser,$sellerHash);
@@ -97,9 +136,7 @@ class Orders extends CI_Controller {
 		if($currentOrder === NULL){
 			// Order placed.
 			$data['title'] = 'Error';
-			$data['page'] = 'orders/index';
 			$data['returnMessage'] = 'You currently have no orders for this user.';
-			$data['orders'] = $this->orders_model->myOrders();
 		} else {
 			if($currentOrder[0]['step'] == "0"){
 				if($this->orders_model->nextStep($currentOrder[0]['id'],'0') === TRUE){
@@ -127,9 +164,7 @@ class Orders extends CI_Controller {
 					);
 
 					$data['title'] = 'Order Placed';
-					$data['page'] = 'orders/index';
 					$data['returnMessage'] = 'Your order has been placed. Please authorize payment to this sellers account to continue.';
-					$data['orders'] = $this->orders_model->myOrders();
 
 					if($this->messages_model->addMessage($messageArray) !== TRUE){
 						$data['returnMessage'] = "Unable to send a message to {$currentOrder[0]['buyer']['userName']}";
@@ -137,17 +172,15 @@ class Orders extends CI_Controller {
 
 				} else {
 					$data['title'] = 'Error';
-					$data['page'] = 'orders/index';
 					$data['returnMessage'] = 'Unable to progress this order, please try again later.';
-					$data['orders'] = $this->orders_model->myOrders();
 				}
 			} else {
 				$data['title'] = 'Error';
-				$data['page'] = 'orders/index';
 				$data['returnMessage'] = 'This order has already been placed.';
-				$data['orders'] = $this->orders_model->myOrders();
 			}	
 		}
+				$data['page'] = 'orders/index';
+				$data['orders'] = $this->orders_model->myOrders();
 		$this->load->library('layout',$data);
 	}
 

@@ -34,7 +34,7 @@ if(count($orders) > 0){?>
 				<?php } else {
 					foreach($order['items'] as $item):?>
 				
-					<?=$item['quantity'];?><br />
+					<?=$item['quantity'];?>
 				
 					<?php endforeach;
 				} ?>

@@ -62,7 +62,7 @@ $route['listings/mainImage/(:any)'] = 'listings/mainImage/$1';
 
 // Control a buyers orders
 $route['orders'] = 'orders/index';
-$route['order/review/(:any)'] = 'orders/review/$1';
+$route['orders/review/(:any)'] = 'orders/review/$1';
 $route['order/place/(:any)'] = 'orders/place/$1';
 $route['order/(:any)'] = 'orders/orderItem/$1';
 $route['order/recount'] = 'orders/recount';
@@ -71,6 +71,8 @@ $route['order/recount'] = 'orders/recount';
 $route['payment/confirm/(:any)'] = 'orders/confirmPayment/$1';
 // Seller confirms item dispatch
 $route['dispatch/confirm/(:any)'] = 'orders/confirmDispatch/$1';
+$route['purchases'] = 'orders/purchases';
+
 
 // Messages 
 $route['messages'] = 'messages/inbox';
@@ -82,7 +84,6 @@ $route['message/reply/(:any)'] = 'messages/send/$1';
 $route['message/reply'] = 'messages/reply';
 $route['message/(:any)'] = 'messages/read/$1';
 
-$route['purchases'] = 'orders/purchases';
 
 // Error class
 $route['error/(:any)'] = 'error/$1';

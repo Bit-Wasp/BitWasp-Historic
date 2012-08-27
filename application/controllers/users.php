@@ -24,6 +24,7 @@ class Users extends CI_Controller {
 	}
 
         public function view($userHash){
+		$this->load->model('orders_model');
 		// Load the user info from the database.
                 $data['user'] = $this->users_model->get_user(array('userHash' => $userHash));
 
@@ -35,7 +36,12 @@ class Users extends CI_Controller {
 			// user exists
 	                $data['title'] = $data['user']['userName'];
 			$data['page'] = 'user/individual';
-			$data['login'] = 'true';
+
+			$listReviews = array(	'reviewedID' => $data['user']['id'],
+					 	'type' => 'Vendor',
+						'count' => 5);
+
+			$data['reviews'] = $this->orders_model->listReviews($listReviews);
 	                $this->load->library('layout', $data);
 		} else {
 			redirect('error/userNotFound');

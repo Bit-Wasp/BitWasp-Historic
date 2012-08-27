@@ -125,6 +125,19 @@ $config = array(
 							'label' => 'message',
 							'rules' => 'trim|required'
 							)
+					),
+
+		'reviewOrder' => 	array(
+						array(	'field' => 'comment',
+							'label' => 'Comment',
+							'rules' => 'trim|htmlentities|required'
+
+						),
+						array(	'field' => 'rating',
+							'label' => 'Rating',
+							'rules' => 'required|callback_check_rating'
+
+						)
 					)
 
 		);

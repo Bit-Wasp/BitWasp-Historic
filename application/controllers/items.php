@@ -39,10 +39,19 @@ class Items extends CI_Controller {
 		{
 			$data['title'] = 'Not Found';
 			$data['returnMessage'] = 'That item cannot be found.';
-			$data['page'] = 'items/notFound';
+			$data['items'] = $this->items_model->getLatest();
+			$data['page'] = 'items/index';
 		} else {
+			$this->load->model('orders_model');
+
 			$data['userRole'] = strtolower($this->my_session->userdata('userRole'));
 			$data['title'] = $data['item']['name'];
+/*
+			$listReviews = array(	'reviewedID' => $data['item']['id'],
+						'type' => 'Item',
+						'count' => 5);	
+
+			$data['reviews'] = $this->orders_model->listReviews($listReviews);*/
 			$data['page'] = 'items/individual';
 		}
 

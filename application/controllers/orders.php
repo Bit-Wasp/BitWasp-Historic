@@ -184,10 +184,59 @@ class Orders extends CI_Controller {
 		$this->load->library('layout',$data);
 	}
 
-	public function review(){
-		$data['title'] = 'Soon to come..';
-		$data['page'] = 'orders/review';
-		$data['returnMessage'] = 'This content will come soon..';
+	public function review($id){	
+		$this->load->library('form_validation');
+
+		$buyerHash = $this->my_session->userdata('userHash');
+		$currentOrder = $this->orders_model->getOrderByID($id);
+		$data['order'] = $currentOrder[0];
+
+		if($currentOrder !== NULL){
+			if($data['order']['buyer']['userHash'] == $buyerHash){				
+				if($data['order']['step'] == 3){
+					if($this->form_validation->run('reviewOrder')===TRUE){
+						$comments = $this->input->post('comment');
+						$rating = $this->input->post('rating');
+						$reviewOrder = array(	'reviewedID' => $data['order']['seller']['id'],
+								     	'comments' => $comments,
+									'rating' => $rating,
+									'orderID' => $id );
+			
+						if($this->orders_model->review($reviewOrder,'Vendor') === TRUE){
+							// Submission Successful
+							$data['title'] = "Orders";
+							$data['returnMessage'] = "Your review for order #$id has been submitted.";
+							$data['page'] = 'orders/index';
+							$data['orders'] = $this->orders_model->myOrders();
+						} else {
+							$data['title'] = "Review: #$id";
+							$data['returnMessage'] = "An error occured during your submission, please try again.";
+							$data['page'] = "orders/review";
+						}
+					} else {
+						// Submission Failed
+						$data['title'] = "Review: #$id";
+						$data['returnMessage'] = "";
+						$data['page'] = 'orders/review';
+					}
+				} else {
+					$data['title'] = "Not Allowed";
+					$data['returnMessage'] = "You are not allowed to review this order.";
+					$data['page'] = 'orders/index';
+					$data['orders'] = $this->orders_model->myOrders();
+				}
+			} else {
+				$data['title'] = "Not Allowed";
+				$data['returnMessage'] = "You are not allowed to review this order.";
+				$data['page'] = 'orders/index';
+				$data['orders'] = $this->orders_model->myOrders();
+			}
+		} else {
+			$data['title'] = "Not Found";
+			$data['returnMessage'] = "This order can not be found.";
+			$data['orders'] = $this->orders_model->myOrders();
+			$data['page'] = 'orders/index';
+		}
 		$this->load->library('layout',$data);
 	}
 
@@ -330,21 +379,27 @@ class Orders extends CI_Controller {
 	}
 
 
-
 	public function purchases(){
 		$data['title'] = 'Purchases';
 		$data['page'] = 'orders/purchases';
+
 		$sellerHash = $this->my_session->userdata('userHash');
 				
-		$data['items'] = $this->items_model->userListings($sellerHash);
-	
 		// Load unconfirmed orders for the current user.
 		$data['newOrders'] = $this->orders_model->ordersByStep($sellerHash,1);
-	
+		
 		// Load orders for dispatch
 		$data['dispatchOrders'] = $this->orders_model->ordersByStep($sellerHash,2); 
+
 		$this->load->library('layout',$data);
 	}
 
+	public function callback_check_rating($param){
+		if(is_numeric($param) && $param >= 1 && $param <= 5){
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
 };
 

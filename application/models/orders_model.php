@@ -68,7 +68,6 @@ class Orders_model extends CI_Model {
 					$itemInfo[$j++]['quantity'] = $array[1];
 				}
 
-
 				if($result->step == '0'){
 					$stepMessage = anchor('order/place/'.$result->sellerHash,'Place Order');
 				} else if($result->step == '1'){
@@ -76,9 +75,9 @@ class Orders_model extends CI_Model {
 				} else if($result->step == '2'){
 					$stepMessage = 'Awaiting dispatch.';
 				} else if($result->step == '3'){
-					$stepMessage = "Completed. ".anchor('order/review/'.$result->sellerHash,'Please Review');
+					$stepMessage = "Completed. ".anchor('orders/review/'.$result->id,'Please Review');
 				} else {//Error..
-					$stepMessage = 'Gone on too long!';
+					$stepMessage = 'Error! Gone on too long!';
 				}
 
 				$orders[$i++] = array(	'id' => $result->id,
@@ -102,8 +101,8 @@ class Orders_model extends CI_Model {
 	}
 
 	public function ordersByStep($userID,$step){
-		$query = $this->db->get_where('orders', array('sellerHash' => $userID,
-							  'step' => $step ) );
+		$query = $this->db->get_where('orders', array(	'sellerHash' => $userID,
+							  	'step' => $step ) );
 		$orders = $this->buildOrderArray($query);
 
 		if($orders === FALSE){
@@ -221,6 +220,52 @@ class Orders_model extends CI_Model {
 		return NULL;
 	}
 
+	public function review($review,$type){
+
+		$reviewArray = array(	'reviewedID' => $review['reviewedID'],
+					'reviewType' => $type,
+					'reviewText' => $review['comments'],
+					'rating' => $review['rating'],
+					'time' => time());
+
+		if($this->db->insert('reviews',$reviewArray)){
+
+			if($type == 'Vendor'){
+				// Delete from orders table
+				$this->db->where('id',$review['orderID']);
+				if($this->db->delete('orders')){
+					return TRUE;
+				} else {
+					return FALSE;
+				}
+			}
+
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function listReviews($listReviews){
+		$this->db->order_by('time LIMIT 5');
+		$query = $this->db->get_where('reviews',array(	'reviewedID'=>$listReviews['reviewedID']
+								)
+					);
+		if($query->num_rows() > 0){
+			$reviews = array();
+			foreach($query->result() as $review){
+				array_push($reviews,array(	'reviewedID' => $review->reviewedID,
+								'rating' => $review->rating,
+								'reviewText' => $review->reviewText,
+								'time' => $this->general->displayTime($review->time),
+							)
+					);
+			}
+			return $reviews;
+		} else {
+			return NULL;
+		}
+	}
+
 
 	public function getQuantity($itemHash){
 		
@@ -240,6 +285,8 @@ class Orders_model extends CI_Model {
 	
 		return NULL;
 	}
+
+	
 };
 
 

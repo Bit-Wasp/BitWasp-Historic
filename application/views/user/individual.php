@@ -13,6 +13,33 @@ Rating: <?=$user['rating'] ?><br />
 			<?php } ?>
                         <div class="clear"></div>
 
+		<div class='reviews'>
+			<?php 
+			if(count($reviews) > 0){?>
+			<table class="orderlist">
+			<tr class="orderHeader">
+				<td>Rating</td>
+				<td>Comments</td>
+				<td>Time</td>
+			</tr>
+			
+			<?php foreach($reviews as $review):?>
+			<tr>
+				<td><?=$review['rating'];?>/5</td>
+				<td><?=$review['reviewText'];?></td>
+				<td><?=$review['time'];?></td>
+			</tr>
+			<?php endforeach; ?>
+			</table/>
+			<?php } else { ?>
+			This item has no reviews at present.
+			<?php } ?>		
+
+
+		</div>
+	
+
+
                 </div>
 
 

@@ -50,6 +50,7 @@ class My_captcha {
 	public function generateCaptcha($length='5'){
 		$CI = &get_instance();
 		$CI->load->model('captcha_model');
+		
 		$CI->load->helper('captcha');
 		$CI->load->helper('url');
 
@@ -79,7 +80,7 @@ class My_captcha {
 		// No need to add captchas to the image DB. They are automatically cleared, and displayed only once.
 		$data['image'] = $CI->my_image->displayTempImage("captcha/{$captcha['time']}.jpg");
 
-		$data['randomKey'] = $this->general->uniqueHash('captchas','key');
+		$data['randomKey'] = $CI->general->uniqueHash('captchas','key');
 
 		// Remove the image after it has been displayed. 
 		unlink("assets/images/captcha/{$captcha['time']}.jpg");

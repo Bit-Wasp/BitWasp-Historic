@@ -85,7 +85,7 @@ class General {
 		} else if($difference < (120*60)) {		// Within a few hours.
 			return 'about an hour ago';
 		} else if($difference < (24*60*60)) {		// Within a day.
-			return 'about ' . ($difference / 3600) . ' hours ago';
+			return 'about ' . round($difference / 3600) . ' hours ago';
 		} else if($difference < (48*60*60)) {		// Just over a day.
 			return '1 day ago';
 		} else {					// Otherwise just return the basic date.

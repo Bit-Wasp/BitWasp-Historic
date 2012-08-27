@@ -5,11 +5,10 @@ class My_session extends CI_Session {
 
 	public function checkAuth(){
 		$CI = &get_instance();
-		$CI->load->library('general');
 		// check user is allowed to view the page
 		// for now, determined by the first URI string.
 		$URI = explode("/", uri_string());
-		$level = $CI->general->getAuthLevel($URI[0]);
+		$level = $CI->pages_model->getAuthLevel($URI[0]);
 		if($level == 'login'){
 			if( $CI->session->userdata('logged_in') == true )
 				return true;

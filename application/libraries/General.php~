@@ -13,10 +13,10 @@ class General {
 			// If the entry exists, return the value to the table.
 			$row = $query->row_array();
 			return $row['authLevel'];
-		} 
-			//Failed, return false. Force users to log in.
+		} else {
+			// Failed, return false. Force users to log in.
 			return false;
-		
+		}
 	}
 
 

@@ -8,34 +8,31 @@ class Categories_model extends CI_Model {
 		$this->load->model('items_model');
 	}
 
+	// Move items from one category to another.
 	public function moveCatItems($source,$destination){
+		// Select the items by the source category.
 		$this->db->where('category',$source);
 
+		// Update the items with the new category.
 		$array = array('category' => $destination);
 		if($this->db->update('items',$array)){
+			// Successful; items updated; return TRUE;
 			return TRUE;
 		} else {
+			// Failure; Unable to update items.
 			return FALSE;
-		}
-	}
-
-	// For callback functions
-	// Check that selected parentID exists, before adding a sub-category.
-	public function validParentID($parentID){
-		$query = $this->db->get_where('categories', array('parentID' => $parentID));
-		if($query->num_rows() > 0){
-			return TRUE;
-		} else {
-			return TRUE;
 		}
 	}
 
 	// Check category exists before trying to delete.
 	public function checkCategoryExists($id){
+		// See if the category exists.
 		$query = $this->db->get_where('categories', array('id' => $id));
 		if($query->num_rows() > 0){
+			// Success; category exists. return TRUE;
 			return TRUE;
 		} else {
+			// Failure; can't find category. return FALSE;
 			return FALSE;
 		}
 	}
@@ -44,26 +41,32 @@ class Categories_model extends CI_Model {
 	public function countCategoryItems($catID){
 		$this->db->where('category', $catID);
 		$this->db->from('items');
+		// Return the number of items in the response.
 		return $this->db->count_all_results();
 	}
 
 	// Gather information about the category.
 	public function catInfo($catID){
+		// Select the category by the ID.
 		$query = $this->db->get_where('categories',array('id' => $catID));
 		if($query->num_rows() > 0){
-			$result = $query->row_array();
-			return $result;
+			// Success; return category information.
+			return $query->row_array();
 		} else {
+			// Failure; return NULL.
 			return NULL;
 		}
 	}
 
 	// Create a new Category
 	public function addCategory($array){
+		// Insert array of info into the table.
 		$query = $this->db->insert('categories',$array);
 		if($query){
+			// Success; category added. 
 			return TRUE;
 		} else {
+			// Failure; unable to add category; return FALSE;
 			return FALSE;
 		}
 	}
@@ -73,14 +76,17 @@ class Categories_model extends CI_Model {
 	public function removeCategory($categoryID){
 		$query = $this->db->delete('categories', array('id' => $categoryID));
 		if($query){ 
+			// Success; category removed.
 			return TRUE;
 		} else {
+			// Failure; unable to remove category. Return FALSE;
 			return FALSE;
 		} 
 	}
 
 	// List Items by Category
 	public function getCatItems($catID = NULL){
+		// Check the category exists.
 		if($catID === NULL){
 			// No category selected for some reason. Show latest items as normal.
 			return $this->products_model->getLatest();
@@ -89,12 +95,14 @@ class Categories_model extends CI_Model {
 		// Get items in the chosen category.
 		$query = $this->db->get_where('items',array('category' => $catID));
 
+		// If the category has items.
 		if($query->num_rows() > 0){
 			$result = $query->result_array();
 
 			//Get more information for each item
 			$this->load->model('images_model');
 			$this->load->model('currency_model');
+			// Loop through result as a pointer, add more info to $result.
 			foreach($result AS &$item)
 			{
 				//Load the main image, and information about the vendor and currency.
@@ -102,9 +110,10 @@ class Categories_model extends CI_Model {
 				$item['vendor'] = $this->users_model->get_user(array('userHash' => $item['sellerID']));
 				$item['symbol'] = $this->currency_model->get_symbol($item['currency']);
 			}
+			// Success; loaded category items.
 			return $result;
 		} else {
-			// No items in this category.
+			// Failure; No items in this category. return FALSE.
 			return FALSE;
 		}
 	}
@@ -118,6 +127,7 @@ class Categories_model extends CI_Model {
 		$this->db->select('id, name');
 		$query = $this->db->get('categories');
 
+		// Check there are categories in the table. 
 		if($query->num_rows() > 0){
 			// Once there are categories, build the array from the returned object.
 			foreach($query->result() as $result){
@@ -126,9 +136,10 @@ class Categories_model extends CI_Model {
 						)
 					);
 			}
+			// Success; return array of categories.
 			return $array;
 		} else {
-			// Return nothing otherwise.			
+			// Failure; return FALSE;			
 			return FALSE;
 		}
 	}
@@ -167,7 +178,21 @@ class Categories_model extends CI_Model {
 				unset($menu[$ID]);
 		}
 
+		// Return constructed menu.
 		return $menu;
+	}
+
+	
+	// For callback functions
+	// Check that selected parentID exists, before adding a sub-category.
+	public function validParentID($parentID){
+		$query = $this->db->get_where('categories', array('parentID' => $parentID));
+		// 
+		if($query->num_rows() > 0){
+			return TRUE;
+		} else {
+			return TRUE;
+		}
 	}
 
 }

@@ -78,7 +78,7 @@ class Users_Model extends CI_Model {
 		//Select these fields from the database
 		$this->db->select('id, userName, userRole, userHash, rating, timeRegistered');
 
-                //Check what field has been provide, and query database using that field.
+                //Check what field has been provided, and query database using that field.
                 if (isset($user['userHash'])) {
 			$query = $this->db->get_where('users', array('userHash' => $user['userHash']));
 		} elseif (isset($user['id'])) {
@@ -110,10 +110,14 @@ class Users_Model extends CI_Model {
                 //Otherwise, load the public key which corresponds to this ID.
                 $this->db->select('key');
                 $query = $this->db->get_where('publicKeys', array('userId' => $id));
+
+		// If there is a key, return the value.
 		if ($query->num_rows() > 0) {
 			$result = $query->row_array();
 			return $result['key'];
 		}
+
+		// Otherwise return NULL.
 		return NULL;
         }
 

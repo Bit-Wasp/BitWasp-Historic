@@ -63,7 +63,6 @@ class My_image {
 		return $results;
 	}
 
-	// Return the image contant.
 	public function displayImage($imageHash,$height = NULL, $width = NULL){	
 		// To get an image, call this function.
 		$CI = &get_instance();
@@ -74,10 +73,10 @@ class My_image {
 		$image = $CI->images_model->imageFromDB($imageHash);
 
         	if($image === FALSE) {
-			// Failure; Image identifier is invalid.
+			// Image identifier is invalid.
 			return FALSE;
 		} else {
-			// Return the values for the <img> tag with base64 encoded image, height/width
+			// Return the <img> tag with base64 encoded image, and the height
 			if($height !== NULL){ $displayHeight = $height; } else { $displayHeight = $image['height']; }
 			if($width !== NULL){ $displayWidth = $width; } else { $displayWidth = $image['width']; }
 
@@ -86,7 +85,6 @@ class My_image {
 					'height'  => $displayHeight,
 					'width'   => $displayWidth );
 			return $result;
-			// Success; return Image information.
 		}
 	}
 
@@ -96,7 +94,6 @@ class My_image {
 	
 		$image = $this->simpleImageEncode($identifier);
 		$validHTML = "<img src=\"data:image/gif;base64,{$image}\" />";
-		// Return the <img> tag.
 		return $validHTML;
 	}
 

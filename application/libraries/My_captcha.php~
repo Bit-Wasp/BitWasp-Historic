@@ -46,6 +46,15 @@ class My_captcha {
 		}
 	}
 
+	// Generate a 
+	public function captchaCode(){
+		$randKey = '';
+		for($i = 0; $i < mt_rand(6,9); $i++){
+			$randKey .= mt_rand(1,999);
+		} 
+		return md5($randKey);
+	}
+
 	// Generate a captcha.
 	public function generateCaptcha($length='5'){
 		$CI = &get_instance();

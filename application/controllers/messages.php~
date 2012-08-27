@@ -62,7 +62,7 @@ class Messages extends CI_Controller {
 
 					$userId = $this->my_session->userdata('id');
 					$data['messages'] = $this->messages_model->messages($userId);
-					if($data['messages'] === NULL)
+					if($data'messages'] === NULL)
 						$data['returnMessage'] .= ' You have no messages in your inbox';
 
 				} else {

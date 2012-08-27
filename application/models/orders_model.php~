@@ -351,7 +351,7 @@ class Orders_model extends CI_Model {
 			$count = $listReviews['count'];
 
 		// Order results by time, and set the appropriate LIMIT.
-		$this->db->order_by("time LIMIT $count");
+		$this->db->order_by('time LIMIT $count');
 
 		// Load reviews by the submitted ID.
 		$query = $this->db->get_where('reviews',array(	'reviewedID'=>$listReviews['reviewedID']

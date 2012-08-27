@@ -141,17 +141,7 @@ class Listings extends CI_Controller {
 			$data['title'] = 'Not Found';
 			$data['page'] = 'listings/manage';
 			$data['returnMessage'] = 'This order does not exist.';
-
-			// Get userHash from the session.
-			$hash = $this->my_session->userdata('userHash');
-			// Load the current users items.
-			$data['items'] = $this->items_model->userListings($hash);
-			// Load unconfirmed orders for the current user.
-			$data['newOrders'] = $this->orders_model->ordersByStep($hash,1);
-			// Load orders for dispatch
-			$data['dispatchOrders'] = $this->orders_model->ordersByStep($hash,2); 			
-
-
+			$data['orders'] = $this->orders_model->myOrders();
 		} else {
 			if($this->orders_model->nextStep($orderInfo[0]['id'],'2') === TRUE){
 	
@@ -172,8 +162,10 @@ class Listings extends CI_Controller {
 					$data['returnMessage'] = "You have confirmed this item has been dispatched. To contact this buyer with any further updates to the order, ".anchor("messages/send/".$orderInfo[0]['buyer']['userHash'], "send them a message");
 					
 					$data['items'] = $this->items_model->userListings($sellerHash);
+
 					// Load unconfirmed orders for the current user.
 					$data['newOrders'] = $this->orders_model->ordersByStep($sellerHash,1);
+		
 					// Load orders for dispatch
 					$data['dispatchOrders'] = $this->orders_model->ordersByStep($sellerHash,2); 
 				} else {
@@ -181,25 +173,22 @@ class Listings extends CI_Controller {
 					$data['page'] = 'listings/manage';
 
 					$data['items'] = $this->items_model->userListings($sellerHash);
+
 					// Load unconfirmed orders for the current user.
 					$data['newOrders'] = $this->orders_model->ordersByStep($sellerHash,1);
+	
 					// Load orders for dispatch
 					$data['dispatchOrders'] = $this->orders_model->ordersByStep($sellerHash,2); 
-
 					$data['returnMessage'] = "Payment has been confirmed. The item may now be dispatched. An error occurred sending a message to {$orderInfo[0]['buyer']['userName']}.";
 				}			
 			} else {
 				$data['title'] = "Error";
 				$data['page'] = 'listings/manage';
 				$data['returnMessage'] = "An error was encountered while trying to progress your order, please try again.";
-				// Get userHash from the session.
-				$hash = $this->my_session->userdata('userHash');
-				// Load the current users items.
-				$data['items'] = $this->items_model->userListings($hash);
-				// Load unconfirmed orders for the current user.
-				$data['newOrders'] = $this->orders_model->ordersByStep($hash,1);
-				// Load orders for dispatch
-				$data['dispatchOrders'] = $this->orders_model->ordersByStep($hash,2); 			}
+				$data['items'] = $this->items_model->userListings($sellerHash);
+				$data['newOrders'] = $this->orders_model->ordersByStep($sellerHash,1);
+				$data['dispatchOrders'] = $this->orders_model->ordersByStep($sellerHash,2);
+			}
 		}
 		$this->load->library('layout',$data);
 	}

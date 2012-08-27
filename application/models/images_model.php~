@@ -7,19 +7,6 @@ class Images_model extends CI_Model {
 		parent::__construct();
 	}
 
-
-	// Load an array of information about the image.
-	public function getImageInfo($imageHash){
-		$this->db->where('imageHash',$imageHash);
-		$query = $this->db->get('itemPhotos');
-		if($query->num_rows() > 0){
-			return $query->row_array();
-		} else {
-			return NULL;
-		}
-	}
-
-
 	public function imageFromDB($imageHash){
 		$query = $this->db->select('encoded, height, width')
 				->where('imageHash',$imageHash)

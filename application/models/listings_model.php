@@ -21,9 +21,9 @@ class Listings_model extends CI_Model {
 		$this->db->where('itemHash',$itemHash);
 		$query = $this->db->update('items',$array);
 		if($query){
-			return true;
+			return TRUE;
 		} else {
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -31,9 +31,9 @@ class Listings_model extends CI_Model {
 	public function addItem($array){
 		$query = $this->db->insert('items',$array);
 		if($query){
-			return true;
+			return TRUE;
 		} else {
-			return false;
+			return FALSE;
 		}
 	}
 

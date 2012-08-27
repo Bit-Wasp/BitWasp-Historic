@@ -82,8 +82,6 @@ $route['message/reply/(:any)'] = 'messages/send/$1';
 $route['message/reply'] = 'messages/reply';
 $route['message/(:any)'] = 'messages/read/$1';
 
-$route['purchases'] = 'orders/purchases';
-
 // Error class
 $route['error/(:any)'] = 'error/$1';
 

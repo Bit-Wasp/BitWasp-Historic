@@ -16,6 +16,16 @@ class Listings_model extends CI_Model {
 		}
 	}
 
+	// Update information about the item.
+	public function updateItem($itemHash,$array){
+		$this->db->where('itemHash',$itemHash);
+		$query = $this->db->update('items',$array);
+		if($query){
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	// Add item to the table.
 	public function addItem($array){

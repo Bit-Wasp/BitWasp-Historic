@@ -192,5 +192,159 @@ class Orders extends CI_Controller {
 	}
 
 
+
+
+	// For the Vendors
+
+	// Confirm Item Dispatch
+	// URI: dispatch/confirm/
+	// Auth: Vendor
+	public function confirmDispatch($buyerHash){
+		$this->load->model('messages_model');
+		$sellerHash = $this->my_session->userdata('userHash');
+		$orderInfo = $this->orders_model->check($buyerHash,$sellerHash);
+
+		// Confirm order exists & buyer/seller is correct.
+		if($orderInfo === NULL){
+			// Not found, or the users are not correct. 
+			$data['title'] = 'Not Found';
+			$data['page'] = 'orders/purchases';
+			$data['returnMessage'] = 'This order does not exist.';
+
+			// Get userHash from the session.
+			$hash = $this->my_session->userdata('userHash');
+			// Load the current users items.
+			$data['items'] = $this->items_model->userListings($hash);
+			// Load unconfirmed orders for the current user.
+			$data['newOrders'] = $this->orders_model->ordersByStep($hash,1);
+			// Load orders for dispatch
+			$data['dispatchOrders'] = $this->orders_model->ordersByStep($hash,2); 			
+
+
+		} else {
+			if($this->orders_model->nextStep($orderInfo[0]['id'],'2') === TRUE){
+	
+				$messageHash = $this->general->uniqueHash('messages','messageHash');
+				$messageText = "Your item has now been dispatched by {$orderInfo[0]['seller']['userName']}. For delivery information please contact your Vendor.";
+				$messageArray = array(  'toId' => $orderInfo[0]['buyer']['id'],
+						        'fromId' => $orderInfo[0]['seller']['id'],
+						        'messageHash' => $messageHash,
+							'orderID' => $orderInfo[0]['id'],
+							'subject' => "Order has been dispatched: ".$orderInfo[0]['id'],
+							'message' => nl2br($messageText),
+							'encrypted' => '0',
+							'time' => time() );
+
+				if($this->messages_model->addMessage($messageArray) === TRUE){
+					$data['title'] = 'Dispatch Confirmed';
+					$data['page'] = 'orders/purchases';
+					$data['returnMessage'] = "You have confirmed this item has been dispatched. To contact this buyer with any further updates to the order, ".anchor("messages/send/".$orderInfo[0]['buyer']['userHash'], "send them a message");
+					
+					$data['items'] = $this->items_model->userListings($sellerHash);
+					// Load unconfirmed orders for the current user.
+					$data['newOrders'] = $this->orders_model->ordersByStep($sellerHash,1);
+					// Load orders for dispatch
+					$data['dispatchOrders'] = $this->orders_model->ordersByStep($sellerHash,2); 
+				} else {
+					$data['title'] = 'Payment Confirmed';
+					$data['page'] = 'orders/purchases';
+
+					$data['items'] = $this->items_model->userListings($sellerHash);
+					// Load unconfirmed orders for the current user.
+					$data['newOrders'] = $this->orders_model->ordersByStep($sellerHash,1);
+					// Load orders for dispatch
+					$data['dispatchOrders'] = $this->orders_model->ordersByStep($sellerHash,2); 
+
+					$data['returnMessage'] = "Payment has been confirmed. The item may now be dispatched. An error occurred sending a message to {$orderInfo[0]['buyer']['userName']}.";
+				}			
+			} else {
+				$data['title'] = "Error";
+				$data['page'] = 'orders/purchases';
+				$data['returnMessage'] = "An error was encountered while trying to progress your order, please try again.";
+				// Get userHash from the session.
+				$hash = $this->my_session->userdata('userHash');
+				// Load the current users items.
+				$data['items'] = $this->items_model->userListings($hash);
+				// Load unconfirmed orders for the current user.
+				$data['newOrders'] = $this->orders_model->ordersByStep($hash,1);
+				// Load orders for dispatch
+				$data['dispatchOrders'] = $this->orders_model->ordersByStep($hash,2); 
+			}
+		}
+		$this->load->library('layout',$data);
+	}
+
+	// Confirm Receipt of Payment
+	// URI: payment/confirm
+	// Auth: Vendor
+	public function confirmPayment($buyerHash){
+		$this->load->model('messages_model');
+
+		$sellerHash = $this->my_session->userdata('userHash');
+		$orderInfo = $this->orders_model->check($buyerHash,$sellerHash);
+
+		// Check if the order exists, or whether user is the buyer/seller.
+		if($orderInfo === NULL){
+			// Not found, or neither user corrent.
+			$data['title'] = 'Not Found';
+			$data['returnMessage'] = 'This order does not exist.';
+		} else {
+			if($this->orders_model->nextStep($orderInfo[0]['id'],'1') === TRUE){
+
+				$messageHash = $this->general->uniqueHash('messages','messageHash');
+				$messageText = "Your payment has been confirmed as received by {$orderInfo[0]['seller']['userName']}. The order will now be dispatched.";
+				$messageArray = array(  'toId' => $orderInfo[0]['buyer']['id'],
+						        'fromId' => $orderInfo[0]['seller']['id'],
+						        'messageHash' => $messageHash,
+							'orderID' => $orderInfo[0]['id'],
+							'subject' => "Ready for dispatch: ".$orderInfo[0]['id'],
+							'message' => nl2br($messageText),
+							'encrypted' => '0',
+							'time' => time() );
+
+				if($this->messages_model->addMessage($messageArray) === TRUE){
+					$data['title'] = 'Payment Confirmed';
+					$data['returnMessage'] = 'Payment has been received. The item may now be dispatched.'; 
+				} else {
+					$data['title'] = 'Payment Confirmed';
+					$data['returnMessage'] = "Payment has been confirmed. The item may now be dispatched. An error occurred sending a message to {$orderInfo[0]['buyer']['userName']}.";
+				}
+			} else {
+				$data['title'] = 'Error';
+				$data['returnMessage'] = 'Unable to confirm payment.';
+			}
+		}
+
+		$data['items'] = $this->items_model->userListings($sellerHash);
+	
+		// Load unconfirmed orders for the current user.
+		$data['newOrders'] = $this->orders_model->ordersByStep($sellerHash,1);
+	
+		// Load orders for dispatch
+		$data['dispatchOrders'] = $this->orders_model->ordersByStep($sellerHash,2); 
+
+		$data['page']= 'orders/purchases';
+
+	
+		$this->load->library('layout',$data);
+	}
+
+
+
+	public function purchases(){
+		$data['title'] = 'Purchases';
+		$data['page'] = 'orders/purchases';
+		$sellerHash = $this->my_session->userdata('userHash');
+				
+		$data['items'] = $this->items_model->userListings($sellerHash);
+	
+		// Load unconfirmed orders for the current user.
+		$data['newOrders'] = $this->orders_model->ordersByStep($sellerHash,1);
+	
+		// Load orders for dispatch
+		$data['dispatchOrders'] = $this->orders_model->ordersByStep($sellerHash,2); 
+		$this->load->library('layout',$data);
+	}
+
 };
 

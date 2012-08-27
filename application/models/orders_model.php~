@@ -252,11 +252,8 @@ class Orders_model extends CI_Model {
 	
 				// Check the submitted quantity is greater than 0. 
 				if($quantity > 0){
-
-					// Check if the current item needs a ':' to separate the entries.
 					if($place++ !== 0)
 						$newItems .= ":";
-
 					// Add the itemHash and quantity.
 					$newItems.= $item['itemHash']."-".$quantity;
 				}

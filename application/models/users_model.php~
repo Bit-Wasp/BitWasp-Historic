@@ -7,29 +7,22 @@ class Users_Model extends CI_Model {
 		$this->load->library('session');
 	}
 
-	// Return the basic info for logging in. 
 	public function getLoginInfo($userName = FALSE){
-		// Check if the field is empty.
 		if($userName === FALSE){
 			return NULL;
 		} else {
-			// Select the entries by username.
 			$this->db->select('id,userSalt, userHash, userRole');
 			$query = $this->db->get_where('users', array('userName' => $userName));
 
-			// Check if the result exists. 
 			if($query->num_rows() > 0){
-				// Return the results
 				return $query->row_array();
 			} else {
-				// No results for this username.
 				return false;
 			}
 		}
 	}
 
 	public function addUser($userData){
-		// Insert the array into the users table.
 		$query = $this->db->insert('users',$userData);
 		if($query){
 			return TRUE;
@@ -38,14 +31,10 @@ class Users_Model extends CI_Model {
 		}
 	}
 
-	// Update the last login time.
 	public function setLastLog($username){
-		// Update the table.
 		$userdata = array('lastLog' => time());
 		$this->db->where('username',$username);
 		$query = $this->db->update('users',$userdata);
-		
-		// Test whether the query was successful.
 		if($query){
 			return TRUE;
 		} else {

@@ -32,7 +32,7 @@ Date Registered: <?=$user['dispTime'];?><br />
 			<?php } ?>		
                         <div class="clear"></div>
 		</div>
-<br />
+
 
 
 

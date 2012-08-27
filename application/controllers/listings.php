@@ -532,8 +532,8 @@ class Listings extends CI_Controller {
 						// Remove any remaining image files.
 						if(file_exists($cleanImage['destination']))
 							unlink($cleanImage['destination']);
-						if(file_exists($results['upload_data']['full_path']))
-						 	unlink($results['upload_data']['full_path']);
+						if(file_exists($cleanImage['old_path']))
+						 	unlink($cleanImage['old_path']);
 					} else {
 						// Unable to add image to the table.
 		             			$this->load->library('form_validation');

@@ -18,7 +18,7 @@ class My_image {
 			$img->writeImage($destination);
 			$img->clear();
 
-			$results['old_path'] = $array['full_path'];
+			$results['oldpath'] = $array['full_path'];
 			$results['file_name'] = $array['raw_name'].'.png';
 			$results['destination'] = $destination;
 			$results['format'] = '.png';
@@ -33,13 +33,13 @@ class My_image {
 			}			
 			
 			imagepng($img, $destination);
-			$results['old_path'] = $array['full_path'];
+			$results['oldpath'] = $array['full_path'];
 			$results['file_name'] = $array['raw_name'].'.png';
 			$results['destination'] = $destination;
 			$results['format'] = '.png';
 		} else {
 			// Neither PHP-GD or ImageMagick is installed, no EXIF filtering.
-			$results['old_path'] = $array['full_path'];
+			$results['oldpath'] = $array['full_path'];
 			$results['file_name'] = $array['file_name'];
 			$results['destination'] = $array['full_path'];
 			$results['format'] = $array['file_ext'];

@@ -264,33 +264,38 @@ class Orders_model extends CI_Model {
 			}
 			// Finish off new items, add the item if it's not already held in the order.
 			if($found === false){
+				// If the quantity is greater than zero, add the new value to the string.
 				if($newInfo['quantity'] > 0)
 					$newItems.= ":".$newInfo['itemHash']."-".$newInfo['quantity'];
 			}
 	
-		
-	
+			// If the newItems is not empty, update the order.
 			if(!empty($newItems)){
 				// Regenerate the total price.
 				$splitNewItems = explode(":",$newItems);
 				$totalPrice = 0;
 				foreach($splitNewItems as $item){
+					// Loop through items, adding up the price of the items. 
 					$info = explode("-",$item);
 					$quantity = $info[1];
 					$itemInfo = $this->items_model->getInfo($info[0]);
 					$totalPrice += $quantity*$itemInfo['price'];
-				
 				}	
 
+				// Build the array to update the table with.
 				$order = array( 'items' => $newItems,
-					'totalPrice' => $totalPrice,
-					'time' => time() );
+						'totalPrice' => $totalPrice,
+						'time' => time() );
 	
-				$this->db->where(array('id'=>$currentOrder[0]['id'],
-							'step'=>'0'));
+				// Select the order by ID, and make sure it's still at step=0.
+				$this->db->where(	array(	'id'	=> $currentOrder[0]['id'],
+								'step'	=> '0'));
+				
+				// Check whether the update was successful.
 				if($this->db->update('orders',$order)){
 					return TRUE;
 				} else {
+					// Return false if the query was unsuccessful.
 					return FALSE;
 				}
 			} else {
@@ -303,38 +308,61 @@ class Orders_model extends CI_Model {
 		return NULL;
 	}
 
+	// Submit a review for an Item/Vendor.
 	public function review($review,$type){
 
+		// Build an array to insert into the tables.
 		$reviewArray = array(	'reviewedID' => $review['reviewedID'],
 					'reviewType' => $type,
 					'reviewText' => $review['comments'],
 					'rating' => $review['rating'],
 					'time' => time());
 
+		// Check if the query was successful.
 		if($this->db->insert('reviews',$reviewArray)){
 
+			// Query successful; if the review is for a Vendor, delete the order from the table.
 			if($type == 'Vendor'){
 				// Delete from orders table
 				$this->db->where('id',$review['orderID']);
+
+				// Check if the order has been deleted. 
 				if($this->db->delete('orders')){
+					// Return TRUE if successful.
 					return TRUE;
 				} else {
+					// Unsuccesful, return FALSE;
 					return FALSE;
 				}
 			}
 
 		} else {
+			// Query was unsuccessful.
 			return FALSE;
 		}
 	}
 
 	public function listReviews($listReviews){
-		$this->db->order_by('time LIMIT 5');
+		// Set default value for the number of reviews to display.
+		$count = 5;
+
+		// If there is a specified amount of reviews to display, change the number to this.
+		if(isset($listReviews['count']) && is_numeric($listReviews['count']))
+			$count = $listReviews['count'];
+
+		// Order results by time, and set the appropriate LIMIT.
+		$this->db->order_by('time LIMIT $count');
+
+		// Load reviews by the submitted ID.
 		$query = $this->db->get_where('reviews',array(	'reviewedID'=>$listReviews['reviewedID']
 								)
 					);
+
+		// If there are reviews in the response.
 		if($query->num_rows() > 0){
 			$reviews = array();
+
+			// Loop through each entry, and add the required fields to an array.
 			foreach($query->result() as $review){
 				array_push($reviews,array(	'reviewedID' => $review->reviewedID,
 								'rating' => $review->rating,
@@ -343,8 +371,10 @@ class Orders_model extends CI_Model {
 							)
 					);
 			}
+			// Return the reviews array.
 			return $reviews;
 		} else {
+			// Otherwise return NULL.
 			return NULL;
 		}
 	}
@@ -360,12 +390,15 @@ class Orders_model extends CI_Model {
 		// Load order information
 		$getOrder = $this->check($buyerHash,$sellerHash);
 	
+		// Loop through the items
 		foreach($getOrder[0]['items'] as $item){
+			// If the item is there, return the associated quantity.
 			if($item['itemHash'] == $itemHash){
 				return $item['quantity'];
 			}
 		}
 	
+		// If the item hasn't been found, return NULL.
 		return NULL;
 	}
 

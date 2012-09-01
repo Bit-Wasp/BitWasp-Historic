@@ -103,9 +103,16 @@ class Orders_model extends CI_Model {
 					
 					// Check if the item still exists.
 					if($tmp == NULL){
+						$message = "Item {$array[0]} has been ";
+						if(strtolower($this->my_session->userdata('userRole')) == "vendor"){
+							$message .= "removed";
+						} else {
+							$message .= "<br />removed. Contact your vendor.";
+						}
+
 						// Not found; Return an error array.
 						$itemInfo[$j] = array(	'itemHash'=>'removed',
-									'name' => "Item {$array[0]} has been <br />removed. Contact your vendor.");
+									'name' => $message);
 					} else {
 						// Item found; return information about it.
 						$itemInfo[$j] = $tmp;

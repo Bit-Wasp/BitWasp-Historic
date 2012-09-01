@@ -24,6 +24,7 @@
 		<table class="orderlist">
 			<tr class="orderHeader">
 				<td>Buyer</td>
+				<td>Quantity</td>
 				<td>Items</td>
 				<td>Total Price</td>
 				<td>Progress</td>
@@ -34,7 +35,12 @@
 				<td><?=anchor("user/".$order['buyer']['userHash'], $order['buyer']['userName']); ?></td>
 				<td>
 					<ul><?php foreach($order['items'] as $item): // Loop through items in the order ?>
-						<li><?=$item['quantity']." x ".$item['name'];?></li>
+						<li><?=$item['quantity'];?></li>
+					<?php endforeach; ?></ul>
+				</td>
+				<td>
+					<ul><?php foreach($order['items'] as $item): // Loop through items in the order ?>
+						<li><?=$item['name'];?></li>
 					<?php endforeach; ?></ul>
 				</td>
 				<td><?=$order['currencySymbol'].$order['totalPrice'];?></td>
@@ -51,6 +57,7 @@
 		<table class="orderlist">
 			<tr class="orderHeader">
 				<td>Buyer</td>
+				<td>Quantity</td>
 				<td>Items</td>
 				<td>Total Price</td>
 				<td>Progress</td>
@@ -60,8 +67,13 @@
 			<tr>
 				<td><?=anchor("user/".$order['buyer']['userHash'], $order['buyer']['userName']); ?></td>
 				<td>
-					<ul><?php foreach($order['items'] as $item): // Loop through items in an order. ?>
-						<li><?=$item['quantity']." x ".$item['name'];?></li>
+					<ul><?php foreach($order['items'] as $item): // Loop through items in the order ?>
+						<li><?=$item['quantity'];?></li>
+					<?php endforeach; ?></ul>
+				</td>
+				<td>
+					<ul><?php foreach($order['items'] as $item): // Loop through items in the order ?>
+						<li><?=$item['name'];?></li>
 					<?php endforeach; ?></ul>
 				</td>
 				<td><?=$order['currencySymbol'].$order['totalPrice'];?></td>

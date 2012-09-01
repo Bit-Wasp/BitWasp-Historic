@@ -107,7 +107,7 @@ class Orders_model extends CI_Model {
 						if(strtolower($this->my_session->userdata('userRole')) == "vendor"){
 							$message .= "<br /> has been removed";
 						} else {
-							$message .= "has been <br /> removed. Contact your vendor.";
+							$message .= "has been<br /> removed. Contact your vendor.";
 						}
 
 						// Not found; Return an error array.

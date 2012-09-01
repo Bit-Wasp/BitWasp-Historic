@@ -43,7 +43,7 @@ if(count($orders) > 0){?>
 			<td><ul><?php foreach($order['items'] as $item): ?>
 				<li>
 					<?php if($item['itemHash'] == 'removed'){?>
-						<?=$item['name'];?>
+						Item Removed
 					<?php } else { ?>
 						<?=anchor('item/'.$item['itemHash'], $item['name']);?>
 					

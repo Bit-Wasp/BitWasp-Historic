@@ -99,9 +99,17 @@ class Orders_model extends CI_Model {
 					// Extract the itemHash and quantity.
 					$array = explode("-", $item);
 					
-					// Load an array of item information for each itemHash.
-					$itemInfo[$j] = $this->items_model->getInfo($array[0]);
-
+					$tmp = $this->items_model->getInfo($array[0]);
+					
+					// Check if the item still exists.
+					if($tmp == NULL){
+						// Not found; Return an error array.
+						$itemInfo[$j] = array(	'itemHash'=>'removed',
+									'name' => "Item {$array[0]} has been removed. <br />Contact your vendor.");
+					} else {
+						// Item found; return information about it.
+						$itemInfo[$j] = $tmp;
+					}
 					// Add the ordered quantity into the array.
 					$itemInfo[$j++]['quantity'] = $array[1];
 				}
@@ -351,7 +359,7 @@ class Orders_model extends CI_Model {
 			$count = $listReviews['count'];
 
 		// Order results by time, and set the appropriate LIMIT.
-		$this->db->order_by('time LIMIT $count');
+		$this->db->order_by("time LIMIT $count");
 
 		// Load reviews by the submitted ID.
 		$query = $this->db->get_where('reviews',array(	'reviewedID'=>$listReviews['reviewedID']

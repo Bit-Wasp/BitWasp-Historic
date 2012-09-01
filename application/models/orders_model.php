@@ -99,9 +99,17 @@ class Orders_model extends CI_Model {
 					// Extract the itemHash and quantity.
 					$array = explode("-", $item);
 					
-					// Load an array of item information for each itemHash.
-					$itemInfo[$j] = $this->items_model->getInfo($array[0]);
-
+					$tmp = $this->items_model->getInfo($array[0]);
+					
+					// Check if the item still exists.
+					if($tmp == NULL){
+						// Not found; Return an error array.
+						$itemInfo[$j] = array(	'itemHash'=>'removed',
+									'name' => "Item {$array[0]} has been <br />removed. Contact your vendor.");
+					} else {
+						// Item found; return information about it.
+						$itemInfo[$j] = $tmp;
+					}
 					// Add the ordered quantity into the array.
 					$itemInfo[$j++]['quantity'] = $array[1];
 				}

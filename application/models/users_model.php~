@@ -83,7 +83,7 @@ class Users_Model extends CI_Model {
 			$query = $this->db->get_where('users', array('userHash' => $user['userHash']));
 		} elseif (isset($user['id'])) {
 			$query = $this->db->get_where('users', array('id' => $user['id']));
-		} elseif (isset($user['userName'])) { 
+		} elseif (isset($user['userName'])) { echo "debug";
 			$query = $this->db->get_where('users', array('userName' => $user['userName']));
 		} else {
 			return FALSE; //No suitable field found.

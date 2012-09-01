@@ -157,7 +157,7 @@ class Listings extends CI_Controller {
 			if($itemInfo['sellerID'] == $this->my_session->userdata('userHash')){
 				// User matches, show form and items for item.
 		                $data['title'] = 'Item Images';
-				$data['page'] = 'items/images';
+				$data['page'] = 'listings/images';
 				$data['returnMessage'] = 'Select an image to upload.';
 				$data['item'] = $this->items_model->getInfo($itemHash);
 				$data['images'] = $this->items_model->get_item_images($itemHash);
@@ -187,7 +187,7 @@ class Listings extends CI_Controller {
 		if($imageInfo === NULL){
 			// Image does not exist. 
 			$data['title'] = 'Item Images';
-			$data['page'] = 'items/images';
+			$data['page'] = 'listings/images';
 
 			// Load information about the item.
 			$data['item'] = $this->items_model->getInfo($imageInfo['itemHash']);
@@ -204,7 +204,7 @@ class Listings extends CI_Controller {
 
 				// Item does not exist
 				$data['title'] = 'Item Images';
-				$data['page'] = 'items/images';
+				$data['page'] = 'listings/images';
 				$data['returnMessage'] = 'Item does not exist.';
 				$data['item'] = $this->items_model->getInfo($imageInfo['itemHash']);
 				$data['images'] = $this->items_model->get_item_images($imageInfo['itemHash']);
@@ -216,7 +216,7 @@ class Listings extends CI_Controller {
 					if($this->items_model->fixMainPhoto($itemInfo['itemHash'],$imageInfo['imageHash'])){
 						// Successful; item has been updated with new photo.
 						$data['title'] = 'Item Images';
-						$data['page'] = 'items/images';
+						$data['page'] = 'listings/images';
 						$data['returnMessage'] = 'Main photo selected.';
 
 						// Load information about the item.
@@ -227,7 +227,7 @@ class Listings extends CI_Controller {
 					} else {
 						// Unsuccessful
 						$data['title'] = 'Item Images';
-						$data['page'] = 'items/images';
+						$data['page'] = 'listings/images';
 						$data['returnMessage'] = 'Unable to update the main photo.';
 						$data['item'] = $this->items_model->getInfo($imageInfo['itemHash']);
 						$data['images'] = $this->items_model->get_item_images($imageInfo['itemHash']);	
@@ -235,7 +235,7 @@ class Listings extends CI_Controller {
 				} else {
 					// Seller hash does not match.
 					$data['title'] = 'Item Images';
-					$data['page'] = 'items/images';
+					$data['page'] = 'listings/images';
 					$data['returnMessage'] = 'Not authorized to edit this image.';
 					
 					// Load info about the item.
@@ -260,7 +260,7 @@ class Listings extends CI_Controller {
 		if($imageInfo === NULL){
 			// Image cannot be found.
 			$data['title'] = 'Item Images';
-			$data['page'] = 'items/images';
+			$data['page'] = 'listings/images';
 			$data['item'] = $this->items_model->getInfo($imageInfo['itemHash']);
 			$data['images'] = $this->items_model->get_item_images($imageInfo['itemHash']);
 			$data['returnMessage'] = 'This image does not exist.';		
@@ -504,7 +504,7 @@ class Listings extends CI_Controller {
 				$data['item'] = $this->items_model->getInfo($hash);
 				$data['images'] = $this->items_model->get_item_images($hash);
 
-				$data['page'] = 'items/images';		
+				$data['page'] = 'listings/images';		
 			}
 		}	
                 $this->load->library('Layout',$data);				

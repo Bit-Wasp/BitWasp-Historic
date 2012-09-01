@@ -160,6 +160,7 @@ class Messages extends CI_Controller {
 		}
 
 		$recipient = $this->users_model->get_user(array('userName' => $data['to']));
+	
 		$data['publickey'] = $this->users_model->get_pubKey_by_id($recipient['id']);
 		if($data['publickey']!=''){ $data['returnMessage'] .= 'This message will be encrypted automatically if you have javascript enabled.<br />';  }
 

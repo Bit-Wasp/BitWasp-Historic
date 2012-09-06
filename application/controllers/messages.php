@@ -36,7 +36,6 @@ class Messages extends CI_Controller {
 				}
 			}
 			$data['title'] = 'Messages Deleted';
-			$data['page'] = 'messages/inbox';
 			$data['returnMessage'] = 'All messages have been permentantly deleted!';
 			$userId = $this->my_session->userdata('id');
 			$data['messages'] = $this->messages_model->messages($userId);
@@ -47,7 +46,6 @@ class Messages extends CI_Controller {
 			$messageInfo = $this->messages_model->getMessage($messageHash);
 			if($messageInfo==NULL){ //Could not find this message, throw an error
 				$data['title'] = 'Message Not Found';
-				$data['page'] = 'messages/inbox';
 				$data['returnMessage'] = 'This message cannot be found.';
 				$userId = $this->my_session->userdata('id');
 				$data['messages'] = $this->messages_model->messages($userId);
@@ -57,7 +55,6 @@ class Messages extends CI_Controller {
 				if(($messageInfo['fromId']==$userId)||($messageInfo['toId']==$userId)){ //User owns this message, delete ie
 					$this->messages_model->deleteMessage($messageHash);
 					$data['title'] = 'Message Deleted';
-					$data['page'] = 'messages/inbox';
 					$data['returnMessage'] = 'This message has been deleted!';
 
 					$userId = $this->my_session->userdata('id');
@@ -72,10 +69,11 @@ class Messages extends CI_Controller {
 					$data['messages'] = $this->messages_model->messages($userId);
 					if($data['messages'] === NULL)
 						$data['returnMessage'] .= 'You have no messages in your inbox';
-					$data['page'] = 'messages/inbox';
+
 				}
 			}
 		}
+		$data['page'] = 'messages/inbox';
 		$this->load->library('layout',$data);
 	}
 

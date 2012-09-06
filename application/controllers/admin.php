@@ -20,7 +20,7 @@ class Admin extends CI_Controller {
 			// Not completed properly, refer back to Category Removed page with the form.
 			$data['title'] = 'Category Removed';
 			$data['returnMessage'] = 'Your category has been removed.';
-			$data['page'] = 'admin/index';
+			$data['page'] = 'admin/removeCategorySuccess';
 
 			// Need to see how many orphaned products there are.
 			$categoryID = $this->input->post('oldCat');
@@ -104,6 +104,7 @@ class Admin extends CI_Controller {
 				$data['returnMessage'] = 'Unable to add your category, please try again.';
 				$data['page'] = 'admin/addCategory';
 				$data['subCats'] = $this->categories_model->getList();
+				// failure; unable to add the category.
 			}
 
 		}

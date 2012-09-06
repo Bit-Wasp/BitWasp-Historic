@@ -73,7 +73,7 @@ class Listings extends CI_Controller {
 					}
 				}
 			} else {
-				// Not allowed edit this image.
+				// Not allowed edit this item.
 				$data['title'] = 'Not Authorized';
 				$data['returnMessage'] = "Unable to edit this item.";
 
@@ -353,7 +353,7 @@ class Listings extends CI_Controller {
 					$data['itemHash'] = $itemHash;
 				        $data['title'] = 'Item Images';
 					$data['page'] = 'listings/images';
-					$data['returnMessage'] = 'Unable to upload your file.';
+					$data['returnMessage'] = 'Unable to upload your file.'.$this->upload->display_errors();
 					$data['item'] = $this->items_model->getInfo($itemHash);
 					$data['images'] = $this->items_model->get_item_images($itemHash);			
 				} else {

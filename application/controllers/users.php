@@ -43,8 +43,10 @@ class Users extends CI_Controller {
 
 			$data['reviews'] = $this->orders_model->listReviews($listReviews);
 	                $this->load->library('layout', $data);
+			// Success; display the user information
 		} else {
 			redirect('error/userNotFound');
+			// User not found, redirect to appropriate page.
 	        }
 	}
 
@@ -57,7 +59,6 @@ class Users extends CI_Controller {
                 $this->load->library('form_validation');
 
                 if ($this->form_validation->run('login') == FALSE){
-
 			// form not submitted, or unsuccessful
                         $data['title'] = 'Login';
 			$data['page'] = 'users/login';
@@ -104,6 +105,7 @@ class Users extends CI_Controller {
 
 	// Logout
 	public function logout(){
+		// Kill the session and redirect to the login page.
 		$this->my_session->killSession($this->session->userdata('userHash'));
 		redirect('users/login');
 	}

@@ -27,8 +27,8 @@ $config['base_url']	= 'http://localhost/bw/';
 | that it only listening on the localhost.
 |
 */
-$config['bitcoind_rpc_username']	= 'user';
-$config['bitcoind_rpc_password']	= 'passJ2xHL0su3';
+$config['bitcoind_rpc_username']	= 'username';
+$config['bitcoind_rpc_password']	= 'password';
 $config['bitcoind_rpc_host']		= '127.0.0.1:8332';
 
 /*

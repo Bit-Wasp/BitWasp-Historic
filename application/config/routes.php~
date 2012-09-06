@@ -45,8 +45,6 @@ $route['users/logout'] = 'users/logout';
 $route['users/register'] = 'users/register';
 $route['users/logoutInactivity'] = 'users/logoutInactivity';
 
-$route['bitcoin'] = 'bitcoin/index';
-
 // Show show specific products, and all.
 $route['items'] = 'items';
 $route['item/(:any)'] = 'items/view/$1';

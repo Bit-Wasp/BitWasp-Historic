@@ -29,7 +29,7 @@ $config = array(
 							),
 						array( 'field' => 'price',
 							'label' => 'Price',
-							'rules' => 'required|trim|decimal'		
+							'rules' => 'required|trim'		
 							)
 					),
 		'editItem'	=> 	array(
@@ -78,7 +78,7 @@ $config = array(
 		'register'	=>	array(
 						array(	'field' => 'username',
 							'label' => 'Username',
-							'rules' => 'trim|required|alpha_dash|min_length[5]|is_unique[users.userName]'
+							'rules' => 'htmlentities|trim|alpha_dash|required|min_length[5]|is_unique[users.userName]'
 							),
 						array( 	'field' => 'password0',
 							'label' => 'Password',
@@ -100,7 +100,7 @@ $config = array(
 		'login'		=>	array(
 						array(	'field' => 'username',
 							'label' => 'Username',
-							'rules' => 'trim|required'
+							'rules' => 'trim|htmlentities|required'
 							),
 						array(	'field' => 'password',
 							'label' => 'Password',
@@ -108,22 +108,22 @@ $config = array(
 							),
 						array( 'field' => 'captcha',
 							'label' => 'captcha',
-							'rules' => 'required|callback_check_captcha'
+							'rules' => 'trim|required|callback_check_captcha'
 							)
 					),
 
 		'sendmessage'	=>	array(
 						array(	'field' => 'recipient',
 							'label' => 'Recipient',
-							'rules' => 'trim|required|callback_check_user_exists'
+							'rules' => 'trim|htmlentities|required|callback_check_user_exists'
 							),
 						array(	'field' => 'subject',
 							'label' => 'Subject',
-							'rules' => 'required|html_entities|'
+							'rules' => 'required'
 							),
 						array( 'field' => 'message',
 							'label' => 'message',
-							'rules' => 'trim|html_entities|required'
+							'rules' => 'trim|required'
 							)
 					),
 
@@ -135,7 +135,8 @@ $config = array(
 						),
 						array(	'field' => 'rating',
 							'label' => 'Rating',
-							'rules' => 'numeric|required|callback_check_rating'
+							'rules' => 'required|callback_check_rating'
+
 						)
 					)
 

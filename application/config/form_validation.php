@@ -21,7 +21,7 @@ $config = array(
 							),
 						array( 'field' => 'description',
 							'label' => 'Description',
-							'rules' => 'required|htmlentites'		
+							'rules' => 'required|htmlentities'		
 							),
 						array( 'field' => 'categoryID',
 							'label' => 'Category',
@@ -119,11 +119,11 @@ $config = array(
 							),
 						array(	'field' => 'subject',
 							'label' => 'Subject',
-							'rules' => 'required|html_entities|'
+							'rules' => 'trim|required|htmlentities'
 							),
 						array( 'field' => 'message',
 							'label' => 'message',
-							'rules' => 'trim|html_entities|required'
+							'rules' => 'trim|htmlentities|required'
 							)
 					),
 

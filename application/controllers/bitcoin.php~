@@ -11,7 +11,7 @@ class Bitcoin extends CI_Controller {
 		$data['title'] = 'bitcoin';
 		$data['page'] = 'home/index';
 		$this->load->library('jsonrpcclient',array('url' => 'http://user:passJ2xHL0su3@127.0.0.1:8332'));
-		$data['returnMessage'] = print_r($this->jsonrpcclient->getinfo());
+		print_r($this->jsonrpcclient->getinfo());
 //		$bitcoin = new jsonRPCClient('http://user:passJ2xHL0su3@127.0.0.1:8332/');
 		
 		$this->load->library('layout',$data);

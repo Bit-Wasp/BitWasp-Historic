@@ -369,15 +369,16 @@ class Orders_model extends CI_Model {
 		$this->db->order_by("time LIMIT $count");
 
 		// Load reviews by the submitted ID.
-		$query = $this->db->get_where('reviews',array(	'reviewedID'=>$listReviews['reviewedID']
-								)
+		$query = $this->db->get_where('reviews',array(	'reviewedID'=>$listReviews['reviewedID'])
 					);
 
 		// If there are reviews in the response.
 		if($query->num_rows() > 0){
 			$reviews = array();
+			$rating = 0;
 
 			// Loop through each entry, and add the required fields to an array.
+			// This returns the latest information, based on the $count.
 			foreach($query->result() as $review){
 				array_push($reviews,array(	'reviewedID' => $review->reviewedID,
 								'rating' => $review->rating,
@@ -386,8 +387,23 @@ class Orders_model extends CI_Model {
 							)
 					);
 			}
+
+			/* Quickfix ahead! This will be expanded to take better account of the rating */
+			// Load everything to work out the weighted rating.
+			$this->db->order_by('time');
+			$allratings = $this->db->get_where('reviews',array('reviewedID'=>$listReviews['reviewedID']));
+			foreach($allratings->result() as $tmp){
+				$rating += $tmp->rating;
+			}
+			$rating = ($rating/$allratings->num_rows());
+			/* End of quick-fix*/
+
+
+			$results = array('AvgRating' => $rating,
+					 'reviews'   => $reviews );
+
 			// Return the reviews array.
-			return $reviews;
+			return $results;
 		} else {
 			// Otherwise return NULL.
 			return NULL;

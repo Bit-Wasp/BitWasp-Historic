@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://178.238.140.54/bitwasp/';
+$config['base_url']	= 'http://127.0.0.1/bitwasp/';
 
 
 /*

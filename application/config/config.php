@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://178.238.140.54/bitwasp';
+$config['base_url']	= 'http://127.0.0.1/bitwasp';
 
 
 /*
@@ -27,8 +27,8 @@ $config['base_url']	= 'http://178.238.140.54/bitwasp';
 | that it only listening on the localhost.
 |
 */
-$config['bitcoind_rpc_username']	= 'user';
-$config['bitcoind_rpc_password']	= 'passJ2xHL0su3';
+$config['bitcoind_rpc_username']	= 'userforbitwasp';
+$config['bitcoind_rpc_password']	= 'passJ2xas9df7asdf';
 $config['bitcoind_rpc_host']		= '127.0.0.1:8332';
 
 /*

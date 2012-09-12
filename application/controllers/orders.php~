@@ -338,6 +338,7 @@ class Orders extends CI_Controller {
 		// Confirm order exists & buyer/seller is correct.
 		if($orderInfo === NULL){
 			$data['title'] = 'Not Found';
+			$data['page'] = 'orders/purchases';
 			$data['returnMessage'] = 'This order does not exist.';
 			// Failure; order cannot be found.
 		} else {
@@ -367,6 +368,7 @@ class Orders extends CI_Controller {
 				// Success; order confirmed as dispatched.
 			} else {
 				$data['title'] = "Error";
+				$data['page'] = 'orders/purchases';
 				$data['returnMessage'] = "An error was encountered while trying to progress your order, please try again.";
 				// Failure; unable to dispatch the order.
 			}
@@ -380,8 +382,6 @@ class Orders extends CI_Controller {
 		$data['newOrders'] = $this->orders_model->ordersByStep($sellerHash,1);
 		// Load orders for dispatch
 		$data['dispatchOrders'] = $this->orders_model->ordersByStep($sellerHash,2);
-
-		$data['page'] = 'orders/purchases';
 
 		$this->load->library('layout',$data);
 	}

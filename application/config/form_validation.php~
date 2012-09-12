@@ -3,11 +3,11 @@ $config = array(
 		'addCategory'	=>	array(
 						array(	'field' => 'name',
 							'label' => 'Name',
-							'rules' => 'trim|required|min_length[2]|strip_tags|is_unique[categories.name]'
+							'rules' => 'htmlentities|trim|required|min_length[2]|is_unique[categories.name]'
 							),
 						array(	'field' => 'description',
 							'label' => 'Description',
-							'rules' => 'required|strip_tags'
+							'rules' => 'htmlentities|required'
 							),
 						array(	'field' => 'parentID',
 							'label' => 'Parent ID',

@@ -9,9 +9,9 @@ Date Registered: <?=$user['dispTime'];?><br />
 
 <br />
 		<div class='reviews'>
-			Rating: <?=$user['rating'] ?><br />
+			Rating: <?=$reviews['AvgRating'];?><br />
 			<?php 
-			if(count($reviews) > 0){?>
+			if(count($reviews['reviews']) > 0){?>
 			<table class="orderlist">
 			<tr class="orderHeader">
 				<td>Rating</td>
@@ -19,7 +19,7 @@ Date Registered: <?=$user['dispTime'];?><br />
 				<td>Time</td>
 			</tr>
 			
-			<?php foreach($reviews as $review):?>
+			<?php foreach($reviews['reviews'] as $review):?>
 			<tr>
 				<td><?=$review['rating'];?>/5</td>
 				<td><?=$review['reviewText'];?></td>
@@ -28,7 +28,7 @@ Date Registered: <?=$user['dispTime'];?><br />
 			<?php endforeach; ?>
 			</table/>
 			<?php } else { ?>
-			This item has no reviews at present.
+			This vendor has no reviews at present.
 			<?php } ?>		
                         <div class="clear"></div>
 		</div>

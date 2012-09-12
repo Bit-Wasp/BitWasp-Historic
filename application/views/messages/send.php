@@ -18,7 +18,7 @@
 
 <textarea style="display:none;" name="pubkey">
 <?=$publickey; ?>
-</textarea><br /
+</textarea><br />
 
 <br /><br />
 <label for="submit"><input type='submit' value='Send' onclick='messageEncrypt()' /></label><br />

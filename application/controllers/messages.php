@@ -146,7 +146,7 @@ class Messages extends CI_Controller {
 		elseif($toHash !== NULL){ //A user was specified
 			$recipient = $this->users_model->get_user(array('userHash' => $toHash));
 			if($recipient['userName'] === NULL){ //Check if a user is found with the specified userHash
-				$data['returnMessage'] = 'The requested user could not be found.';
+				$data['returnMessage'] = 'The requested username could not be found';
 				$data['to'] = '';
 			} else { //A matching user was found.
 				$data['to'] = $recipient['userName'];
@@ -154,7 +154,18 @@ class Messages extends CI_Controller {
 
 		//If no user hash was specified try use the submitted value
 		} else {
-			$data['to'] = $this->input->post('recipient');
+			if($this->input->post('recipient') == FALSE){ //No username was inputted
+				$data['to'] = '';
+			} else { //A username was provided
+				$recipient = $this->users_model->get_user(array('userName' => $this->input->post('recipient')));
+				if($recipient['userName'] != NULL) { //Check if the username is valid.
+					$data['to'] = $recipient['userName'];
+				} else {
+					$data['returnMessage'] = 'The requested username could not be found..';
+					$data['subject'] = $this->input->post('subject');
+					$data['to'] = '';
+				}
+			}
 		}
 
 		$recipient = $this->users_model->get_user(array('userName' => $data['to']));
@@ -165,7 +176,7 @@ class Messages extends CI_Controller {
 		//Need to check if provided username is valid
                 if ($this->form_validation->run('sendmessage') == FALSE){
 			//Submitted form didn't pass validation, display it again
-			if($this->input->post('subject')!='') {	
+			if($this->input->post('subject')) {	
 				$data['subject'] = $this->input->post('subject');
 			}
                 } else  {

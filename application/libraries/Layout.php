@@ -7,19 +7,20 @@ class Layout  extends CI_Controller {
 
 		$CI = &get_instance();
 
-//		print_r($CI->my_session->all_userdata());
-
 		//register code to include header JS and meta.
 		if(!isset($data['header_meta'])) {	
 			$data['header_meta'] = ''; 
 		}
 
 		if($CI->session->userdata('logged_in') === TRUE){
+
+      //Load data needed for header menu.
 			$CI->load->model('messages_model');
 			$data['unreadMessages'] = $CI->messages_model->getUnread($CI->session->userdata('id'));
 			$headerFile = 'templates/'.strtolower($CI->my_session->userdata('userRole')).'Header';
 			$CI->load->view($headerFile,$data);
 
+      //Begin loading category data
 			$CI->load->model('categories_model');
 			$categories = $CI->categories_model->getCategories();
 
@@ -29,6 +30,7 @@ class Layout  extends CI_Controller {
 			} else {
 				$category_data['cats'] = "No Categories";
 			}
+      $CI->load->view('templates/catSidebar', $category_data);
 		} else if($CI->session->userdata('twoStep') === TRUE){
 			$CI->load->view('templates/twoStepHeader',$data);
 			$category_data['cats'] = "";
@@ -37,8 +39,6 @@ class Layout  extends CI_Controller {
 			$CI->load->view('templates/loginHeader',$data);
 			$category_data['cats'] = NULL;
 		}
-
-                $CI->load->view('templates/catSidebar', $category_data);
 
 		$CI->load->view($data['page']);
 		$CI->load->view('templates/footer.php');

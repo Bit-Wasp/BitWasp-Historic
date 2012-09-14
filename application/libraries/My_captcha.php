@@ -68,7 +68,8 @@ class My_captcha {
 		$arraycaptcha = array(		'word' => $characters,
 						'img_path' => 'assets/images/captcha/',
 						'img_url' => base_url().'assets/images/captcha/',
-						'font_path' => 'assets/font.ttf'
+						'font_path' => 'assets/font.ttf',
+            'img_width' => '218'
 					);
 
 		// create captcha from the array above

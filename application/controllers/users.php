@@ -183,12 +183,16 @@ class Users extends CI_Controller {
 			redirect('home');
 		} 
 
-                $this->load->helper(array('form', 'url'));
-                $this->load->library('form_validation');
+    $this->load->helper(array('form', 'url'));
+    $this->load->library('form_validation');
+
+    //Set some defaults for forms etc.
+    $this->form_validation->set_error_delimiters('<span class="form-error">', '</span>');
 
 		// Run form validation
-                if ($this->form_validation->run('register') == FALSE){
-			// Show the register form.
+    if ($this->form_validation->run('register') == FALSE){
+
+		// Show the register form.
                         $data['title'] = 'Register';
                         $data['page'] = 'users/register'; 
                         $data['captcha'] = $this->my_captcha->generateCaptcha();

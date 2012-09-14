@@ -110,7 +110,7 @@ class Users_Model extends CI_Model {
         public function get_user($user = FALSE)
         {
 		//Select these fields from the database
-		$this->db->select('id, userName, userRole, userHash, rating, timeRegistered, twoStepAuth');
+		$this->db->select('id, userName, userRole, userHash, rating, timeRegistered, twoStepAuth, profileMessage');
 
                 //Check what field has been provided, and query database using that field.
                 if (isset($user['userHash'])) {
@@ -173,6 +173,16 @@ class Users_Model extends CI_Model {
 		}
 	}
 
-
+	public function get_profileMessage($userID){
+		$this->db->where('id',$userID);
+		$this->db->select('profileMessage');
+		$query = $this->db->get('users');
+		if($query->num_rows() > 0 ){
+			$result = $query->row_array();
+			return $result['profileMessage'];
+		} else {
+			return NULL;
+		}
+	}
 
 }

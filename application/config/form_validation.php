@@ -20,6 +20,21 @@ $config = array(
 							'rules' => 'required|numeric|callback_check_parentID_exists'
 							)
 					),
+
+		'editAccount'	=>	array(
+						array(	'field' => 'passwordConfirm',
+							'label' => 'Password Confirmation',
+							'rules' => 'required'
+							),
+						array(	'field' => 'twoStep',
+							'label' => 'Two Step Authenication',
+							'rules' => 'required|numeric'
+							),
+						array(	'field' => 'profileMessage',
+							'label' => 'Profile Message',
+							'rules' => 'htmlentities|trim|required'
+							)
+					),
 		'addItem'	=> 	array(
 						array( 'field' => 'name',
 							'label' => 'Item Name',

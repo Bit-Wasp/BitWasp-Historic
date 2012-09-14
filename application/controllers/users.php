@@ -97,6 +97,8 @@ class Users extends CI_Controller {
 					 	'type' => 'Vendor',
 						'count' => 5);
 
+			$data['profileMessage'] = $this->users_model->get_profileMessage($data['user']['id']);
+
 			$data['reviews'] = $this->orders_model->listReviews($listReviews);
 	                $this->load->library('layout', $data);
 			// Success; display the user information

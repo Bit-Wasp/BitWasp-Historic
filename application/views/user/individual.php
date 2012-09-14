@@ -6,6 +6,13 @@ Date Registered: <?=$user['dispTime'];?><br />
 <?=anchor('messages/send/'.$user['userHash'],'Message this user');?>
                         <div class="clear"></div>
                         </div>
+<br />
+
+	<?php if($profileMessage !== NULL){?>
+Profile Message<br />
+<?=$profileMessage;?><br />
+	<?php } ?>
+
 
 	<?php if($user['userRole'] == 'vendor'){?>
 		<div class='reviews'>

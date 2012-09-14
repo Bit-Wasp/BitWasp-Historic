@@ -25,8 +25,15 @@ Add a PGP public key to enable this feature.<br />
 } ?><br />
 
 <label for='password0'>New Password</label><input type='password' name='password0' value='' /><br />
-<label for='password1'>New Password (confirm)</label><input type='password' name='password1' value='' /><Br /><Br />
+<label for='password1'>New Password (confirm)</label><input type='password' name='password1' value='' /><Br />
+
+<label for='profileMessage'>Profile Message</label>
+<textarea name='profileMessage' rows='5' cols='50'><?=$account['profileMessage'];?></textarea><br/>
+
+
 <br />
+
+
 <hr>
 To make any changes to your account, you must enter your password:<br />
 <label for='passwordConfirm'>Password:</label><input type='password' name='passwordConfirm' value='' /><Br />

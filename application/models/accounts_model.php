@@ -27,7 +27,8 @@ class Accounts_model extends CI_Model {
 					'pubKey'   => $pubKey,
 					'pubKeyFingerprint' => $fingerprint,
 					'displayFingerprint' => $dispFingerprint,
-					'twoStepAuth' => $user['twoStepAuth'] );
+					'twoStepAuth' => $user['twoStepAuth'],
+					'profileMessage' => $user['profileMessage'] );
 		return $results;
 	}
 
@@ -87,6 +88,17 @@ class Accounts_model extends CI_Model {
 						$result['twoStep'] = true;
 					} else {
 						$result['twoStep'] = false;
+					}
+				}
+
+
+				if($key == 'profileMessage'){
+					$this->db->where('id',$userID);
+					$update = array('profileMessage' => nl2br($changes['profileMessage']));
+					if($this->db->update('users',$update)){
+						$result['profileMessage'] = true;
+					} else {
+						$result['profileMessage'] = false;
 					}
 				}
 

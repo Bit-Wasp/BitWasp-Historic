@@ -47,7 +47,7 @@ class Account extends CI_Controller {
 
 		// Check if there's a problem with the submitted PGP key.
 		$PGPfail = FALSE;
-		$pubKey = $this->input->post('pubKey');
+		$pubKey = $this->input->post('pubKey',TRUE);
 		$changes = array();
 
 		// Check if the public Key is set.
@@ -93,7 +93,7 @@ class Account extends CI_Controller {
 
 		$passFail = FALSE;
 		// Check if we are suppposed to update the password.
-		if(	strlen($this->input->post('password0'))){
+		if(	strlen($this->input->post('password0') > 0)){
 			// Check the two passwords match.
 			if($this->input->post('password0') == $this->input->post('password1')){
 				$changes['password'] = $this->general->hashFunction($this->input->post('password0'),$loginInfo['userSalt']);
@@ -101,6 +101,13 @@ class Account extends CI_Controller {
 				// Passwords don't match.
 				$passFail = TRUE;
 			}
+		}
+
+
+		$currentMessage = $this->users_model->get_profileMessage($loginInfo['id']);
+		$newMessage = strip_tags(nl2br($this->input->post('profileMessage',TRUE)),'<br>');
+		if($currentMessage !== $newMessage){
+			$changes['profileMessage'] = $newMessage;
 		}
 
 		$error = FALSE;

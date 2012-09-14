@@ -6,7 +6,7 @@
 <fieldset>
 <label for='username'>Username</label> <?=$account['userName'];?><br /><br />
 
-<label for='link'>Link to profile</label> <?=anchor('user/'.$account['userHash'], base_url().'user/'.$account['userHash']);?><br /><br />
+<label for='link'>Link to profile</label> <?=anchor('user/'.$account['userHash'], site_url().'/user/'.$account['userHash']);?><br /><br />
 
 <label for='pubKey'>PGP Public Key</label>
 <?php if($account['pubKey'] !== 'No Public Key found.'){?>

@@ -47,13 +47,16 @@ class My_session extends CI_Session {
                 $CI->load->model('users_model');
 		$CI->load->model('sessions_model');
 		$CI->load->model('pages_model');
+		$CI->load->library('my_config');
+
+		$login_timeout = $CI->my_config->login_timeout()*60;	// Convert timeout to seconds.
 
 		if($CI->session->userdata('logged_in') === TRUE){
 			// User logged in, load the info for the session.
 			$userHash = $CI->session->userdata('userHash');
                         $sessionInfo = $CI->sessions_model->getInfo($userHash);
 			// Check if the user's session has timed out.
-                        if(time()-$sessionInfo['last_activity'] > 1800){		// activity - should be globalized
+                        if(time()-$sessionInfo['last_activity'] > $login_timeout){		// activity - should be globalized
                                 // half an hour before time out 
 				// Kill session and redirect to the inactivity login page.
                                 $this->killSession($userHash);

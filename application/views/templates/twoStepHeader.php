@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8">
-        <title><?php echo $title ?> | Bitwasp :: Anonymous Online Marketplace</title>
+        <title><?=$title; ?> | <?=$site_name;?></title>
         <link rel="stylesheet" type="text/css" href="<?=base_url(); ?>assets/style.css" />
 	<?=$header_meta; ?>
 </head>

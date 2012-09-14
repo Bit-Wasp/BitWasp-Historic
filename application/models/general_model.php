@@ -2,6 +2,17 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class General_model extends CI_Model {
+
+	public function siteConfig(){
+		$query = $this->db->get('config');
+		if($query->num_rows() > 0){
+			$res = $query->row_array();
+			$json = json_decode($res['jsonConfig']);
+			return $json;
+		} else {
+			return NULL;
+		}
+	}
 	
 	// Test to see if the hash is unique in the table/column.
 	public function testUniqueHash($table, $column, $hash){

@@ -13,6 +13,18 @@ class Admin extends CI_Controller {
 		$this->load->library('layout',$data);
 	}
 
+	public function siteInfo(){
+		$data['page'] = 'admin/siteInfo';
+		$data['title'] = 'Site Info';
+		$data['config'] = $this->my_config->loadAll();
+
+		$t = array(	'site_title' => 'Bitwasp :: Anonymous Online Marketplace',
+				'login_timeout' => '30',
+				'base_url' => 'http://178.238.140.54/bitwasp/' );
+		echo json_encode($t);
+		$this->load->library('layout',$data);
+	}
+
 	public function fixOrphans(){
 		$this->load->library('form_validation');
 			

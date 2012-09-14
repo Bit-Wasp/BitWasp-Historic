@@ -110,6 +110,7 @@ $route['admin'] = 'admin/index';
 $route['admin/category/add'] = 'admin/addCategory';
 $route['admin/category/remove'] = 'admin/removeCategory';
 $route['admin/category/fixOrphans'] = 'admin/fixOrphans';
+$route['admin/siteInfo'] = 'admin/siteInfo';
 
 //Redirect pages as default
 $route['default_controller'] = 'users/login';

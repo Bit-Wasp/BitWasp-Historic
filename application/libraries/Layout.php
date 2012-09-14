@@ -9,6 +9,9 @@ class Layout  extends CI_Controller {
 
 //		print_r($CI->my_session->all_userdata());
 
+		$CI->load->library('my_config');
+		$data['site_name'] = $CI->my_config->site_title();
+
 		//register code to include header JS and meta.
 		if(!isset($data['header_meta'])) {	
 			$data['header_meta'] = ''; 

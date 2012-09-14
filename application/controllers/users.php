@@ -28,39 +28,29 @@ class Users extends CI_Controller {
                                 redirect('home');
 
 			} else {
-				$data['returnMessage'] = "Your solution did not match the decrypted text. A new challenge has been generated.";
-
-				// Solution does not match, show a new challenge.
-				// Load users PGP fingerprint.
-				$fingerprint = $this->users_model->get_pubKey_by_id($userID,1);
-				// Generate a unique challenge for the user.
-				$challenge = $this->general->uniqueHash('twoStep','twoStepChallenge');
-				
-				// Add the challenge to the DB.
-				$this->users_model->addTwoStepChallenge($userID, $challenge);
-
-				// Load GNUPG, add the users fingerprint, and encrypt the challenge text.
-				$gpg = gnupg_init();
-				gnupg_addencryptkey($gpg, $fingerprint);
-				$string = gnupg_encrypt($gpg, "Two Step Token: $challenge\n");
-
-				// Display the PGP text.
-				$data['challenge'] = $string;
+        //User submitted an incorrect token. Return error and show form below
+				$data['returnMessage'] = "Your token did not match. Please remove any whitespace and enter only the token. A new challenge has been generated.";
 			}
 			// Finish off session creation.
-		} else {
-			$fingerprint = $this->users_model->get_pubKey_by_id($userID, 1);
-			$challenge = $this->general->uniqueHash('twoStep','twoStepChallenge');
-
-			$this->users_model->addTwoStepChallenge($userID,$challenge);
-
-			$gpg = gnupg_init();
-			gnupg_addencryptkey($gpg, $fingerprint);
-			$string = gnupg_encrypt($gpg, "Two Step Token: $challenge\n");
-
-			$data['challenge'] = $string;
-
 		}
+
+		// Show a new challenge.
+		// Load users PGP fingerprint.
+		$fingerprint = $this->users_model->get_pubKey_by_id($userID,1);
+		// Generate a unique challenge for the user.
+		$challenge = $this->general->uniqueHash('twoStep','twoStepChallenge');
+		
+		// Add the challenge to the DB.
+		$this->users_model->addTwoStepChallenge($userID, $challenge);
+
+		// Load GNUPG, add the users fingerprint, and encrypt the challenge text.
+		$gpg = gnupg_init();
+		gnupg_addencryptkey($gpg, $fingerprint);
+		$string = gnupg_encrypt($gpg, "Two Step Token: $challenge\n");
+
+		// Display the PGP text.
+		$data['challenge'] = $string;
+
 		$this->load->library('layout',$data);
 	}
 

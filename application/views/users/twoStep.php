@@ -8,7 +8,7 @@
                 <pre class="well"><?=$challenge;?></pre>
 
                 <div class="control-group">
-                  <label class="control-label" for="solution">Solution</label>
+                  <label class="control-label" for="solution">Token</label>
                   <div class="controls">
                     <input type="text" name='solution' size='12'/>
                     <span class="help-inline"><?php echo form_error('solution'); ?></span>

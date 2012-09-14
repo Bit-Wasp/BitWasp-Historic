@@ -129,7 +129,7 @@ $config = array(
 
 		'twoStep'	=>	array(	
 						array(	'field' => 'solution',
-							'label' => 'Solution',
+							'label' => 'token',
 							'rules' => 'trim|required'
 							)
 					),

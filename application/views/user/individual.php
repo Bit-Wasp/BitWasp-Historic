@@ -7,7 +7,7 @@ Date Registered: <?=$user['dispTime'];?><br />
                         <div class="clear"></div>
                         </div>
 
-<br />
+	<?php if($user['userRole'] == 'vendor'){?>
 		<div class='reviews'>
 			Rating: <?=$reviews['AvgRating'];?><br />
 			<?php 
@@ -32,6 +32,7 @@ Date Registered: <?=$user['dispTime'];?><br />
 			<?php } ?>		
                         <div class="clear"></div>
 		</div>
+	<?php } ?>
 <br />
 
 

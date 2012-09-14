@@ -8,7 +8,7 @@
 <?php if($account['pubKey'] == 'No Public Key found.'){?>
 <textarea name='pubKey'><?=$account['pubKey'];?></textarea><br />
 <?php } else { ?>
-<?=$account['pubKeyFingerprint'];?><br />
+<?=$account['displayFingerprint'];?><br />
 <?php } ?><br />
 
 <label for='twoStep'>Two-Step Login</label>

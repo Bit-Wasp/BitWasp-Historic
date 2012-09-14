@@ -11,21 +11,22 @@ class Accounts_model extends CI_Model {
 		$user = $this->users_model->get_user(array('userHash' => $userHash));
 		$pubKey = $this->users_model->get_pubKey_by_id($user['id']);
 
-		$fingerprint = strtolower($this->users_model->get_pubKey_by_id($user['id'],true));
-
+		$fingerprint = $this->users_model->get_pubKey_by_id($user['id'],true);
 
 		if($pubKey === NULL){
 			$pubKey = "No Public Key found.";
-			$outFingerprint = NULL;
+			$fingerprint = NULL;
+			$dispFingerprint = NULL;
 		} else if($fingerprint !== NULL){
 			$pubKey = $pubKey;
-			$outFingerprint = $fingerprint;
+			$dispFingerprint = substr($fingerprint,0,31).'<b>'.substr($fingerprint,32).'</b>';
 		}
 
 		$results = array(	'userName' => $user['userName'],
 					'userHash' => $user['userHash'],
 					'pubKey'   => $pubKey,
-					'pubKeyFingerprint' => $outFingerprint,
+					'pubKeyFingerprint' => $fingerprint,
+					'displayFingerprint' => $dispFingerprint,
 					'twoStepAuth' => $user['twoStepAuth'] );
 		return $results;
 	}

@@ -9,7 +9,7 @@
 
 <label for='pubKey'>PGP Public Key</label>
 <?php if($account['pubKey'] !== 'No Public Key found.'){?>
-<?=$account['pubKeyFingerprint'];?> - 
+<?=$account['displayFingerprint'];?> - 
 <?=anchor('account/deletePubKey','Delete');?><br />
 <?php } else { ?>
 <?=$account['pubKey'];?><br />

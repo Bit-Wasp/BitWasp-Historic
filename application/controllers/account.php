@@ -14,6 +14,7 @@ class Account extends CI_Controller {
 		$data['title'] = 'My Account';
 		$userHash = $this->my_session->userdata('userHash');
 		$data['account'] = $this->accounts_model->getAccountInfo($userHash);
+		
 		$this->load->library('layout',$data);
 	}
 
@@ -32,7 +33,7 @@ class Account extends CI_Controller {
 		$userHash = $this->my_session->userdata('userHash');
 		$loginInfo = $this->users_model->getLoginInfo(array('userHash' => $userHash));
 		// Generate the hash of the password to test.
-		$testPass = $this->general->hashFunction($this->input->post('passwordConfirm'),$loginInfo['userSalt']);			
+		$testPass = $this->general->hashFunction($this->input->post('passwordConfirm'),$loginInfo['userSalt']);	
 
 		// Check the password for this username.
 		$checkPass = $this->users_model->checkPass($loginInfo['userName'], $testPass);

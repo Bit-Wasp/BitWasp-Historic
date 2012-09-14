@@ -70,7 +70,7 @@ class Users extends CI_Controller {
 			$login = false;
 
 			// Get id,userSalt, userHash, userRole from the DB.
-			$getLoginInfo = $this->users_model->getLoginInfo($this->input->post('username'));
+			$getLoginInfo = $this->users_model->getLoginInfo(array('userName' =>$this->input->post('username')));
 			// check the user exists
 			if($getLoginInfo !== FALSE){
 				// Encrypt the submitted password

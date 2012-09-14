@@ -103,6 +103,7 @@ class Account extends CI_Controller {
 		}
 
 		$error = FALSE;
+		$errorMsg = "";
 		// Check that the user has submitted the right password.
 		if($PGPfail === TRUE){
 			$error = TRUE;		// ERROR!

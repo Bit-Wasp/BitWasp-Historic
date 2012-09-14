@@ -29,6 +29,10 @@ class Layout  extends CI_Controller {
 			} else {
 				$category_data['cats'] = "No Categories";
 			}
+		} else if($CI->session->userdata('twoStep') === TRUE){
+			$CI->load->view('templates/twoStepHeader',$data);
+			$category_data['cats'] = "";
+
 		} else {
 			$CI->load->view('templates/loginHeader',$data);
 			$category_data['cats'] = NULL;

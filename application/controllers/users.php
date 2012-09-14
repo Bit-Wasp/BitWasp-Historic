@@ -8,7 +8,63 @@ class Users extends CI_Controller {
 		$this->load->model('users_model');
 	}
 
-	function logoutInactivity() {
+	public function twoStep(){
+		$this->load->library('form_validation');
+		$data['title'] = 'Two Step Authentication';
+		$data['page'] = 'users/twoStep';
+		$userID = $this->my_session->userdata('id');
+
+		// Check if the form has been submitted successfully.
+		if($this->form_validation->run('twoStep') === TRUE){
+	
+			// Solution has been entered.
+			$solution = $this->input->post('solution');
+
+			// Check the solution against what's recorded in the DB.
+			if($this->users_model->checkTwoStepChallenge($userID,$solution)){
+				// Solution matches, load userinfo and create a full session.
+				$loginInfo = $this->users_model->get_user(array('id' => $userID));
+				$this->my_session->createSession($loginInfo);
+                                redirect('home');
+
+			} else {
+				$data['returnMessage'] = "Your solution did not match the decrypted text. A new challenge has been generated.";
+
+				// Solution does not match, show a new challenge.
+				// Load users PGP fingerprint.
+				$fingerprint = $this->users_model->get_pubKey_by_id($userID,1);
+				// Generate a unique challenge for the user.
+				$challenge = $this->general->uniqueHash('twoStep','twoStepChallenge');
+				
+				// Add the challenge to the DB.
+				$this->users_model->addTwoStepChallenge($userID, $challenge);
+
+				// Load GNUPG, add the users fingerprint, and encrypt the challenge text.
+				$gpg = gnupg_init();
+				gnupg_addencryptkey($gpg, $fingerprint);
+				$string = gnupg_encrypt($gpg, "Two Step Token: $challenge\n");
+
+				// Display the PGP text.
+				$data['challenge'] = $string;
+			}
+			// Finish off session creation.
+		} else {
+			$fingerprint = $this->users_model->get_pubKey_by_id($userID, 1);
+			$challenge = $this->general->uniqueHash('twoStep','twoStepChallenge');
+
+			$this->users_model->addTwoStepChallenge($userID,$challenge);
+
+			$gpg = gnupg_init();
+			gnupg_addencryptkey($gpg, $fingerprint);
+			$string = gnupg_encrypt($gpg, "Two Step Token: $challenge\n");
+
+			$data['challenge'] = $string;
+
+		}
+		$this->load->library('layout',$data);
+	}
+
+	public function logoutInactivity() {
 		// Check if the user is actually logged in - probably shouldn't happen by accident.
 		if($this->my_session->userdata('logged_in') === TRUE)
 			redirect('home');
@@ -68,7 +124,7 @@ class Users extends CI_Controller {
 
 			// Set default to logged out
 			$login = false;
-
+			$twoStep = false;
 			// Get id,userSalt, userHash, userRole from the DB.
 			$getLoginInfo = $this->users_model->getLoginInfo(array('userName' =>$this->input->post('username')));
 			// check the user exists
@@ -79,12 +135,19 @@ class Users extends CI_Controller {
 
 				// Check whether the password matches that stored in the table.
 				if($this->users_model->checkPass($this->input->post('username'),$testpass) === TRUE){
-					$login = true;
+					if($getLoginInfo['twoStepAuth'] == '1'){
+						$twoStep = true;
+					} else {
+						$login = true;
+					}
 				}
 			}
 
 			// Check whether the login is successul
-			if($login == true){
+			if($twoStep == true){
+				$this->my_session->createSession($getLoginInfo, TRUE);	// TRUE, enables a half-session for twostep
+				redirect('users/twoStep');
+			} else	if($login == true){
 				// Success
 				$this->users_model->setLastLog($this->input->post('username'));
 				$this->my_session->createSession($getLoginInfo);

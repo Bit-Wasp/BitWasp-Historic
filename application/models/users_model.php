@@ -7,6 +7,34 @@ class Users_Model extends CI_Model {
 		$this->load->library('session');
 	}
 
+	public function checkTwoStepChallenge($userID,$solution){
+		$this->db->where('userID',$userID);
+		$this->db->where('twoStepChallenge',$solution);
+		$query = $this->db->get('twoStep');
+
+		if($query->num_rows() > 0){
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function addTwoStepChallenge($userID, $challenge){
+		$query = $this->db->get_where('twoStep', array('userID' => $userID));
+		if($query->num_rows() > 0){
+			$this->db->where('userID',$userID);
+			$this->db->delete('twoStep');
+		} 
+
+		$update = array('userID' => $userID,
+				'twoStepChallenge' => $challenge);
+		if($this->db->insert('twoStep',$update)){
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
 	// Return the basic info for logging in. 
 	public function getLoginInfo($user = FALSE){
 		// Select the entries by username.

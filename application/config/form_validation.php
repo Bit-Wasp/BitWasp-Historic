@@ -1,5 +1,11 @@
 <?php
 $config = array(		
+		'twoStep'	=>	array(	
+						array(	'field' => 'solution',
+							'label' => 'Solution',
+							'rules' => 'trim|required'
+							)
+					),
 		'addCategory'	=>	array(
 						array(	'field' => 'name',
 							'label' => 'Name',

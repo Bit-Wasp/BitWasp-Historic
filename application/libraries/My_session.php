@@ -32,7 +32,7 @@ class My_session extends CI_Session {
 			// Page requires a buyer, allow admin/buyer by role.
 			if(	strtolower($CI->session->userdata('userRole')) == "admin"
 			||	strtolower($CI->session->userdata('userRole')) == "buyer" )
-				return true;
+			return true;
 		}	
 		if($level == FALSE)	// Default: allow the user onto the page.  - should be globalized.
 			return true;
@@ -48,8 +48,7 @@ class My_session extends CI_Session {
 		$CI->load->model('sessions_model');
 		$CI->load->model('pages_model');
 
-		// Check if the user is logged in
-                if($CI->session->userdata('logged_in') === TRUE){
+		if($CI->session->userdata('logged_in') === TRUE){
 			// User logged in, load the info for the session.
 			$userHash = $CI->session->userdata('userHash');
                         $sessionInfo = $CI->sessions_model->getInfo($userHash);
@@ -69,15 +68,25 @@ class My_session extends CI_Session {
 	}	
 
 	// Create a new session
-        public function createSession($user){
+        public function createSession($user, $twoStep = FALSE){
                 $CI = &get_instance();
 		// Set the user session.
-                $sessionData = array( 	'id' => $user['id'],
-					'userHash' => $user['userHash'],
-                                        'userRole' => $user['userRole'],
-                                        'logged_in' => TRUE,
-                                        'last_activity' => time()
-                                    );
+		if($twoStep == TRUE){
+			$sessionData = array(	'id' => $user['id'],
+						'twoStep' => TRUE
+					);
+		} else {
+			if($CI->session->userdata('twoStep') !== NULL)
+				$CI->session->unset_userdata('twoStep');
+			
+
+                	$sessionData = array( 	'id' => $user['id'],
+						'userHash' => $user['userHash'],
+                                	        'userRole' => $user['userRole'],
+                                        	'logged_in' => TRUE,
+	                                        'last_activity' => time()
+        	                            );
+		}
                 $CI->session->set_userdata($sessionData);
 
         }
@@ -94,6 +103,7 @@ class My_session extends CI_Session {
                 $CI->session->unset_userdata('userRole');
                 $CI->session->unset_userdata('logged_in');
                 $CI->session->unset_userdata('last_activity');
+                $CI->session->unset_userdata('twoStep');
 		// Destroy the session.
                 session_destroy();
         }

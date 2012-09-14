@@ -44,6 +44,7 @@ $route['users/login'] = 'users/login';
 $route['users/logout'] = 'users/logout';
 $route['users/register'] = 'users/register';
 $route['users/logoutInactivity'] = 'users/logoutInactivity';
+$route['users/twoStep'] = 'users/twoStep';
 
 $route['bitcoin'] = 'bitcoin/index';
 

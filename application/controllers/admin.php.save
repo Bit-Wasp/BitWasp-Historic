@@ -8,13 +8,13 @@ class Admin extends CI_Controller {
 	}
 
 	public function index(){
-		$data['title'] = 'Admin Panel';
+		$data['title'] = 'Dashboard';
 		$data['page'] = 'admin/index';
 		$this->load->library('layout',$data);
 	}
 
-	public function siteConfig(){
-		$data['page'] = 'admin/siteConfig';
+	public function siteInfo(){
+		$data['page'] = 'admin/siteInfo';
 		$data['title'] = 'Site Info';
 		$data['config'] = $this->my_config->loadAll();
 
@@ -31,47 +31,17 @@ class Admin extends CI_Controller {
 	}
 
 	public function updateConfig(){
-		$this->load->model('general_model');
 		$data['config'] = $this->my_config->loadAll();
 
-		if($this->input->post('site_title') !== $data['config']['site_title']){
-			$newConfig['site_title'] = $this->input->post('site_title');
-		} else {
-			$newConfig['site_title'] = $data['config']['site_title'];
-		}
-
-		if($this->input->post('login_timeout') !== $data['config']['login_timeout']){
-			$newConfig['login_timeout'] = $this->input->post('login_timeout');
-		} else {
-			$newConfig['login_timeout'] = $data['config']['login_timeout'];
-		}
-
-		if($this->input->post('base_url') !== $data['config']['base_url']){
-			$newConfig['base_url'] = $this->input->post('base_url');
-		} else {
-			$newConfig['base_url'] = $data['config']['base_url'];
-		}
-
-		if($this->input->post('index_page') !== ''){
-			$newConfig['index_page'] = $this->input->post('index_page');
-		} else {
-			$newConfig['index_page'] = $data['config']['index_page'];
-		}
-		$newConfig['index_page'] = 'index.php';
-		$jsonConfig = json_encode($newConfig);
-
-		if($this->general_model->updateConfig($jsonConfig)){
-			$data['title'] = 'Site Configuration';
-			$data['page'] = 'admin/siteConfig';
-			$data['returnMessage'] = 'Your settings have been updated.';
-		} else {
-			$data['title'] = 'Update Configuration';
-			$data['page'] = 'admin/edit';
-			$data['returnMessage'] = 'There was a problem with your submission.';
-		}
 		
-		$this->load->library('layout',$data);
+		$config = array('site_title' => $this->input->post('site_title'),
+				'login_timeout' => $this->input->post('login_timeout'),
+				'base_url' => $this->input->post('base_url') );
+		$jsonConfig = 
 	}
+
+
+
 
 	public function fixOrphans(){
 		$this->load->library('form_validation');

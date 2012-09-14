@@ -3,6 +3,17 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class General_model extends CI_Model {
 
+	public function updateConfig($json){
+		$changes = array('jsonConfig' => $json);
+		$this->db->where('id',1);
+		if($this->db->update('config',$changes)){
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+
 	public function siteConfig(){
 		$query = $this->db->get('config');
 		if($query->num_rows() > 0){
@@ -26,8 +37,6 @@ class General_model extends CI_Model {
 			return FALSE;
 		}
 	}
-
-
 
 };
 

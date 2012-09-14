@@ -32,6 +32,7 @@
 | would be loaded.
 |
 |	$route['404_override'] = 'errors/page_missing';
+
 |
 | This route will tell the Router what URI segments to use if those provided
 | in the URL cannot be matched to a valid route.
@@ -110,7 +111,9 @@ $route['admin'] = 'admin/index';
 $route['admin/category/add'] = 'admin/addCategory';
 $route['admin/category/remove'] = 'admin/removeCategory';
 $route['admin/category/fixOrphans'] = 'admin/fixOrphans';
-$route['admin/siteInfo'] = 'admin/siteInfo';
+$route['admin/siteConfig'] = 'admin/siteConfig';
+$route['admin/editConfig'] = 'admin/editConfig';
+$route['admin/updateConfig'] = 'admin/updateConfig';
 
 //Redirect pages as default
 $route['default_controller'] = 'users/login';

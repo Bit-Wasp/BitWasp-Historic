@@ -8,25 +8,31 @@ class Users_Model extends CI_Model {
 	}
 
 	// Return the basic info for logging in. 
-	public function getLoginInfo($userName = FALSE){
-		// Check if the field is empty.
-		if($userName === FALSE){
-			return NULL;
-		} else {
-			// Select the entries by username.
-			$this->db->select('id,userSalt, userHash, userRole');
-			$query = $this->db->get_where('users', array('userName' => $userName));
+	public function getLoginInfo($user = FALSE){
+		// Select the entries by username.
+		$this->db->select('id, userName,userSalt, userHash, userRole, twoStepAuth');
 
-			// Check if the result exists. 
-			if($query->num_rows() > 0){
-				// Return the results
-				return $query->row_array();
-			} else {
-				// No results for this username.
-				return false;
-			}
+        	//Check what field has been provided, and query database using that field.
+        	if (isset($user['userHash'])) {
+			$query = $this->db->get_where('users', array('userHash' => $user['userHash']));
+		} elseif (isset($user['id'])) {
+			$query = $this->db->get_where('users', array('id' => $user['id']));
+		} elseif (isset($user['userName'])) { 
+			$query = $this->db->get_where('users', array('userName' => $user['userName']));
+		} else {
+			return FALSE; //No suitable field found.
+		}
+
+		// Check if the result exists. 
+		if($query->num_rows() > 0){
+			// Return the results
+			return $query->row_array();
+		} else {
+			// No results for this username.
+			return false;
 		}
 	}
+	
 
 	public function addUser($userData){
 		// Insert the array into the users table.
@@ -76,7 +82,7 @@ class Users_Model extends CI_Model {
         public function get_user($user = FALSE)
         {
 		//Select these fields from the database
-		$this->db->select('id, userName, userRole, userHash, rating, timeRegistered');
+		$this->db->select('id, userName, userRole, userHash, rating, timeRegistered, twoStepAuth');
 
                 //Check what field has been provided, and query database using that field.
                 if (isset($user['userHash'])) {
@@ -100,7 +106,7 @@ class Users_Model extends CI_Model {
         }
 
 	//Retrive this users public key.
-        public function get_pubKey_by_id($id = FALSE)
+        public function get_pubKey_by_id($id = FALSE, $fingerprint = NULL)
         {
                 //If no user is specified, return nothing.
                 if ($id === FALSE) {
@@ -108,20 +114,36 @@ class Users_Model extends CI_Model {
                 }
 
                 //Otherwise, load the public key which corresponds to this ID.
-                $this->db->select('key');
-                $query = $this->db->get_where('publicKeys', array('userId' => $id));
+		if($fingerprint == NULL){
+			$info = 'key';
+		} else {
+			$info = 'fingerprint';		
+	        }
+
+		$this->db->select($info);                
+		$query = $this->db->get_where('publicKeys', array('userId' => $id));
 
 		// If there is a key, return the value.
 		if ($query->num_rows() > 0) {
 			$result = $query->row_array();
-			return $result['key'];
+			return $result[$info];
 		}
 
 		// Otherwise return NULL.
 		return NULL;
         }
 
+	public function drop_pubKey_by_id($id = FALSE){
+		if($id === FALSE)
+			return NULL;
 
+		$this->db->where('userID', $id);
+		if($this->db->delete('publicKeys')){
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
 
 
 

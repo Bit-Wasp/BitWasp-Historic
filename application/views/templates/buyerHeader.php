@@ -16,6 +16,7 @@
                         <li><?=anchor('items', 'Items', 'title="Items"');?></li>
                         <li><?=anchor('orders', 'Orders', 'title="My Orders"');?></li>
                         <li><?=anchor('messages', 'Messages ('.$unreadMessages.')', 'title="Messages"');?></li>
+                        <li><?=anchor('account', 'Account', 'title="My Account"');?></li>
                         <li><?=anchor('users/logout', 'Logout', 'title="Logout"');?></li>
                 </ul>
                 <div class="clear"></div>

@@ -75,6 +75,10 @@ $route['payment/confirm/(:any)'] = 'orders/confirmPayment/$1';
 $route['dispatch/confirm/(:any)'] = 'orders/confirmDispatch/$1';
 $route['purchases'] = 'orders/purchases';
 
+$route['account'] = 'account/index';
+$route['account/edit'] ='account/edit';
+$route['account/update'] ='account/update';
+$route['account/deletePubKey'] = 'account/deletePubKey';
 
 // Messages 
 $route['messages'] = 'messages/inbox';

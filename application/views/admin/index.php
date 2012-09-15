@@ -4,7 +4,7 @@
           <p>Not much here yet!</p>
 
           <div class="form-actions">
-            <?=anchor('admin/siteConfig', 'Site Configuration', 'class="btn btn-primary"');?><br /><br />
+            <?=anchor('admin/siteConfig', 'Site Configuration', 'class="btn btn-primary"');?>
             <?=anchor('admin/category/add', 'Add Category', 'class="btn"');?>
             <?=anchor('admin/category/remove', 'Remove Category', 'class="btn"');?>
           </div>

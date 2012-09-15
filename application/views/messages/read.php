@@ -1,5 +1,5 @@
-        <div class="span9 mainContent" id="send-message">
-
+        <div class="span9 mainContent" id="read-message">
+          <h2>View Message</h2>
           <div class="container-fluid">
             <div class="row-fluid">
               <div class="span2"><strong>From</strong></div>

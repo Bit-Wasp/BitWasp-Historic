@@ -8,12 +8,10 @@
 				      <?=anchor('messages/send/'.$item['vendor']['userHash'],'Message this vendor');?>
 			      </p>
 			      <div id="main">
-			      <?php echo $item['description'] ?>
+			        <?php echo $item['description'] ?>
 			      </div>
-			      <div class="price">Price: <span class="priceValue"><?=$item['price'];?><?=$item['symbol']?></span> 
-			      <?php if($userRole == 'buyer'){ ?>
-			      | <?=anchor('order/'.$item['itemHash'], 'Purchase Item'); ?></div><?php } ?>
-			      <div class="clear"></div>
+			      <div class="price">Price: <span class="priceValue"><?=$item['price'];?><?=$item['symbol']?></span></div>
+			      <?php if($userRole == 'buyer'){ ?><div><?=anchor('order/'.$item['itemHash'], 'Purchase Item'); ?></div><?php } ?>
 		      </div>
           <ul id="item_listing" class="thumbnails">
             <?php foreach ($item['itemImgs'] as $image): ?>

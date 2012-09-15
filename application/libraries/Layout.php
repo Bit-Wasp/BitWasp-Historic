@@ -54,7 +54,7 @@ class Layout  extends CI_Controller {
 				//echo $key.' - '.$value.'<br />';
 				if( is_array($value) ){
 					if($key == "name"){
-						$content.= "$val<br />\n"; 
+						$content.= "<li>$val</li>\n"; 
 					}
 					$content.= $this->createMenu($value);
 				} else {
@@ -62,15 +62,15 @@ class Layout  extends CI_Controller {
 				} 
 
 				if($key == 'children' && $value !== NULL && isset($link['name'])){
-					$content.= "{$link['name']}<br />";
+					$content.= "<li>{$link['name']}</li>";
 					unset($link);
 				} else {				
 					if( isset($link['id']) && isset($link['name']) ){
 						$count = $CI->categories_model->countCategoryItems($link['id']);
 						if($count > 0){
-							$content.="<a href='".site_url()."/cat/{$link['id']}'>{$link['name']} ($count)</a><br />\n";
+							$content.="<li><a href='".site_url()."/cat/{$link['id']}'>{$link['name']} ($count)</a></li>\n";
 						} else {
-							$content.="{$link['name']}<br />\n";
+							$content.="<li>{$link['name']}</li>\n";
 						}
 						unset($link);	
 					}

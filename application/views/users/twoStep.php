@@ -1,10 +1,9 @@
-        <div class="row-fluid">
           <div class="offset3 span6">
             <h2>2 Factor Authentication</h2>
             <?php echo form_open('users/twoStep', array('class' => 'form-horizontal')); ?>
               <fieldset>
                 <?php if(isset($returnMessage)) echo '<div class="alert">' . $returnMessage . '</div>'; ?>
-                <p>Decrypt the following PGP text and enter it here:</p>
+                <p>Decrypt the following PGP text and enter it below:</p>
                 <pre class="well"><?=$challenge;?></pre>
 
                 <div class="control-group">
@@ -22,4 +21,3 @@
               <fieldset>
             </form>
           </div>
-        </div>

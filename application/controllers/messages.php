@@ -36,7 +36,7 @@ class Messages extends CI_Controller {
 				}
 			}
 			$data['title'] = 'Messages Deleted';
-			$data['returnMessage'] = 'All messages have been permentantly deleted!';
+			$data['returnMessage'] = 'All messages have been permentantly deleted! ';
 			$userId = $this->my_session->userdata('id');
 			$data['messages'] = $this->messages_model->messages($userId);
 			if($data['messages'] === NULL)
@@ -223,6 +223,7 @@ class Messages extends CI_Controller {
 
 				$data['returnMessage'] = 'Message has been sent.';
 				$data['title'] = 'Message Sent';
+        $data['sentSuccess'] = 1;
 			        $data['page'] = 'messages/inbox'; 
 			}
                 }

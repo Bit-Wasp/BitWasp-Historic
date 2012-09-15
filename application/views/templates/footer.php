@@ -1,3 +1,4 @@
+      </div> <!-- /row-fluid -->
       <hr />
     <footer>
 	<p class="pull-right">Page rendered in <strong>{elapsed_time}</strong> seconds. <a href="https://github.com/Bit-Wasp/BitWasp">Powered by BitWasp</a></p>

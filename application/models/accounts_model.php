@@ -19,7 +19,7 @@ class Accounts_model extends CI_Model {
 			$dispFingerprint = NULL;
 		} else if($fingerprint !== NULL){
 			$pubKey = $pubKey;
-			$dispFingerprint = substr($fingerprint,0,31).'<b>'.substr($fingerprint,32).'</b>';
+			$dispFingerprint = substr($fingerprint,0,31).'<strong>'.substr($fingerprint,32).'</strong>';
 		}
 
 		$results = array(	'userName' => $user['userName'],

@@ -1,4 +1,3 @@
-        <div class="row-fluid">
           <div class="offset3 span6">
             <h2>Login</h2>
             <?php echo form_open('users/login', array('class' => 'form-horizontal')); ?>
@@ -42,4 +41,3 @@
             </fieldset>
           </form>
         </div>
-      </div>

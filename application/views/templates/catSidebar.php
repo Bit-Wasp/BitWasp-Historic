@@ -1,6 +1,8 @@
-	<div id="catSidebar" class="leftSide Sidebar">
-		<ul>
-		<?=$cats ?>
-		</ul>
-		<div class="clear"></div>
-	</div>
+        <div class="span3">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Categories</li>
+              <?=$cats ?>
+            </ul>
+          </div>
+        </div>

@@ -1,8 +1,23 @@
-<div class='mainContent'>
-<?php echo form_open('users/twoStep'); ?>
-<?php if(isset($returnMessage)) echo $returnMessage.'<br />'; ?>
-Decrypt the following PGP text and enter it here:<br />
-<input type='text' name='solution' value='' /><input type='submit' value='Submit' />
-<pre><?=$challenge;?></pre>
-</form>
-</div>
+          <div class="offset3 span6">
+            <h2>2 Factor Authentication</h2>
+            <?php echo form_open('users/twoStep', array('class' => 'form-horizontal')); ?>
+              <fieldset>
+                <?php if(isset($returnMessage)) echo '<div class="alert">' . $returnMessage . '</div>'; ?>
+                <p>Decrypt the following PGP text and enter it below:</p>
+                <pre class="well"><?=$challenge;?></pre>
+
+                <div class="control-group">
+                  <label class="control-label" for="solution">Token</label>
+                  <div class="controls">
+                    <input type="text" name='solution' size='12'/>
+                    <span class="help-inline"><?php echo form_error('solution'); ?></span>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type='submit' class="btn btn-primary">Proceed</button>
+                  <?=anchor('users/login', 'Cancel', 'title="Cancel" class="btn"');?>
+                </div>
+              <fieldset>
+            </form>
+          </div>

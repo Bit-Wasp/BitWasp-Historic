@@ -328,7 +328,7 @@ class Listings extends CI_Controller {
 	// Auth: Vendor
 	public function imageUpload($itemHash){
 		$this->load->model('images_model');
-                $this->load->library('form_validation');
+    $this->load->library('form_validation');
 
 		// Check that the specified product exists.
 		$query = $this->db->get_where('items',array('itemHash' => $itemHash));
@@ -359,16 +359,6 @@ class Listings extends CI_Controller {
 				} else {
 					// Load the results of the upload into an array.
 					$results = array('upload_data' => $this->upload->data());
-
-		/*		
-					// Print the EXIF data for the image.
-					$exif = exif_read_data($results['upload_data']['full_path'], 0, true);
-					echo "Removing EXIF data:<br />\n";
-					foreach ($exif as $key => $section) {
-		    				foreach ($section as $name => $val) {
-						        echo "$key.$name: $val<br />\n";
-						}
-					}*/
 					
 					// Build the default file path to insert into the database.
 					$source = $results['upload_data']['file_path'].$results['upload_data']['raw_name'].".png";
@@ -395,6 +385,7 @@ class Listings extends CI_Controller {
 						$data['title'] = 'Image Created';
 						$data['page'] = 'listings/images';	
 						$data['returnMessage'] = 'Your image has been uploaded.';
+            $data['success'] = 1;
 
 						$data['item'] = $this->items_model->getInfo($itemHash);
 						$data['images'] = $this->items_model->get_item_images($itemHash);
@@ -500,6 +491,7 @@ class Listings extends CI_Controller {
 				// Product created
                        		$data['title'] = 'Item Created';
 				$data['returnMessage'] = 'Your item has been created. You can now select an image to upload.';
+        $data['success'] = 1;
 
 				$data['item'] = $this->items_model->getInfo($hash);
 				$data['images'] = $this->items_model->get_item_images($hash);

@@ -9,9 +9,9 @@
               <div class="span2"><strong>Subject</strong></div>
               <div class="span7"><?=$subject;?></div>
             </div>
-            <div class="row-fluid"><div class="span2"><strong>Message</strong></div></div>
             <div class="row-fluid">
-              <div class="span9"><?php if($isEncrypted){ echo '<pre>'; } ?><?=$message;?><?php if($isEncrypted){ echo '</pre>'; } ?></div>
+              <div class="span2"><strong>Message</strong></div>
+              <div class="span7"><?php if($isEncrypted){ echo '<pre>'; } ?><?=$message;?><?php if($isEncrypted){ echo '</pre>'; } ?></div>
             </div>
           </div>
 

@@ -6,7 +6,7 @@
               <div class="control-group">
                 <label class="control-label" for="username">Username</label>
                 <div class="controls">
-                  <input type='text' name='username' value="<?php echo set_value('username'); ?>" size='12' />
+                  <input type='text' name='username' value="<?php echo set_value('username'); ?>" />
                   <span class="help-inline"><?php echo form_error('username'); ?></span>
                 </div>
               </div>
@@ -14,7 +14,7 @@
               <div class="control-group">
                 <label class="control-label" for="password">Password</label>
                 <div class="controls">
-                  <input type='password' name='password' value='' size='12' />
+                  <input type='password' name='password' value='' />
                   <span class="help-inline"><?php echo form_error('password'); ?></span>
                 </div>
               </div>
@@ -28,7 +28,7 @@
               </div>
               <div class="control-group">
                 <div class="controls">
-                  <input type="text" name='captcha' size='12'/>
+                  <input type="text" name='captcha' />
                   <span class="help-inline"><?php echo form_error('captcha'); ?></span>
                 </div>
               </div>

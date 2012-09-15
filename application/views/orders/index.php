@@ -1,18 +1,20 @@
-        <div class="span9 mainContent" id="item_view">
+        <div class="span9 mainContent" id="order_view">
           <h2>Orders</h2>
           <?php if(isset($returnMessage)) echo '<div class="alert">' . $returnMessage . '</div>'; ?>
           <?php  
           if(count($orders) > 0){?>
-	          <?php echo form_open('order/recount'); ?>
-	          Review your current orders:
-	          <table class="orderlist">
-		          <tr class="orderHeader">
-			          <td>Seller</td>
-			          <td>Quantity</td>
-			          <td>Items</td>
-			          <td>Price</td>
-			          <td>Progress</td>
-		          </tr>
+	        <?php echo form_open('order/recount'); ?>
+	          <p>Review your current orders:</p>
+	          <table class="table table-striped orderlist">
+		          <thead>
+                <tr>
+			            <th>Seller</th>
+			            <th>Quantity</th>
+			            <th>Items</th>
+			            <th>Price</th>
+			            <th>Progress</th>
+		            </tr>
+              </thead>
 		          <?php 
 			          $recount = 0;			
 			          foreach($orders as $order): ?>
@@ -57,8 +59,10 @@
 		          <?php endforeach; ?>
 	          </table>
 	          <?php if($recount == '1'){?>
-	          <input type='submit' value='Recount' />
-	          </form><?php } ?>
+            <div class="form-actions">
+	            <input type='submit' class="btn btn-primary" value='Recount' />
+            </div>
+	        </form><?php } ?>
           <? } else { ?>
           <p>You have no orders at present.<p>
           <?php } ?>

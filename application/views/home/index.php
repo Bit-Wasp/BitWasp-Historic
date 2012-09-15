@@ -12,4 +12,3 @@
           </ul>
           <?=anchor('items','View Items', 'class="btn-primary btn"');?>
         </div>
-      </div> <!-- /row-fluid -->

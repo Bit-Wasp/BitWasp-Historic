@@ -9,9 +9,7 @@
         padding-bottom: 40px;
       }
     </style>
-    <link rel="stylesheet" type="text/css" href="<?=base_url(); ?>assets/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="<?=base_url(); ?>assets/css/bootstrap-responsive.css">
-    <link rel="stylesheet" type="text/css" href="<?=base_url(); ?>assets/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="<?=base_url(); ?>assets/css/bootstrap.min.css">
     <?=$header_meta; ?>
   </head>
   <body>

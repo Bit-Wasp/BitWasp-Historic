@@ -20,7 +20,7 @@
               </div>
 
               <div class="control-group">
-                <label class="control-label" for="password1">Password</label>
+                <label class="control-label" for="password1">Password (confirm)</label>
                 <div class="controls">
                   <input type='password' name='password1' value='' size='12' />
                   <span class="help-inline"><?php echo form_error('password1'); ?></span>

@@ -2,15 +2,15 @@
 $config = array(		
 		'addCategory'	=>	array(
 						array(	'field' => 'name',
-							'label' => 'Name',
+							'label' => 'name',
 							'rules' => 'trim|required|min_length[2]|strip_tags|is_unique[categories.name]'
 							),
 						array(	'field' => 'description',
-							'label' => 'Description',
+							'label' => 'description',
 							'rules' => 'required|strip_tags'
 							),
 						array(	'field' => 'parentID',
-							'label' => 'Parent ID',
+							'label' => 'parent category',
 							'rules' => 'required|numeric|callback_check_parentID_exists'
 							)
 					),
@@ -31,19 +31,19 @@ $config = array(
 					),
 		'addItem'	=> 	array(
 						array( 'field' => 'name',
-							'label' => 'Item Name',
+							'label' => 'item name',
 							'rules' => 'required|strip_tags'		
 							),
 						array( 'field' => 'description',
-							'label' => 'Description',
+							'label' => 'description',
 							'rules' => 'required|strip_tags'		
 							),
 						array( 'field' => 'categoryID',
-							'label' => 'Category',
+							'label' => 'category',
 							'rules' => 'required|callback_check_category_exists'		
 							),
 						array( 'field' => 'price',
-							'label' => 'Price',
+							'label' => 'price',
 							'rules' => 'required|trim|decimal'		
 							)
 					),

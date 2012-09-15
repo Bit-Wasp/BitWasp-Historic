@@ -13,7 +13,7 @@
               <div class="span7">
                 <?php if($account['pubKey'] !== 'No Public Key found.'){?>
 	                <p id="pubKey"><?=$account['displayFingerprint'];?>
-	                <?=anchor('account/deletePubKey','Delete', 'class="btn btn-danger btn-mini"');?>
+	                <?=anchor('account/deletePubKey','<i class="icon-trash icon-white"></i> Delete', 'class="btn btn-danger btn-mini"');?>
                   </p>
                 <?php } else { ?>
 	                <p id="pubKey"><?=$account['pubKey'];?></p>

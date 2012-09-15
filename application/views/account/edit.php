@@ -8,7 +8,7 @@
                 <label class="control-label" for="pubKey">PGP Public Key</label>
                 <div class="controls">
                   <?php if($account['pubKey'] == 'No Public Key found.'){?>
-                    <textarea name='pubKey'><?=$account['pubKey'];?></textarea><br />
+                    <textarea class="span10" name='pubKey' rows="10"><?=$account['pubKey'];?></textarea><br />
                   <?php } else { ?>
                     <?=$account['displayFingerprint'];?>
                   <?php } ?>
@@ -66,7 +66,7 @@
               </div>
 
               <hr>
-              <p>To make any changes to your account, you must enter your password:</p>
+              <p><strong>To make any changes to your account, you must enter your password:</strong></p>
               <div class="control-group">
                 <label class="control-label" for='passwordConfirm'>Password:</label>
                 <div class="controls">

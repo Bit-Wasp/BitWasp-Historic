@@ -65,6 +65,8 @@ class Items extends CI_Controller {
 
 		//Load information about current category
 		$data['category'] = $this->categories_model->catInfo($catID);
+    $data['currentCat'] = $data['category']; //Store category information persistantly
+
 		$data['items'] = $this->categories_model->getCatItems($catID);
 
 		//Check if category exists

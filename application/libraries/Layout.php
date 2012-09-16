@@ -28,8 +28,10 @@ class Layout  extends CI_Controller {
 			$categories = $CI->categories_model->getCategories();
 
 			//Check if there are categories to display
+      if(!isset($data['currentCat'])){ $data['currentCat'] = array(); } //Set to avoid notice errors if unset
+
 			if(!empty($categories))	{
-				$category_data['cats'] = $this->createMenu($categories);
+				$category_data['cats'] = $this->createMenu($categories , 0, $data['currentCat']); //Pass params so we can show active class on current cat.
 			} else {
 				$category_data['cats'] = "No Categories";
 			}
@@ -46,46 +48,32 @@ class Layout  extends CI_Controller {
 		$CI->load->view($data['page']);
 		$CI->load->view('templates/footer.php');
 	}
-	
-	public function createMenu($categories){
-		$CI = &get_instance();
-		$CI->load->model('categories_model');
-		$content = '';
-		$link = array();
-		if( is_array($categories) ){
-			foreach($categories as $key => $value){
-				//echo $key.' - '.$value.'<br />';
-				if( is_array($value) ){
-					if($key == "name"){
-						$content.= "<li>$val</li>\n"; 
-					}
-					$content.= $this->createMenu($value);
-				} else {
-					$link[$key] = $value;
-				} 
 
-				if($key == 'children' && $value !== NULL && isset($link['name'])){
-					$content.= "<li>{$link['name']}</li>";
-					unset($link);
-				} else {				
-					if( isset($link['id']) && isset($link['name']) ){
-						$count = $CI->categories_model->countCategoryItems($link['id']);
-						if($count > 0){
-							$content.="<li><a href='".site_url()."/cat/{$link['id']}'>{$link['name']} ($count)</a></li>\n";
-						} else {
-							$content.="<li>{$link['name']}</li>\n";
-						}
-						unset($link);	
-					}
-				}
-				
-			}
+  //Output the categories as an unordered list.
+	public function createMenu($categories, $level, $params){
+    if(!isset($content)) { $content = ''; } $level++; //Create $content variable, if its not set
+    if($level!=1) { $content .= "<ul>\n"; }
+
+    // Loop through each parent category
+		foreach($categories as $category) {
+      //Check if were are currently viewing this category, if so, set it as active
+      $content .= "<li "; if(isset($params['id'])) { if($params['id']==$category['id']){ $content .= "class='active'"; }} $content .= ">\n";
+
+      if($category['countProducts']==0){ //Check if category has products and should be linked too
+			  $content .= '<span>'.$category['name'].'</span>';
+      } else {
+			  $content .= '<a href="'.site_url().'/cat/'.$category['id'].'">'.$category['name'].' ('. $category['countProducts'] .")</a>\n";
+      }
+
+      if(isset($category['children'])) { //Check if we need to recurse into children.
+        $content .= $this->createMenu($category['children'], $level, $params); //Begin creating sub menu
+      }
+      $content .= "</li>\n";
 		}
+
+    if($level!=1) { $content .= "</ul>\n"; }
 		return $content;
-
 	}
-
-
 
 };
 

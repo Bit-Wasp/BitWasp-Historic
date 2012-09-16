@@ -33,7 +33,7 @@
               </div>
 
               <div class="control-group">
-                <label class="control-label" for="name">Price</label>
+                <label class="control-label" for="price">Price</label>
                 <div class="controls">
                   <div class="input-prepend">
                     <span class="add-on"><i>BTC</i></span>

@@ -3,13 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title><?php echo $title ?> | Bitwasp :: Anonymous Online Marketplace</title>
+    <link rel="stylesheet" type="text/css" href="<?=base_url(); ?>assets/css/bootstrap.min.css">
     <style type="text/css">
       body {
         padding-top: 60px;
         padding-bottom: 40px;
       }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
     </style>
-    <link rel="stylesheet" type="text/css" href="<?=base_url(); ?>assets/css/bootstrap.min.css">
     <?=$header_meta; ?>
   </head>
   <body>

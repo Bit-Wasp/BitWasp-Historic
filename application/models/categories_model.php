@@ -125,13 +125,15 @@ class Categories_model extends CI_Model {
 
 		// Select ID and Name for output on the form/
 		$this->db->select('id, name');
+		$query = $this->db->order_by("parentID asc, name asc");
 		$query = $this->db->get('categories');
 
 		// Check there are categories in the table. 
 		if($query->num_rows() > 0){
 			// Once there are categories, build the array from the returned object.
 			foreach($query->result() as $result){
-				array_push($array,array('id' => $result->id,
+				array_push($array,array(
+              'id' => $result->id,
 							'name' => $result->name
 						)
 					);
@@ -146,7 +148,9 @@ class Categories_model extends CI_Model {
 
 	// Produce categories in a dynamic multi-dimensional array
 	public function getCategories(){
-		// Return multi-dimensional array
+
+    //Load all categories and sort by parent category
+		$query = $this->db->order_by("parentID asc, name asc");
 		$query = $this->db->get('categories');
 		$menu = array();
 
@@ -157,14 +161,9 @@ class Categories_model extends CI_Model {
 						'name' => $result->name,
 						'description' => $result->description,
 						'countProducts' => $getProducts->num_rows(),
-						'parentID' => $result->parentID 
+						'parentID' => $result->parentID
 					);
 		}
-
-
-		// Allow for children in each $menu[] array.
-		foreach($menu as &$menuItem)
-			$menuItem['children'] = array();
 		
 		// Store all child categories as an array $menu[parentID]['children']
 		foreach($menu as $ID => &$menuItem){

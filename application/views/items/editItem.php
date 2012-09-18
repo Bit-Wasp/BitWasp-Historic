@@ -55,6 +55,14 @@
                 </div>
               </div>
 
+              <div class="control-group">
+                <label class="control-label" for="hidden">Private / Hidden Listing</label>
+                <div class="controls">
+                  <input name="hidden" type="checkbox" <?php if($item['hidden']) { echo 'checked="checked"'; } ?>>
+                  <span class="help-inline"><?php echo form_error('hidden'); ?></span>
+                </div>
+              </div>
+
               <input type='hidden' name='itemHash'  value='<?=$item['itemHash'];?>' />
 
               <div class="form-actions">

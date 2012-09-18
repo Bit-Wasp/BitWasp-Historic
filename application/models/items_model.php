@@ -108,6 +108,7 @@ class Items_model extends CI_Model {
 
 		// Display most recent items.
 		$this->db->order_by('id DESC');
+    $this->db->where('hidden !=', 1);
 		$query = $this->db->get('items');
 
 
@@ -191,7 +192,7 @@ class Items_model extends CI_Model {
 			// Check the product exists
 			if($query->num_rows() > 0){
 				// Load the main image or show the default one.
-	                	$itemPhotos = $this->db->get_where('itemPhotos', array('imageHash' => $result['mainPhotoHash']));
+	      $itemPhotos = $this->db->get_where('itemPhotos', array('imageHash' => $result['mainPhotoHash']));
 				if($itemPhotos->num_rows() > 0){
 					// Load image information.
 		                	$array = $itemPhotos->row_array();

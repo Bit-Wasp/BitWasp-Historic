@@ -93,7 +93,9 @@ class Categories_model extends CI_Model {
 		}
 
 		// Get items in the chosen category.
-		$query = $this->db->get_where('items',array('category' => $catID));
+    $this->db->where('hidden !=',1);
+    $this->db->where('category',$catID);
+		$query = $this->db->get('items');
 
 		// If the category has items.
 		if($query->num_rows() > 0){
@@ -156,7 +158,9 @@ class Categories_model extends CI_Model {
 
 		// Add all categories to $menu[] array.
 		foreach($query->result() as $result){
-			$getProducts = $this->db->get_where('items',array('category' => $result->id));
+      $this->db->where('category',$result->id);
+      $this->db->where('hidden !=', 1);
+			$getProducts = $this->db->get('items');
 			$menu[$result->id] = array('id' => $result->id,
 						'name' => $result->name,
 						'description' => $result->description,

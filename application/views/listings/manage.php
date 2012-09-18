@@ -15,6 +15,7 @@
 			            <?=anchor("listings/edit/".$item['itemHash'], 'Edit');?> | 
 			            <?=anchor("listings/remove/".$item['itemHash'], 'Remove');?> |
 			            <?=anchor("listings/images/".$item['itemHash'], 'Images');?>
+                  <?php if($item['hidden']) { ?>Hidden<? } ?>
 			            <!--<div class="rating">item Rating: <?=$item['rating'];?>/5</div>-->
                 </div>
               </div>

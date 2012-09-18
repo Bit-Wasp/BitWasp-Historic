@@ -16,7 +16,7 @@ class Listings extends CI_Controller {
 	// Auth: Vendor
 	public function edit($itemHash){
 		$this->load->model('categories_model');
-                $this->load->library('form_validation');
+    $this->load->library('form_validation');
 
 		// Check the item exists.
 		$query = $this->db->get_where('items',array('itemHash' => $itemHash));
@@ -28,20 +28,31 @@ class Listings extends CI_Controller {
 			if($itemInfo['sellerID'] == $this->my_session->userdata('userHash')){
 
 				// Finally check that the form validates correctly.
-		                if ($this->form_validation->run('editItem') == FALSE){			
+		  if ($this->form_validation->run('editItem') == FALSE){			
 					// Form not submitted, or unsuccessful
-		                        $data['title'] = 'Edit Item';
+		      $data['title'] = 'Edit Item';
 					$data['page'] = 'items/editItem';
 					$data['categories'] = $this->categories_model->getList();
 					$data['currencies'] = $this->currency_model->getList();
 					$data['item'] = $this->items_model->getInfo($itemHash);
 				} else {
+
 					// Submission successful, update the item.
-					$itemInfo = array(	'name' 		=> $this->input->post('name'),
-								'description' 	=> $this->input->post('description'),
-								'category' 	=> $this->input->post('categoryID'),
-								'price' 	=> $this->input->post('price'),
-								'currency' 	=> $this->input->post('currency')
+
+          //Check if this product should be hidden
+          if($this->input->post('hidden')=='on'){
+            $hiddenItem = 1;
+          } else {
+            $hiddenItem = 0;
+          }
+
+					$itemInfo = array(	
+                'name' => $this->input->post('name'),
+								'description' => $this->input->post('description'),
+								'category' => $this->input->post('categoryID'),
+								'price' => $this->input->post('price'),
+								'currency' => $this->input->post('currency'),
+                'hidden' => $hiddenItem
 							);
 					
 					$updateProduct = $this->listings_model->updateItem($itemHash,$itemInfo);
@@ -468,28 +479,46 @@ class Listings extends CI_Controller {
 			$data['currencies'] = $this->currency_model->getList();
 			$data['categories'] = $this->categories_model->getList();
 
+      //Check if this product should be hidden
+      if($this->input->post('hidden')=='on'){
+        $hidden = 1;
+      } else {
+        $hidden = 0;
+      }
+
 		} else {
 			// Form submission successful, add product to database.
+
+      //Check if this product should be hidden
+      if($this->input->post('hidden')=='on'){
+        $hiddenItem = 1;
+      } else {
+        $hiddenItem = 0;
+      }
 			
 			$hash = $this->general->uniqueHash('items','itemHash');
-			$itemInfo = array(	'name' 		=> $this->input->post('name'),
+			$itemInfo = array(	
+            'name' 		=> $this->input->post('name'),
 						'description' 	=> $this->input->post('description'),
 						'category'	=> $this->input->post('categoryID'),
 						'itemHash'	=> $hash,
 						'sellerID' 	=> $this->my_session->userdata('userHash'),
 						'price'		=> $this->input->post('price'),
-						'currency'	=> $this->input->post('currency') );
+						'currency'	=> $this->input->post('currency'),
+            'hidden' => $hiddenItem
+      );
+
 			$submitProduct = $this->listings_model->addItem($itemInfo);
 			if($submitProduct === FALSE){
 				// Some error with submission.
-                       		$data['title'] = 'Add Item';
+        $data['title'] = 'Add Item';
 				$data['returnMessage'] = 'Unable to create your product, please try again.';
 				$data['page'] = 'listings/addItem';
 				$data['categories'] = $this->categories_model->getList();
 
 			} else {
 				// Product created
-                       		$data['title'] = 'Item Created';
+        $data['title'] = 'Item Created';
 				$data['returnMessage'] = 'Your item has been created. You can now select an image to upload.';
         $data['success'] = 1;
 
@@ -499,7 +528,7 @@ class Listings extends CI_Controller {
 				$data['page'] = 'listings/images';		
 			}
 		}	
-                $this->load->library('Layout',$data);				
+    $this->load->library('Layout',$data);				
 	}
 };
 

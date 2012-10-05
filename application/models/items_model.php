@@ -108,9 +108,9 @@ class Items_model extends CI_Model {
 
 		// Display most recent items.
 		$this->db->order_by('id DESC');
-    $this->db->where('hidden !=', 1);
+		$this->db->where('hidden !=', '1');
 		$query = $this->db->get('items');
-
+	
 
 		if($query->num_rows() > 0){
 			$result = $query->result_array();

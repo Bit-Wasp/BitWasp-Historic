@@ -91,7 +91,7 @@ class Messages extends CI_Controller {
 		
 		} else { //There is matching messages, begin outputting
 			if($this->my_session->userdata('id') == $messageInfo['toId'] ||
-			   $this->my_session->userdata('id') == $messageInfo['fromId'] ){ //Show messages from or too the current user.
+			   $this->my_session->userdata('id') == $messageInfo['fromId'] ){ //Show messages from or to the current user.
 
 				//Mark the message as read
 				$this->messages_model->setMessageViewed($messageInfo['id']);

@@ -93,8 +93,8 @@ class Categories_model extends CI_Model {
 		}
 
 		// Get items in the chosen category.
-    $this->db->where('hidden !=',1);
-    $this->db->where('category',$catID);
+		$this->db->where('hidden !=','1');
+		$this->db->where('category',$catID);
 		$query = $this->db->get('items');
 
 		// If the category has items.
@@ -135,10 +135,10 @@ class Categories_model extends CI_Model {
 			// Once there are categories, build the array from the returned object.
 			foreach($query->result() as $result){
 				array_push($array,array(
-              'id' => $result->id,
-							'name' => $result->name
-						)
-					);
+              				'id' => $result->id,
+					'name' => $result->name
+					)
+				);
 			}
 			// Success; return array of categories.
 			return $array;
@@ -151,15 +151,15 @@ class Categories_model extends CI_Model {
 	// Produce categories in a dynamic multi-dimensional array
 	public function getCategories(){
 
-    //Load all categories and sort by parent category
+		//Load all categories and sort by parent category
 		$query = $this->db->order_by("parentID asc, name asc");
 		$query = $this->db->get('categories');
 		$menu = array();
 
 		// Add all categories to $menu[] array.
 		foreach($query->result() as $result){
-      $this->db->where('category',$result->id);
-      $this->db->where('hidden !=', 1);
+      			$this->db->where('category',"{$result->id}");
+      			$this->db->where('hidden !=', '1');
 			$getProducts = $this->db->get('items');
 			$menu[$result->id] = array('id' => $result->id,
 						'name' => $result->name,
@@ -180,7 +180,7 @@ class Categories_model extends CI_Model {
 			if($menu[$ID]['parentID'] != "0")
 				unset($menu[$ID]);
 		}
-
+		//print_r($menu);
 		// Return constructed menu.
 		return $menu;
 	}
@@ -190,7 +190,7 @@ class Categories_model extends CI_Model {
 	// Check that selected parentID exists, before adding a sub-category.
 	public function validParentID($parentID){
 		$query = $this->db->get_where('categories', array('parentID' => $parentID));
-		// 
+		
 		if($query->num_rows() > 0){
 			return TRUE;
 		} else {

@@ -51,27 +51,28 @@ class Layout  extends CI_Controller {
 
   //Output the categories as an unordered list.
 	public function createMenu($categories, $level, $params){
-    if(!isset($content)) { $content = ''; } $level++; //Create $content variable, if its not set
-    if($level!=1) { $content .= "<ul>\n"; }
+		if(!isset($content)) { $content = ''; } $level++; //Create $content variable, if its not set
+		if($level!=1) { $content .= "<ul>\n"; }
 
-    // Loop through each parent category
+		// Loop through each parent category
 		foreach($categories as $category) {
-      //Check if were are currently viewing this category, if so, set it as active
-      $content .= "<li "; if(isset($params['id'])) { if($params['id']==$category['id']){ $content .= "class='active'"; }} $content .= ">\n";
+			//Check if were are currently viewing this category, if so, set it as active
+			$content .= "<li "; if(isset($params['id'])) { if($params['id']==$category['id']){ $content .= "class='active'"; }} $content .= ">\n";
 
-      if($category['countProducts']==0){ //Check if category has products and should be linked too
-			  $content .= '<span>'.$category['name'].'</span>';
-      } else {
-			  $content .= '<a href="'.site_url().'/cat/'.$category['id'].'">'.$category['name'].' ('. $category['countProducts'] .")</a>\n";
-      }
+			if($category['countProducts']==0){ //Check if category has products and should be linked too
+				$content .= '<span>'.$category['name'].'</span>';
+			} else {
+				$content .= '<a href="'.site_url().'/cat/'.$category['id'].'">'.$category['name'].' ('. $category['countProducts'] .")</a>\n";
+			}
 
-      if(isset($category['children'])) { //Check if we need to recurse into children.
-        $content .= $this->createMenu($category['children'], $level, $params); //Begin creating sub menu
-      }
-      $content .= "</li>\n";
+			if(isset($category['children'])) { //Check if we need to recurse into children.
+				$content .= $this->createMenu($category['children'], $level, $params); //Begin creating sub menu
+			}
+			$content .= "</li>\n";
 		}
 
-    if($level!=1) { $content .= "</ul>\n"; }
+		if($level!=1) { $content .= "</ul>\n"; }
+
 		return $content;
 	}
 

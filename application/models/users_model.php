@@ -110,7 +110,7 @@ class Users_Model extends CI_Model {
         public function get_user($user = FALSE)
         {
 		//Select these fields from the database
-		$this->db->select('id, userName, userRole, userHash, rating, timeRegistered, twoStepAuth, profileMessage');
+		$this->db->select('id, userName, userRole, userHash, rating, timeRegistered, twoStepAuth, forcePGPmessage, profileMessage, userSalt');
 
                 //Check what field has been provided, and query database using that field.
                 if (isset($user['userHash'])) {

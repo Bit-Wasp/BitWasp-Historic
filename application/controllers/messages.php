@@ -171,7 +171,10 @@ class Messages extends CI_Controller {
 		$recipient = $this->users_model->get_user(array('userName' => $data['to']));
 	
 		$data['publickey'] = $this->users_model->get_pubKey_by_id($recipient['id']);
-		if($data['publickey']!=''){ $data['returnMessage'] .= 'This message will be encrypted automatically if you have javascript enabled.<br />';  }
+		$fingerprint = $this->users_model->get_pubKey_by_id($recipient['id'],1);
+		if($data['publickey']!=''){ 
+			$data['returnMessage'] .= 'This message will be encrypted automatically if you have javascript enabled.<br />';  
+		} 
 
 		//Need to check if provided username is valid
                 if ($this->form_validation->run('sendmessage') == FALSE){
@@ -202,12 +205,23 @@ class Messages extends CI_Controller {
 					$threadHash = $this->general->uniqueHash('messages','threadHash');
 				}
 
+				$messageText = $this->input->post('message');
+
+				if($recipient['forcePGPmessage'] == '1' && $isEncrypted == 0){
+					$gpg = gnupg_init();
+					gnupg_addencryptkey($gpg, $fingerprint);
+					$messageText = gnupg_encrypt($gpg, "$messageText\n");
+					$messageText = "-----BEGIN PGP MESSAGE-----\nComment: Server Side Encryption\n".substr($messageText,28);
+					$isEncrypted = 1;					
+				}
+
+
 				$messageArray = array(  'toId' => $recipient['id'],
 				        'fromId' => $this->my_session->userdata('id'),
 				        'messageHash' => $messageHash,
 					'orderID' => 0,
 					'subject' => $this->input->post('subject'),
-					'message' => $this->input->post('message'),
+					'message' => $messageText,
 					'encrypted' => $isEncrypted,
 					'time' => time(),
 					'threadHash' => $threadHash,

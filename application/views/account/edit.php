@@ -41,6 +41,34 @@
                 </div>
               </div>
 
+
+              <div class="control-group">
+                <label class="control-label" for="forcePGPmessage">Force PGP Messages</label>
+                <div class="controls">
+                  <?php if($account['pubKey'] == 'No Public Key found.'){?>
+                    Add a PGP public key first to enable this feature.<br />
+                  <?php } else { ?>
+		                <?php if($account['forcePGPmessage'] === '1'){?>
+                      <label class="radio inline">
+                        <input type='radio' name='forcePGPmessage' value='0' /> Disabled
+                      </label>
+                      <label class="radio inline">
+                        <input type='radio' name='forcePGPmessage' value='1' checked/> Enabled
+                      </label>
+                    <?php } else { ?>
+                      <label class="radio inline">
+	                      <input type='radio' name='forcePGPmessage' value='0' checked/> Disabled
+                      </label>
+                      <label class="radio inline">
+	                      <input type='radio' name='forcePGPmessage' value='1' /> Enabled
+                      </label>
+	                  <?php } ?>
+                  <? } ?>
+                </div>
+              </div>
+
+
+
               <div class="control-group">
                 <label class="control-label" for="password0">New Password</label>
                 <div class="controls">

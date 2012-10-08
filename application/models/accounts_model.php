@@ -28,6 +28,7 @@ class Accounts_model extends CI_Model {
 					'pubKeyFingerprint' => $fingerprint,
 					'displayFingerprint' => $dispFingerprint,
 					'twoStepAuth' => $user['twoStepAuth'],
+					'forcePGPmessage' => $user['forcePGPmessage'],
 					'profileMessage' => $user['profileMessage'] );
 		return $results;
 	}
@@ -88,6 +89,16 @@ class Accounts_model extends CI_Model {
 						$result['twoStep'] = true;
 					} else {
 						$result['twoStep'] = false;
+					}
+				}
+
+				if($key == 'forcePGPmessage'){
+					$this->db->where('id',$userID);
+					$update = array('forcePGPmessage' => $changes['forcePGPmessage']);
+					if($this->db->update('users',$update)){
+						$result['forcePGPmessage'] = true;
+					} else {
+						$result['forcePGPmessage'] = false;
 					}
 				}
 

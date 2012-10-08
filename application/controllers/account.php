@@ -31,7 +31,7 @@ class Account extends CI_Controller {
 	public function update(){
 		// Load information about the current user
 		$userHash = $this->my_session->userdata('userHash');
-		$loginInfo = $this->users_model->getLoginInfo(array('userHash' => $userHash));
+		$loginInfo = $this->users_model->get_user(array('userHash' => $userHash));
 		// Generate the hash of the password to test.
 		$testPass = $this->general->hashFunction($this->input->post('passwordConfirm'),$loginInfo['userSalt']);	
 
@@ -90,6 +90,10 @@ class Account extends CI_Controller {
 			$changes['twoStep'] = $twoStep;
 		}
 
+		$forcePGPmessage = $this->input->post('forcePGPmessage');
+		if($forcePGPmessage !== $loginInfo['forcePGPmessage']){
+			$changes['forcePGPmessage'] = $forcePGPmessage;
+		}
 
 		$passFail = FALSE;
 		// Check if we are suppposed to update the password.

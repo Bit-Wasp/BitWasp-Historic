@@ -37,6 +37,44 @@ class Listings_model extends CI_Model {
 		}
 	}
 
+	// Add the product to itemPhotos and images.
+	public function addProductImage($array){
+		// Get the number of photos for that item.
+		$query = $this->db->get_where('itemPhotos',array('itemHash' => $array['item']['itemHash']));
+		$count = $query->num_rows();
+
+		// Add image to itemPhotos
+		$imagePhoto = array(	'itemHash' => $array['item']['itemHash'],
+					'imageHash' => $array['imageHash']);
+	
+		// If unable to insert update the item with the image, return FALSE
+		if(!$this->db->insert('itemPhotos',$imagePhoto)){
+			return FALSE;
+		}
+
+		// Check if this image is the new main image, or if there are no other images.
+		if($array['mainPhoto'] == '1' || $count == 0){
+			// Update the items table to store the mainPhoto
+			$this->db->where('itemHash', $array['item']['itemHash']);
+			$this->db->update('items',array('mainPhotoHash' => $array['imageHash']));		
+		}
+
+		// Encode the image and store it in the DB.
+		$image = array( 'encoded' => $array['encoded'],
+				'imageHash' => $array['imageHash'],
+				'height' => '120',
+				'width' => '160' );
+
+		// Insert the image content into the table.
+		if($this->db->insert('images',$image)){
+			// Success; image has been added.
+			return TRUE;
+		} else {		
+			// Failure; return FALSE.
+			return FALSE;
+		}
+	}
+
 	// Add item to the table.
 	public function addItem($array){
 		// Insert array into the items table.

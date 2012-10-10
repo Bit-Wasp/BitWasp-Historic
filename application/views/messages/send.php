@@ -27,7 +27,19 @@
                   <span class="help-inline"><?php echo form_error('message'); ?></span>
                 </div>
               </div>
-
+	      <?php if(substr($returnMessage,0,20)=="This message will be") { ?>
+	      <noscript>
+	        <div class="control-group">
+                  <label class="control-label" for="PGPencryption">PGP Encryption?</label>
+                  <div class="controls">
+                    <label class="checkbox inline">
+	              <input type='checkbox' name='PGPencryption' value='1' /> 
+                    </label>
+	          </div>
+                </div>
+              </noscript>
+	      <?php } ?>
+	
               <textarea style="display:none;" name="pubkey"><?=$publickey; ?></textarea><br />
 
               <div class="form-actions">

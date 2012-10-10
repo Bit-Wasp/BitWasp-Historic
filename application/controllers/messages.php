@@ -207,7 +207,14 @@ class Messages extends CI_Controller {
 
 				$messageText = $this->input->post('message');
 
-				if($recipient['forcePGPmessage'] == '1' && $isEncrypted == 0){
+				if($isEncrypted == 0 && $this->input->post('PGPencryption') == '1'){
+					$gpg = gnupg_init();
+					gnupg_addencryptkey($gpg, $fingerprint);
+					$messageText = gnupg_encrypt($gpg, "$messageText\n");
+					$messageText = "-----BEGIN PGP MESSAGE-----\nComment: Server Side Encryption\n".substr($messageText,28);
+					$isEncrypted = 1;					
+				}
+				if($isEncrypted == 0 && $recipient['forcePGPmessage'] == '1'){
 					$gpg = gnupg_init();
 					gnupg_addencryptkey($gpg, $fingerprint);
 					$messageText = gnupg_encrypt($gpg, "$messageText\n");

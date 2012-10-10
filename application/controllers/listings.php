@@ -391,12 +391,12 @@ class Listings extends CI_Controller {
 							 'imageHash' => $this->general->uniqueHash('images','imageHash')
 							 );		
 					// Associate image with item, and add to the image table.
-					if($this->items_model->addProductImage($imgInfo) == TRUE){
+					if($this->listings_model->addProductImage($imgInfo) == TRUE){
 						// Image added to the tables.
 						$data['title'] = 'Image Created';
 						$data['page'] = 'listings/images';	
 						$data['returnMessage'] = 'Your image has been uploaded.';
-            $data['success'] = 1;
+            					$data['success'] = 1;
 
 						$data['item'] = $this->items_model->getInfo($itemHash);
 						$data['images'] = $this->items_model->get_item_images($itemHash);

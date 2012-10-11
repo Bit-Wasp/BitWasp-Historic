@@ -85,7 +85,7 @@ class Categories_model extends CI_Model {
 	}
 
 	// List Items by Category
-	public function getCatItems($catID = NULL){
+	public function getCatItems($limit, $start, $catID = NULL){
 		// Check the category exists.
 		if($catID === NULL){
 			// No category selected for some reason. Show latest items as normal.
@@ -93,6 +93,7 @@ class Categories_model extends CI_Model {
 		}
 
 		// Get items in the chosen category.
+		$this->db->limit($limit,$start);
 		$this->db->where('hidden !=','1');
 		$this->db->where('category',$catID);
 		$query = $this->db->get('items');
@@ -146,6 +147,15 @@ class Categories_model extends CI_Model {
 			// Failure; return FALSE;			
 			return FALSE;
 		}
+	}
+
+
+	public function get_catItems_count($catID){
+		$this->db->order_by('id DESC');
+		$this->db->where('hidden !=', '1');
+		$this->db->where('category', $catID);
+		$query = $this->db->get('items');
+		return $query->num_rows();
 	}
 
 	// Produce categories in a dynamic multi-dimensional array

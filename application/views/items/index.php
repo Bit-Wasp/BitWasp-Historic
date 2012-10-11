@@ -20,6 +20,7 @@
 	            </li>
             <?php endforeach; ?>
           </ul>
+	  <?=$pagination_links;?>
           <?php } ?>
         </div>
 

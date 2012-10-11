@@ -65,10 +65,19 @@ class Items_model extends CI_Model {
 		}
 	}
 
+	public function get_items_count(){
+		$this->db->order_by('id DESC');
+		$this->db->where('hidden !=', '1');
+		$query = $this->db->get('items');
+		return $query->num_rows();
+	}
+
+
 	// Load the latest products, can specify the number to return.
-	public function getLatest($count = 20){
+	public function getLatest($limit, $start){
 
 		// Display most recent items.
+		$this->db->limit($limit, $start);
 		$this->db->order_by('id DESC');
 		$this->db->where('hidden !=', '1');
 		$query = $this->db->get('items');

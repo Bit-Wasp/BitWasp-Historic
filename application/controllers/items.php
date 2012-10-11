@@ -92,6 +92,8 @@ class Items extends CI_Controller {
 	// URI: cat/
 	// Auth: Login
 	public function cat($catID = FALSE){
+
+		$config = array();
 		$config["per_page"] = $this->my_config->items_per_page(); 
 
 		//Load information about current category
@@ -121,7 +123,6 @@ class Items extends CI_Controller {
 
 		} elseif($data['total_rows'] > 0){ 
 
-		        $config = array();
 		        $config["base_url"] = site_url() . "/cat/$catID";
 		        $config["total_rows"] = $this->categories_model->get_catItems_count($catID);
 		        $config["uri_segment"] = 3;

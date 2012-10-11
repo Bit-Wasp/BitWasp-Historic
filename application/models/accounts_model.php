@@ -29,7 +29,8 @@ class Accounts_model extends CI_Model {
 					'displayFingerprint' => $dispFingerprint,
 					'twoStepAuth' => $user['twoStepAuth'],
 					'forcePGPmessage' => $user['forcePGPmessage'],
-					'profileMessage' => $user['profileMessage'] );
+					'profileMessage' => $user['profileMessage'],
+					'items_per_page' => $user['items_per_page'] );
 		return $results;
 	}
 
@@ -110,6 +111,16 @@ class Accounts_model extends CI_Model {
 						$result['profileMessage'] = true;
 					} else {
 						$result['profileMessage'] = false;
+					}
+				}
+
+				if($key == 'items_per_page'){
+					$this->db->where('id',$userID);
+					$update = array('items_per_page' => $changes['items_per_page']);
+					if($this->db->update('users',$update)){
+						$result['items_per_page'] = true;
+					} else {
+						$result['items_per_page'] = false;
 					}
 				}
 

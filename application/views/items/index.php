@@ -1,6 +1,20 @@
         <div class="span9 mainContent" id="item_view">
           <?php if(isset($returnMessage)) echo '<div class="alert">' . $returnMessage . '</div>'; ?>
           <?php if(!empty($items)) { ?>
+
+	  	  <?=$pagination_links;?><?php echo form_open('items/item_count');?>
+	  <select name='items_per_page' onchange='this.form.submit()'>
+		<?php
+		  $unit = 25;
+		  for($i = 1; $i < 5; $i++){?>
+	    <option value='<?=$unit*$i;?>' <?php if($items_per_page==($unit*$i)) echo "selected";?> /> <?=$unit*$i;?> </option>
+		  <?php } ?>
+          </select>
+	  <noscript>
+          <button type='submit' class="btn btn-primary">Go</button>
+	  </noscript>
+          </form>
+
           <ul id="item_listing" class="thumbnails">
             <?php foreach ($items as $item): ?>
               <li class="span2 productBox" id="prod_<?=$item['itemHash']; ?>">
@@ -21,6 +35,19 @@
             <?php endforeach; ?>
           </ul>
 	  <?=$pagination_links;?>
+	  <?php echo form_open('items/item_count');?>
+	  <select name='items_per_page' onchange='this.form.submit()'>
+		<?php
+		  $unit = 25;
+		  for($i = 1; $i < 5; $i++){?>
+	    <option value='<?=$unit*$i;?>' <?php if($items_per_page==($unit*$i)) echo "selected";?> /> <?=$unit*$i;?> </option>
+		  <?php } ?>
+          </select>
+	  <noscript>
+	  <input type='submit' value='Go' class="btn btn-primary" />
+	  </noscript>
+          </form>
+
           <?php } ?>
         </div>
 

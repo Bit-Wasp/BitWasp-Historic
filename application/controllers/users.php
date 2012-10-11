@@ -47,7 +47,7 @@ class Users extends CI_Controller {
 		$gpg = gnupg_init();
 		gnupg_addencryptkey($gpg, $fingerprint);
 		$string = gnupg_encrypt($gpg, "Two Step Token: $challenge\n");
-
+ 	
 		// Display the PGP text.
 		$data['challenge'] = $string;
 

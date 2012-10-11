@@ -90,6 +90,12 @@ class Account extends CI_Controller {
 			$changes['twoStep'] = $twoStep;
 		}
 
+		$items_per_page = $this->input->post('items_per_page');
+		if($items_per_page !== $loginInfo['items_per_page']){
+			$this->my_session->set_userdata('items_per_page',$items_per_page);
+			$changes['items_per_page'] = $items_per_page;
+		}
+
 		$forcePGPmessage = $this->input->post('forcePGPmessage');
 		if($forcePGPmessage !== $loginInfo['forcePGPmessage']){
 			$changes['forcePGPmessage'] = $forcePGPmessage;
@@ -113,6 +119,8 @@ class Account extends CI_Controller {
 		if($currentMessage !== $newMessage){
 			$changes['profileMessage'] = $newMessage;
 		}
+
+		
 
 		$error = FALSE;
 		$errorMsg = "";

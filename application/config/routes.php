@@ -51,6 +51,7 @@ $route['bitcoin'] = 'bitcoin/index';
 
 // Show show specific products, and all.
 $route['items'] = 'items';
+$route['items/item_count'] = 'items/tmp_items_per_page';
 $route['items/(:any)'] = 'items/index/$1';
 $route['item/(:any)'] = 'items/view/$1';
 $route['item'] = 'items';

@@ -38,6 +38,22 @@
             </div>
 
             <div class="row-fluid">
+              <div class="span2"><strong>Forced PGP Messages</strong></div>
+              <div class="span7"><p id="forcePGPmessage">
+                <?php if($account['pubKey'] == 'No Public Key found.'){?>
+                  Add a PGP key to enable two-step authentication.
+                <?php } else {
+	                // check if two-step is enabled.
+	                if($account['forcePGPmessage'] === '1'){?>
+                    Enabled.<br /><br />
+                  <?php	} else {?>
+                    Edit your profile to enable this feature.
+                  <?php	} 
+                }?>
+              </div>
+            </div>
+
+            <div class="row-fluid">
               <div class="span2"><strong>Profile Message</strong></div>
               <div class="span7">
               <?php if($account['profileMessage']!=''){ ?>

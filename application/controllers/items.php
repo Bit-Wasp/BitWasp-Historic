@@ -10,6 +10,15 @@ class Items extends CI_Controller {
 		$this->load->model('categories_model');
 		$this->load->library('my_image');
 		$this->load->library('pagination');
+		$this->load->library('form_validation');
+	}
+
+	public function tmp_items_per_page(){
+		$count = $this->input->post('items_per_page');
+		if($count == '25' || $count == '50' || $count = '75' || $count = '100'){
+			$this->my_session->set_userdata('items_per_page',$count);
+		} 
+		redirect('items');
 	}
 
 	// View item listings
@@ -35,7 +44,7 @@ class Items extends CI_Controller {
 		$data['items'] = $this->items_model->getLatest($config["per_page"], $page);
 
 		$data['pagination_links'] = $this->pagination->create_links();
-
+		$data['items_per_page'] = $config['per_page'];
 		//Check if there are no matching items
 		if(empty($data['items'])){
 			$data['returnMessage'] = "No matching items have been found. Please return soon.";
@@ -60,7 +69,7 @@ class Items extends CI_Controller {
 		        $config = array();
 		        $config["base_url"] = site_url() . "/items";
 		        $config["total_rows"] = $this->items_model->get_items_count();
-		        $config["per_page"] = 20;
+		        $config["per_page"] = $this->my_config->items_per_page();
 		        $config["uri_segment"] = 2;	
 			$choice = $config["total_rows"] / $config["per_page"];
 			$config["num_links"] = round($choice);

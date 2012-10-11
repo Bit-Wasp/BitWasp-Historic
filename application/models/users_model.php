@@ -38,7 +38,7 @@ class Users_Model extends CI_Model {
 	// Return the basic info for logging in. 
 	public function getLoginInfo($user = FALSE){
 		// Select the entries by username.
-		$this->db->select('id, userName,userSalt, userHash, userRole, twoStepAuth');
+		$this->db->select('id, userName,userSalt, userHash, userRole, twoStepAuth, items_per_page');
 
         	//Check what field has been provided, and query database using that field.
         	if (isset($user['userHash'])) {
@@ -110,7 +110,7 @@ class Users_Model extends CI_Model {
         public function get_user($user = FALSE)
         {
 		//Select these fields from the database
-		$this->db->select('id, userName, userRole, userHash, rating, timeRegistered, twoStepAuth, forcePGPmessage, profileMessage, userSalt');
+		$this->db->select('id, userName, userRole, userHash, rating, timeRegistered, twoStepAuth, forcePGPmessage, profileMessage, userSalt, items_per_page');
 
                 //Check what field has been provided, and query database using that field.
                 if (isset($user['userHash'])) {

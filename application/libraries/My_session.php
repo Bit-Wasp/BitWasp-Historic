@@ -87,6 +87,7 @@ class My_session extends CI_Session {
 						'userHash' => $user['userHash'],
                                 	        'userRole' => $user['userRole'],
                                         	'logged_in' => TRUE,
+						'items_per_page' => $user['items_per_page'],
 	                                        'last_activity' => time()
         	                            );
 		}

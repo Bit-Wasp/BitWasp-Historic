@@ -6,7 +6,7 @@ define('BASEPATH',dirname(__FILE__));
 if(isset($_GET['step'])){
 	if($_GET['step'] == '2'){
 		include('application/config/database.php');
-		$siteCfg = '{"site_title":"'.$_POST['site_title'].'","login_timeout":"'.$_POST['site_timeout'].'","base_url":"'.$_POST['site_url'].'","index_page":"'.$_POST['site_index'].'","default_items_per_page":"25"}';
+		$siteCfg = '{"site_title":"'.$_POST['site_title'].'","login_timeout":"'.$_POST['site_timeout'].'","base_url":"'.$_POST['site_url'].'","index_page":"'.$_POST['site_index'].'","default_items_per_page":"25","registration_allowed":"Enabled"}';
 		
 		$conn = mysql_connect('localhost',$_SESSION['sql_user'],$_SESSION['sql_pw']);
 		if(!$conn){

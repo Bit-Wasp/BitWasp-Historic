@@ -4,4 +4,10 @@ BitWasp is an open source project which aims to lower the barrier for anyone to 
 If you can help or have any ideas please join us on http://www.thelaboratory.org
 
 #Installation and Configuration
-To setup BitWasp please import the schema.sql file from this directory into your MySQL database. Please configure the settings in ./application/config/database.php and ./application/config/config.php to match your enviroment. Finally if your site is not in your root directory please update the .htaccess file to the correct base directory.
+To set up BitWasp, first make ./application/config and ./assets/images writable.
+
+chmod 777 ./application/config
+chmod 777 -R ./assets/images
+
+And then visit the installer page to set up the marketplace.
+

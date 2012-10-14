@@ -12,6 +12,8 @@ class My_config {
 
 	public $items_per_page = '';
 
+	public $registration_allowed = '';
+
 	public function __construct(){
 		$CI = &get_instance();
 		
@@ -23,11 +25,12 @@ class My_config {
 		$this->login_timeout = $config->login_timeout;
 		$this->base_url = $config->base_url;
 		$this->index_page = $config->index_page;
+		$this->registration_allowed = $config->registration_allowed;
 
 		if($CI->session->userdata('items_per_page')){
 			$this->items_per_page = $CI->session->userdata('items_per_page');
 		} else {
-			$this->items_per_page = $config->default_items_per_page;
+			$this->items_per_page = '25';
 		}
 
 		$CI->config->set_item('base_url', $this->base_url);
@@ -39,7 +42,8 @@ class My_config {
 		$results = array(	'site_title' => $this->site_title,
 					'login_timeout' => $this->login_timeout,
 					'base_url' => $this->base_url,
-					'index_page' => $this->index_page );
+					'index_page' => $this->index_page,
+					'registration_allowed' => $this->registration_allowed );
 		return $results;
 	}
 
@@ -53,6 +57,10 @@ class My_config {
 
 	public function login_timeout(){
 		return $this->login_timeout;
+	}
+
+	public function registration_allowed(){
+		return $this->registration_allowed;
 	}
 
 };

@@ -39,6 +39,18 @@
                 </div>
               </div>
 
+              <div class="control-group">
+                <label class="control-label" for="registration_allowed">Registration Allowed</label>
+                <div class="controls">
+                  <select name='registration_allowed' autocomplete="off">
+                   <option value='Enabled' <?php if($config['registration_allowed'] == 'Enabled') echo 'selected'; ?>>Enabled</option>
+                   <option value='Disabled' <?php if($config['registration_allowed'] == 'Disabled') echo 'selected'; ?>>Disabled</option>
+                  </select>
+                  <span class="help-inline"><?php echo form_error('registration_allowed'); ?></span>
+                </div>
+              </div>
+
+
               <div class="form-actions">
                 <input type='submit' class="btn btn-primary" value="Update" />
                 <?=anchor('admin/siteConfig', 'Cancel', 'class="btn"');?>

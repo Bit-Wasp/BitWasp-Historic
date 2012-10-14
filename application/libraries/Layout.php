@@ -41,6 +41,9 @@ class Layout  extends CI_Controller {
 			$category_data['cats'] = "";
 
 		} else {
+			$data['allow_reg'] = true;
+			if($CI->my_config->registration_allowed() == 'Disabled')
+				$data['allow_reg'] = false;
 			$CI->load->view('templates/loginHeader',$data);
 			$category_data['cats'] = NULL;
 		}

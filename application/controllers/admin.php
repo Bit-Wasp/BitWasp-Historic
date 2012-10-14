@@ -52,6 +52,12 @@ class Admin extends CI_Controller {
 			$newConfig['base_url'] = $data['config']['base_url'];
 		}
 
+		if($this->input->post('registration_allowed') !== $data['config']['registration_allowed']){
+			$newConfig['registration_allowed'] = $this->input->post('registration_allowed');
+		} else {
+			$newConfig['registration_allowed'] = $data['config']['registration_allowed'];
+		}
+
 		if($this->input->post('index_page') !== ''){
 			$newConfig['index_page'] = $this->input->post('index_page');
 		} else {

@@ -25,7 +25,9 @@
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
               <li><?=anchor('users/login', 'Login', 'title="Login"');?></li>
+		<?php if($allow_reg == 'Enabled'){?>
               <li><?=anchor('users/register', 'Register', 'title="Register"');?></li>
+		<?php } ?>
             </ul>
           </div>
         </div>

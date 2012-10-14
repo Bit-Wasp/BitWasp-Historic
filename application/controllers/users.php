@@ -168,6 +168,10 @@ class Users extends CI_Controller {
 
 	// Register function
 	public function register(){
+		if($this->my_config->registration_allowed() == 'Disabled'){
+			redirect('users/login');
+		}
+
 		// Check if the user is currently logged in.
 		if($this->session->userdata('logged_in') == TRUE){
 			redirect('home');

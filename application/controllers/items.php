@@ -114,6 +114,7 @@ class Items extends CI_Controller {
 		//Check if category exists
 		if ($data['category']==NULL)
 		{
+			$data['items_per_page'] = $config['per_page'];
 		        $config["base_url"] = site_url() . "/items";
 		        $config["total_rows"] = $this->items_model->get_items_count();
 		        $config["uri_segment"] = 2;
@@ -131,6 +132,7 @@ class Items extends CI_Controller {
 
 
 		} elseif($data['total_rows'] > 0){ 
+			$data['items_per_page'] = $config['per_page'];
 
 		        $config["base_url"] = site_url() . "/cat/$catID";
 		        $config["total_rows"] = $this->categories_model->get_catItems_count($catID);
@@ -147,7 +149,8 @@ class Items extends CI_Controller {
 			$data['pagination_links'] = $this->pagination->create_links();
 
 		} else {
-	
+	                $config["per_page"] = $this->my_config->items_per_page(); 
+
 		        $config["base_url"] = site_url() . "/items";
 		        $config["total_rows"] = $this->items_model->get_items_count();
 		        $config["uri_segment"] = 2;

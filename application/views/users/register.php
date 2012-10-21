@@ -34,6 +34,9 @@
                       <option value='1'>Buyer</option>
                       <option value='2'>Seller</option>
                     </select>
+		  <?php if($force_vendor_PGP == 'Enabled'){ ?>
+		    <span class="span7">If you are registering as a vendor, it is required to upload a PGP public key. Please have one ready on your first login.</span>
+		  <?php } ?>
                     <span class="help-inline"><?php echo form_error('usertype'); ?></span>
                   </div>
                 </div>

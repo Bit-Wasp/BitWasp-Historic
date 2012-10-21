@@ -58,6 +58,12 @@ class Admin extends CI_Controller {
 			$newConfig['registration_allowed'] = $data['config']['registration_allowed'];
 		}
 
+		if($this->input->post('force_vendor_PGP') !== $data['config']['force_vendor_PGP']){
+			$newConfig['force_vendor_PGP'] = $this->input->post('force_vendor_PGP');
+		} else { 
+			$newConfig['force_vendor_PGP'] = $data['config']['force_vendor_PGP'];
+		}
+
 		if($this->input->post('index_page') !== ''){
 			$newConfig['index_page'] = $this->input->post('index_page');
 		} else {

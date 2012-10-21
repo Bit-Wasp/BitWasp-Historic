@@ -14,7 +14,7 @@ class Account extends CI_Controller {
 		$data['title'] = 'My Account';
 		$userHash = $this->my_session->userdata('userHash');
 		$data['account'] = $this->accounts_model->getAccountInfo($userHash);
-		
+		$data['force_vendor_pgp'] = $this->my_config->force_vendor_pgp();
 		$this->load->library('layout',$data);
 	}
 
@@ -27,6 +27,51 @@ class Account extends CI_Controller {
 		$data['account'] = $this->accounts_model->getAccountInfo($userHash);
 		$this->load->library('layout',$data);
 	} 
+
+	public function replacePGP(){
+		$userHash = $this->my_session->userdata('userHash');
+		$data['account'] = $this->accounts_model->getAccountInfo($userHash);
+
+		// Load information about the current user
+		$userHash = $this->my_session->userdata('userHash');
+		$loginInfo = $this->users_model->get_user(array('userHash' => $userHash));
+		// Generate the hash of the password to test.
+		$testPass = $this->general->hashFunction($this->input->post('passwordConfirm'),$loginInfo['userSalt']);	
+
+		// Check the password for this username.
+		$checkPass = $this->users_model->checkPass($loginInfo['userName'], $testPass);
+		if($checkPass === TRUE){
+			// Password correct
+			$correctPass = TRUE;
+		} else {
+			// Password incorrect, stop code execution later.
+			$correctPass = FALSE;
+		}
+		
+		$data['page'] = 'account/replacePGP';
+		$data['title'] = 'Replace PGP key';
+		if($this->input->post('pubKey')){
+			$pubKey = $this->input->post('pubKey');
+
+			if($correctPass){
+				if($this->users_model->drop_pubKey_by_id($loginInfo['id'])){
+					if($this->accounts_model->updateAccount($loginInfo['id'],array('pubKey' => $pubKey))){
+						$data['page'] = 'account/index';
+						$data['title'] = 'Account';		
+						$data['force_vendor_pgp'] = $this->my_config->force_vendor_pgp();
+						$data['returnMessage'] = 'Your PGP public key has been updated.';
+					} else {
+						$data['returnMessage'] = 'Unable to update your public key.';
+					}
+				} else {
+					$data['returnMessage'] = 'Unable to remove your previous PGP key.';
+				}
+			} else {
+				$data['returnMessage'] = "Your password was incorrect.";
+			}
+		}
+		$this->load->library('Layout',$data);
+	}
 
 	public function update(){
 		// Load information about the current user

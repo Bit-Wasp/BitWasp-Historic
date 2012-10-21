@@ -19,8 +19,8 @@ class My_session extends CI_Session {
 		}
 		if($level == 'vendor'){
 			// Page requires a vendor, check the userRole for admin/vendor
-			if( 	strtolower($CI->session->userdata('userRole')) == 'admin' 	
-			||	strtolower($CI->session->userdata('userRole')) == 'vendor' 	)
+			if( 	strtolower($CI->session->userdata('userRole')) == 'admin' ||
+				strtolower($CI->session->userdata('userRole')) == 'vendor' 	)
 				return true;
 		}
 		if($level == 'admin'){ 
@@ -30,8 +30,8 @@ class My_session extends CI_Session {
 		}
 		if($level == 'buyer'){
 			// Page requires a buyer, allow admin/buyer by role.
-			if(	strtolower($CI->session->userdata('userRole')) == "admin"
-			||	strtolower($CI->session->userdata('userRole')) == "buyer" )
+			if(	strtolower($CI->session->userdata('userRole')) == "admin" ||
+				strtolower($CI->session->userdata('userRole')) == "buyer" )
 			return true;
 		}	
 		if($level == FALSE)	// Default: allow the user onto the page.  - should be globalized.
@@ -71,14 +71,18 @@ class My_session extends CI_Session {
 	}	
 
 	// Create a new session
-        public function createSession($user, $twoStep = FALSE){
+        public function createSession($user, $params = NULL){
                 $CI = &get_instance();
 		// Set the user session.
-		if($twoStep == TRUE){
+		if($params == 'twoStep'){
 			$sessionData = array(	'id' => $user['id'],
 						'twoStep' => TRUE
 					);
-		} else {
+		} else if($params == 'forcePGP'){
+			$sessionData = array(	'id' => $user['id'],
+						'forcePGP' => TRUE 
+					);
+		} else if($params == NULL){
 			if($CI->session->userdata('twoStep') !== NULL)
 				$CI->session->unset_userdata('twoStep');
 			
@@ -90,7 +94,7 @@ class My_session extends CI_Session {
 						'items_per_page' => $user['items_per_page'],
 	                                        'last_activity' => time()
         	                            );
-		}
+		} 
                 $CI->session->set_userdata($sessionData);
 
         }

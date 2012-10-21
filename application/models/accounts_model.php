@@ -24,6 +24,7 @@ class Accounts_model extends CI_Model {
 
 		$results = array(	'userName' => $user['userName'],
 					'userHash' => $user['userHash'],
+					'userRole' => $user['userRole'],
 					'pubKey'   => $pubKey,
 					'pubKeyFingerprint' => $fingerprint,
 					'displayFingerprint' => $dispFingerprint,
@@ -49,28 +50,32 @@ class Accounts_model extends CI_Model {
 
 	                                $gpg = gnupg_init();
 	                                $keyInfo = gnupg_import($gpg,$changes['pubKey']);
-	                                $checkPrev = $this->db->get_where('publicKeys', array('userID'=>$userID));
-	                                if($checkPrev->num_rows() > 0){
-	                                        $this->db->where('userID',$userID);
-	
-	                                        $update = array('key' => $changes['pubKey'],
-	                                                        'fingerprint' => $keyInfo['fingerprint']);
-	                                        if($this->db->update('publicKeys', $update) === TRUE){
-	                                                $result['pubKey'] = true;
-	                                        } else {
-	                                                $result['pubKey'] = false;
-	                                        }
-	                                } else {
-	
-	                                        $update = array('key' => $changes['pubKey'],
-	                                                        'userID' => $userID,
-	                                                        'fingerprint' => $keyInfo['fingerprint']);
-	                                        if($this->db->insert('publicKeys',$update)){
-	                                                $result['pubKey'] = true;
-	                                        } else {
-	                                                $result['pubKey'] = false;
-	                                        }
-	                                }
+					if(isset($keyInfo['fingerprint'])){
+		                                $checkPrev = $this->db->get_where('publicKeys', array('userID'=>$userID));
+		                                if($checkPrev->num_rows() > 0){
+		                                        $this->db->where('userID',$userID);
+		
+		                                        $update = array('key' => $changes['pubKey'],
+		                                                        'fingerprint' => $keyInfo['fingerprint']);
+		                                        if($this->db->update('publicKeys', $update) === TRUE){
+		                                                $result['pubKey'] = true;
+		                                        } else {
+		                                                $result['pubKey'] = false;
+		                                        }
+		                                } else {
+		
+		                                        $update = array('key' => $changes['pubKey'],
+		                                                        'userID' => $userID,
+		                                                        'fingerprint' => $keyInfo['fingerprint']);
+		                                        if($this->db->insert('publicKeys',$update)){
+		                                                $result['pubKey'] = true;
+		                                        } else {
+		                                                $result['pubKey'] = false;
+		                                        }
+		                                }
+					} else {	
+						$result['pubKey'] = false;
+					}
 	                        } 
 
 	                       if($key == 'password'){

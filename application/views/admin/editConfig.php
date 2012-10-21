@@ -50,6 +50,16 @@
                 </div>
               </div>
 
+	      <div class="">
+	        <label class="control-label" for="force_vendor_PGP">Force Vendor PGP</label>
+	        <div class='controls'>
+		  <select name='force_vendor_PGP' autocomplete="off">
+		    <option value='Enabled' <?php if($config['force_vendor_PGP'] == 'Enabled') echo "selected";?>>Enabled</option>
+		    <option value='Disabled' <?php if($config['force_vendor_PGP'] == 'Disabled') echo "selected";?>>Disabled</option>
+		  </select>
+	        </div>
+	      </div>
+
 
               <div class="form-actions">
                 <input type='submit' class="btn btn-primary" value="Update" />

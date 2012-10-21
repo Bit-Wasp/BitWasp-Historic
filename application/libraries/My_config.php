@@ -14,6 +14,8 @@ class My_config {
 
 	public $registration_allowed = '';
 
+	public $force_vendor_PGP = '';
+
 	public function __construct(){
 		$CI = &get_instance();
 		
@@ -26,6 +28,8 @@ class My_config {
 		$this->base_url = $config->base_url;
 		$this->index_page = $config->index_page;
 		$this->registration_allowed = $config->registration_allowed;
+		$this->force_vendor_PGP = $config->force_vendor_PGP;
+
 
 		if($CI->session->userdata('items_per_page')){
 			$this->items_per_page = $CI->session->userdata('items_per_page');
@@ -39,12 +43,7 @@ class My_config {
 	}
 
 	public function loadAll(){
-		$results = array(	'site_title' => $this->site_title,
-					'login_timeout' => $this->login_timeout,
-					'base_url' => $this->base_url,
-					'index_page' => $this->index_page,
-					'registration_allowed' => $this->registration_allowed );
-		return $results;
+		return get_object_vars($this);
 	}
 
 	public function items_per_page(){
@@ -61,6 +60,10 @@ class My_config {
 
 	public function registration_allowed(){
 		return $this->registration_allowed;
+	}
+
+	public function force_vendor_PGP(){
+		return $this->force_vendor_PGP;
 	}
 
 };

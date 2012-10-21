@@ -8,6 +8,41 @@ class Users extends CI_Controller {
 		$this->load->model('users_model');
 	}
 
+	public function registerPGP(){
+		$this->load->library('form_validation');
+		$this->load->model('accounts_model');
+		$data['title'] = 'Setup PGP';
+		$data['page'] = 'users/registerPGP';
+		$userID = $this->my_session->userdata('id');
+
+		// Check if the form has been submitted successfully.
+		if($this->input->post('pubKey')){
+
+			$pubKey = $this->input->post('pubKey');
+			$gpg = gnupg_init();
+			$keyInfo = gnupg_import($gpg,$pubKey);
+
+			if(isset($keyInfo['fingerprint'])){
+				
+				// Check the solution against what's recorded in the DB.
+				if($this->accounts_model->updateAccount($userID,array('pubKey' => $pubKey))){
+					// Solution matches, load userinfo and create a full session.
+					$loginInfo = $this->users_model->get_user(array('id' => $userID));
+					$this->my_session->createSession($loginInfo);
+	                                redirect('home');
+				} else {
+				        //User submitted an incorrect token. Return error and show form below
+					$data['returnMessage'] = "It was not possible to add your PGP key, please try again.";
+				}
+			} else {
+				$data['returnMessage'] = "Please ensure you enter an ASCII armoured PGP public key.";
+			}
+		} 
+			
+		$this->load->library('layout',$data);
+	}
+
+
 	public function twoStep(){
 		$this->load->library('form_validation');
 		$data['title'] = 'Two Step Authentication';
@@ -117,6 +152,7 @@ class Users extends CI_Controller {
 			// Set default to logged out
 			$login = false;
 			$twoStep = false;
+			$forcePGP = false;
 			// Get id,userSalt, userHash, userRole from the DB.
 			$getLoginInfo = $this->users_model->getLoginInfo(array('userName' =>$this->input->post('username')));
 			// check the user exists
@@ -129,6 +165,10 @@ class Users extends CI_Controller {
 				if($this->users_model->checkPass($this->input->post('username'),$testpass) === TRUE){
 					if($getLoginInfo['twoStepAuth'] == '1'){
 						$twoStep = true;
+					} else if(	$getLoginInfo['userRole'] == 'Vendor' && 
+							$this->my_config->force_vendor_PGP() == 'Enabled' &&
+							$this->users_model->get_pubKey_by_id($getLoginInfo['id']) == NULL ){
+						$forcePGP = true;
 					} else {
 						$login = true;
 					}
@@ -137,8 +177,11 @@ class Users extends CI_Controller {
 
 			// Check whether the login is successul
 			if($twoStep == true){
-				$this->my_session->createSession($getLoginInfo, TRUE);	// TRUE, enables a half-session for twostep
+				$this->my_session->createSession($getLoginInfo, 'twoStep');	// TRUE, enables a half-session for twostep
 				redirect('users/twoStep');
+			} else if($forcePGP == true){
+				$this->my_session->createSession($getLoginInfo, 'forcePGP');
+				redirect('users/registerPGP');
 			} else	if($login == true){
 				// Success
 				$this->users_model->setLastLog($this->input->post('username'));
@@ -168,28 +211,26 @@ class Users extends CI_Controller {
 
 	// Register function
 	public function register(){
-		if($this->my_config->registration_allowed() == 'Disabled'){
+		if($this->my_config->registration_allowed() == 'Disabled')
 			redirect('users/login');
-		}
 
 		// Check if the user is currently logged in.
-		if($this->session->userdata('logged_in') == TRUE){
+		if($this->session->userdata('logged_in') == TRUE)
 			redirect('home');
-		} 
+ 
+		$this->load->helper(array('form', 'url'));
+		$this->load->library('form_validation');
 
-    $this->load->helper(array('form', 'url'));
-    $this->load->library('form_validation');
-
-    //Set some defaults for forms etc.
-    $this->form_validation->set_error_delimiters('<span class="form-error">', '</span>');
+		//Set some defaults for forms etc.
+		$this->form_validation->set_error_delimiters('<span class="form-error">', '</span>');
+		$data['force_vendor_PGP'] = $this->my_config->force_vendor_PGP();
 
 		// Run form validation
-    if ($this->form_validation->run('register') == FALSE){
-
-		// Show the register form.
-                        $data['title'] = 'Register';
-                        $data['page'] = 'users/register'; 
-                        $data['captcha'] = $this->my_captcha->generateCaptcha();
+		if ($this->form_validation->run('register') == FALSE){
+			// Show the register form.
+                	$data['title'] = 'Register';
+                   	$data['page'] = 'users/register'; 
+			$data['captcha'] = $this->my_captcha->generateCaptcha();
 		} else {
 			// Form validation successful
 

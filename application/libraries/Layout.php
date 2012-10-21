@@ -7,7 +7,7 @@ class Layout  extends CI_Controller {
 
 		$CI = &get_instance();
 
-  	$CI->load->library('my_config');
+	  	$CI->load->library('my_config');
 		$data['site_name'] = $CI->my_config->site_title();
 
 		//register code to include header JS and meta.
@@ -39,7 +39,9 @@ class Layout  extends CI_Controller {
 		} else if($CI->session->userdata('twoStep') === TRUE){
 			$CI->load->view('templates/twoStepHeader',$data);
 			$category_data['cats'] = "";
-
+		} else if($CI->session->userdata('forcePGP') === TRUE){
+			$CI->load->view('templates/registerPGPHeader',$data);
+			$category_data['cats'] = "";
 		} else {
 			$data['allow_reg'] = true;
 			if($CI->my_config->registration_allowed() == 'Disabled')

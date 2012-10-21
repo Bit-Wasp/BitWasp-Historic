@@ -27,6 +27,10 @@
               <div class="span2"><strong>Allow Registration</strong></div>
               <div class="span7"><?=$config['registration_allowed'];?></div>
             </div>
+
+	    <div class="row-fluid">
+              <div class='span2'><strong>Force Vendor PGP</strong></div>
+	      <div class='span7'><?=$config['force_vendor_PGP'];?></div>
           </div>
 
           <div class="form-actions">

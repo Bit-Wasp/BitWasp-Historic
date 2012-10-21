@@ -46,6 +46,7 @@ $route['users/logout'] = 'users/logout';
 $route['users/register'] = 'users/register';
 $route['users/logoutInactivity'] = 'users/logoutInactivity';
 $route['users/twoStep'] = 'users/twoStep';
+$route['users/registerPGP'] = 'users/registerPGP';
 
 $route['bitcoin'] = 'bitcoin/index';
 
@@ -83,7 +84,7 @@ $route['account'] = 'account/index';
 $route['account/edit'] ='account/edit';
 $route['account/update'] ='account/update';
 $route['account/deletePubKey'] = 'account/deletePubKey';
-
+$route['account/replacePGP'] = 'account/replacePGP';
 // Messages 
 $route['messages'] = 'messages/inbox';
 $route['messages/inbox'] = 'messages/inbox';

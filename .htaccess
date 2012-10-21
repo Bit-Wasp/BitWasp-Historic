@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /bitwasp/
+RewriteBase /bitwasp2/
 #Removes access to the system folder by users.
 #Additionally this will allow you to create a System.php controller,
 #previously this would not have been possible.
@@ -19,3 +19,6 @@ RewriteRule ^(.*)$ index.php/$1 [L]
 # Submitted by: ElliotHaughin
 
 ErrorDocument 404 /index.php
+
+
+

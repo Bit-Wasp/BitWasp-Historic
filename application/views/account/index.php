@@ -13,7 +13,12 @@
               <div class="span7">
                 <?php if($account['pubKey'] !== 'No Public Key found.'){?>
 	                <p id="pubKey"><?=$account['displayFingerprint'];?>
+			<?php if(	$account['userRole'] == 'Vendor' &&
+					$force_vendor_pgp == 'Enabled' ){?>
+	                <?=anchor('account/replacePGP','<i class="icon-trash icon-white"></i> Replace', 'class="btn btn-danger btn-mini"');?>
+			<?php } else { ?>
 	                <?=anchor('account/deletePubKey','<i class="icon-trash icon-white"></i> Delete', 'class="btn btn-danger btn-mini"');?>
+			<?php } ?>
                   </p>
                 <?php } else { ?>
 	                <p id="pubKey"><?=$account['pubKey'];?></p>

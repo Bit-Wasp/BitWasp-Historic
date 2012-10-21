@@ -41,7 +41,7 @@ $config['bitcoind_rpc_host']		= '127.0.0.1:8332';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------

@@ -21,6 +21,11 @@
               </div>
             </div>
 
+	    <div class="row-fluid">
+	      <div class='span2'><strong>Profile URL</strong></div>
+	      <div class='span7'><?=anchor("user/{$account['userHash']}",base_url()."user/{$account['userHash']}");?></div>
+	    </div>
+
             <div class="row-fluid">
               <div class="span2"><strong>Two-Step Login</strong></div>
               <div class="span7"><p id="twoStep">

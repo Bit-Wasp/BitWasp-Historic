@@ -9,15 +9,11 @@ class Admin extends CI_Controller {
 
 	public function index(){
 		$data['title'] = 'Admin Panel';
-		$data['page'] = 'admin/index';
-		$this->load->library('layout',$data);
-	}
-
-	public function siteConfig(){
 		$data['page'] = 'admin/siteConfig';
-		$data['title'] = 'Site Info';
+	
+		// Load the site configuration
 		$data['config'] = $this->my_config->loadAll();
-
+		
 		$this->load->library('layout',$data);
 	}
 
@@ -25,6 +21,8 @@ class Admin extends CI_Controller {
 		$this->load->library('form_validation');
 		$data['page'] = 'admin/editConfig';
 		$data['title'] = 'Edit Configuration';
+
+		// Load the site configuration
 		$data['config'] = $this->my_config->loadAll();
 
 		$this->load->library('layout',$data);
@@ -32,8 +30,11 @@ class Admin extends CI_Controller {
 
 	public function updateConfig(){
 		$this->load->model('general_model');
+
+		// Load the site configuration
 		$data['config'] = $this->my_config->loadAll();
 
+		// Check which fields are being updated
 		if($this->input->post('site_title') !== $data['config']['site_title']){
 			$newConfig['site_title'] = $this->input->post('site_title');
 		} else {
@@ -69,9 +70,11 @@ class Admin extends CI_Controller {
 		} else {
 			$newConfig['index_page'] = $data['config']['index_page'];
 		}
-		$newConfig['index_page'] = 'index.php';
+
+		// Build the json string
 		$jsonConfig = json_encode($newConfig);
 
+		// Update the site configuration
 		if($this->general_model->updateConfig($jsonConfig)){
 			$data['title'] = 'Site Configuration';
 			$data['page'] = 'admin/siteConfig';

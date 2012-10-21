@@ -149,7 +149,7 @@ class Categories_model extends CI_Model {
 		}
 	}
 
-
+	// Load the number of items in a category.
 	public function get_catItems_count($catID){
 		$this->db->order_by('id DESC');
 		$this->db->where('hidden !=', '1');

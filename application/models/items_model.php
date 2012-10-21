@@ -65,6 +65,7 @@ class Items_model extends CI_Model {
 		}
 	}
 
+	// Count the number of items in the table
 	public function get_items_count(){
 		$this->db->order_by('id DESC');
 		$this->db->where('hidden !=', '1');

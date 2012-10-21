@@ -70,23 +70,30 @@ class My_session extends CI_Session {
 		$this->checkAuth();
 	}	
 
-	// Create a new session
+	// Create a new session.
         public function createSession($user, $params = NULL){
                 $CI = &get_instance();
 		// Set the user session.
+
+		// Half session, only allow them view the two step prompt.
 		if($params == 'twoStep'){
 			$sessionData = array(	'id' => $user['id'],
 						'twoStep' => TRUE
 					);
+		// Half session, only allow them view the PGP public key prompt.
 		} else if($params == 'forcePGP'){
 			$sessionData = array(	'id' => $user['id'],
 						'forcePGP' => TRUE 
 					);
+		// Otherwise, create a full session.
 		} else if($params == NULL){
+			// Remove the twoStep or forcePGP session values 
 			if($CI->session->userdata('twoStep') !== NULL)
 				$CI->session->unset_userdata('twoStep');
+			if($CI->session->userdata('forcePGP') !== NULL)
+				$CI->session->unset_userdata('forcePGP');
 			
-
+			// Set the session information
                 	$sessionData = array( 	'id' => $user['id'],
 						'userHash' => $user['userHash'],
                                 	        'userRole' => $user['userRole'],

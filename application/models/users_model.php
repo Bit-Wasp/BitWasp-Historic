@@ -7,30 +7,38 @@ class Users_Model extends CI_Model {
 		$this->load->library('session');
 	}
 
+	// Check the submitted PGP two step token against whats on record.
 	public function checkTwoStepChallenge($userID,$solution){
 		$this->db->where('userID',$userID);
 		$this->db->where('twoStepChallenge',$solution);
 		$query = $this->db->get('twoStep');
 
+		// Return true if the token matches.
 		if($query->num_rows() > 0){
 			return TRUE;
 		} else {
+			// Otherwise return false.
 			return FALSE;
 		}
 	}
 
+	// Add the generated two-step token to a table.
 	public function addTwoStepChallenge($userID, $challenge){
+		// Remove any old challenges for this user.
 		$query = $this->db->get_where('twoStep', array('userID' => $userID));
 		if($query->num_rows() > 0){
 			$this->db->where('userID',$userID);
 			$this->db->delete('twoStep');
 		} 
 
+		// Record the challenge for the user.
 		$update = array('userID' => $userID,
 				'twoStepChallenge' => $challenge);
 		if($this->db->insert('twoStep',$update)){
+			// Challenge has been recorded.
 			return TRUE;
 		} else {
+			// Unable to record challenge.
 			return FALSE;
 		}
 	}
@@ -161,6 +169,7 @@ class Users_Model extends CI_Model {
 		return NULL;
         }
 
+	// Delete public key by user id.
 	public function drop_pubKey_by_id($id = FALSE){
 		if($id === FALSE)
 			return NULL;
@@ -173,14 +182,18 @@ class Users_Model extends CI_Model {
 		}
 	}
 
+	// Get the profile message of a user id.
 	public function get_profileMessage($userID){
 		$this->db->where('id',$userID);
 		$this->db->select('profileMessage');
 		$query = $this->db->get('users');
+		// Check if the profile message is set.
 		if($query->num_rows() > 0 ){
 			$result = $query->row_array();
+			// Return the message
 			return $result['profileMessage'];
 		} else {
+			// Otherwise return null.
 			return NULL;
 		}
 	}

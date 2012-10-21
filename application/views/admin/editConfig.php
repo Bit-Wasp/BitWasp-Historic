@@ -50,7 +50,7 @@
                 </div>
               </div>
 
-	      <div class="">
+	      <div class="control-group">
 	        <label class="control-label" for="force_vendor_PGP">Force Vendor PGP</label>
 	        <div class='controls'>
 		  <select name='force_vendor_PGP' autocomplete="off">
@@ -58,6 +58,14 @@
 		    <option value='Disabled' <?php if($config['force_vendor_PGP'] == 'Disabled') echo "selected";?>>Disabled</option>
 		  </select>
 	        </div>
+	      </div>
+
+	      <div class="control-group">
+		<label class="control-label" for="categories">Categories</label>
+		<div class='controls'>
+		  <?=anchor('admin/category/add', 'Add Category', 'class="btn"');?>
+		  <?=anchor('admin/category/remove', 'Remove Category', 'class="btn"');?>
+		</div>
 	      </div>
 
 

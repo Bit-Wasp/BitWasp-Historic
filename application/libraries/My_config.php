@@ -2,18 +2,13 @@
 
 class My_config {
 
+	// Initialize the class variables
 	public $site_title = '';
-
 	public $login_timeout = '';
-
 	public $base_url = '';
-
 	public $index_page = '';
-
 	public $items_per_page = '';
-
 	public $registration_allowed = '';
-
 	public $force_vendor_PGP = '';
 
 	public function __construct(){
@@ -21,8 +16,10 @@ class My_config {
 		
 		$CI->load->model('general_model');
 
+		// Load the site configuration
 		$config = $CI->general_model->siteConfig();
 
+		// Set the object variables with the sites configuration
 		$this->site_title = $config->site_title;
 		$this->login_timeout = $config->login_timeout;
 		$this->base_url = $config->base_url;
@@ -30,16 +27,16 @@ class My_config {
 		$this->registration_allowed = $config->registration_allowed;
 		$this->force_vendor_PGP = $config->force_vendor_PGP;
 
-
+		// Load the number of items to display.
 		if($CI->session->userdata('items_per_page')){
 			$this->items_per_page = $CI->session->userdata('items_per_page');
 		} else {
 			$this->items_per_page = '25';
 		}
 
+		// Have CodeIgniter take the values in the table as the base_url and index_page
 		$CI->config->set_item('base_url', $this->base_url);
 		$CI->config->set_item('index_page', $this->index_page);
-
 	}
 
 	public function loadAll(){

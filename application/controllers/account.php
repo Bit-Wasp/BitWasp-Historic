@@ -10,21 +10,28 @@ class Account extends CI_Controller {
 	}
 
 	public function index(){
+		// Load the account information page.
 		$data['page'] = 'account/index';
 		$data['title'] = 'My Account';
+		
+		// Load information about the user.
 		$userHash = $this->my_session->userdata('userHash');
 		$data['account'] = $this->accounts_model->getAccountInfo($userHash);
+	
+		// Check whether the site requires vendors to use PGP.
 		$data['force_vendor_pgp'] = $this->my_config->force_vendor_pgp();
+
 		$this->load->library('layout',$data);
 	}
 
 	public function edit(){
-		$userHash = $this->my_session->userdata('userHash');
-
 		$data['page'] = 'account/edit';
 		$data['title'] = 'Edit Account';
 
+		// Load information about the user.
+		$userHash = $this->my_session->userdata('userHash');
 		$data['account'] = $this->accounts_model->getAccountInfo($userHash);
+
 		$this->load->library('layout',$data);
 	} 
 
@@ -50,10 +57,12 @@ class Account extends CI_Controller {
 		
 		$data['page'] = 'account/replacePGP';
 		$data['title'] = 'Replace PGP key';
+		// If the pubKey POST value is set, try update it.
 		if($this->input->post('pubKey')){
 			$pubKey = $this->input->post('pubKey');
 
-			if($correctPass){
+			if($correctPass==TRUE){
+				// If the password is correct, delete any other public keys and add the new one.
 				if($this->users_model->drop_pubKey_by_id($loginInfo['id'])){
 					if($this->accounts_model->updateAccount($loginInfo['id'],array('pubKey' => $pubKey))){
 						$data['page'] = 'account/index';
@@ -130,17 +139,20 @@ class Account extends CI_Controller {
 			}				
 		}
 
+		// Check if the two step field is being changed.
 		$twoStep = $this->input->post('twoStep');
 		if($twoStep !== $loginInfo['twoStepAuth']){
 			$changes['twoStep'] = $twoStep;
 		}
 
+		// Check if the items-per-page has been changed.
 		$items_per_page = $this->input->post('items_per_page');
 		if($items_per_page !== $loginInfo['items_per_page']){
 			$this->my_session->set_userdata('items_per_page',$items_per_page);
 			$changes['items_per_page'] = $items_per_page;
 		}
 
+		// Force PGP messages
 		$forcePGPmessage = $this->input->post('forcePGPmessage');
 		if($forcePGPmessage !== $loginInfo['forcePGPmessage']){
 			$changes['forcePGPmessage'] = $forcePGPmessage;
@@ -158,14 +170,12 @@ class Account extends CI_Controller {
 			}
 		}
 
-
+		// Check if we're updating the profile message
 		$currentMessage = $this->users_model->get_profileMessage($loginInfo['id']);
 		$newMessage = strip_tags(nl2br($this->input->post('profileMessage',TRUE)),'<br>');
 		if($currentMessage !== $newMessage){
 			$changes['profileMessage'] = $newMessage;
 		}
-
-		
 
 		$error = FALSE;
 		$errorMsg = "";

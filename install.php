@@ -6,7 +6,7 @@ define('BASEPATH',dirname(__FILE__));
 if(isset($_GET['step'])){
 	if($_GET['step'] == '2'){
 		include('application/config/database.php');
-		$siteCfg = '{"site_title":"'.$_POST['site_title'].'","login_timeout":"'.$_POST['site_timeout'].'","base_url":"'.$_POST['site_url'].'","index_page":"'.$_POST['site_index'].'","default_items_per_page":"25","registration_allowed":"Enabled","force_vendor_PGP":"Disabled"}';
+		$siteCfg = '{"site_title":"'.$_POST['site_title'].'","login_timeout":"'.$_POST['site_timeout'].'","base_url":"'.$_POST['site_url'].'","index_page":"'.$_POST['site_index'].'","default_items_per_page":"25","registration_allowed":"Enabled","force_vendor_PGP":"Disabled","captcha_length":"'.$_POST['captcha_length'].'"}';
 		
 		$conn = mysql_connect('localhost',$_SESSION['sql_user'],$_SESSION['sql_pw']);
 		if(!$conn){
@@ -96,6 +96,7 @@ if(isset($_GET['step'])){
 		echo "<form action='".$_SERVER['PHP_SELF']."?step=2' method='post'>
 Site Title: <input type='text' name='site_title' value='' /><br/>
 Login Timeout: <input type='text' name='site_timeout' value='30' /> minutes<br />
+Captcha Length: <input type='text' name='captcha_length'] value='5' /> characters<br />
 Base URL: <input type='text' name='site_url' value='' /><br />
 Index Page: <input type='text' name='site_index' value='index.php' /><br />
 <input type='submit' value='Submit' /></form>";

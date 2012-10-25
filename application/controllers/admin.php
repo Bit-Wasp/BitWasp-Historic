@@ -65,10 +65,16 @@ class Admin extends CI_Controller {
 			$newConfig['force_vendor_PGP'] = $data['config']['force_vendor_PGP'];
 		}
 
-		if($this->input->post('index_page') !== ''){
+		if($this->input->post('index_page') !== $data['config']['index_page']){
 			$newConfig['index_page'] = $this->input->post('index_page');
 		} else {
 			$newConfig['index_page'] = $data['config']['index_page'];
+		}
+
+		if($this->input->post('captcha_length') !== $data['config']['captcha_length']){
+			$newConfig['captcha_length'] = $this->input->post('captcha_length');
+		} else {
+			$newConfig['captcha_length'] = $data['config']['index_page'];
 		}
 
 		// Build the json string

@@ -17,7 +17,8 @@
                 <label class="control-label" for="login_timeout">Login Timeout</label>
                 <div class="controls">
                   <div class="input-append">
-                    <input type="text" name="login_timeout" value="<?=$config['login_timeout'];?>"><span class="add-on">minutes</span>
+                    <input type="text" name="login_timeout" value="<?=$config['login_timeout'];?>">
+		    <span class="add-on">minute<?php if($config['login_timeout'] > 1)echo "s";?></span>
                   </div>
                   <span class="help-inline"><?php echo form_error('login_timeout'); ?></span>
                 </div>
@@ -30,6 +31,18 @@
                   <span class="help-inline"><?php echo form_error('base_url'); ?></span>
                 </div>
               </div>
+
+             <div class="control-group">
+                <label class="control-label" for="captcha_length">Captcha Length</label>
+                <div class="controls">
+                  <div class="input-append">
+                    <input type="text" name="captcha_length" value="<?=$config['captcha_length'];?>">
+		    <span class="add-on">character<?php if($config['captcha_length'] > 1) echo "s"; ?></span>
+                  </div>
+                  <span class="help-inline"><?php echo form_error('captcha_length'); ?></span>
+                </div>
+              </div>
+
 
               <div class="control-group">
                 <label class="control-label" for="index_page">Index Page</label>

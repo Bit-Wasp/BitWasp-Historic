@@ -10,6 +10,7 @@ class My_config {
 	public $items_per_page = '';
 	public $registration_allowed = '';
 	public $force_vendor_PGP = '';
+	public $catpcha_length = '';
 
 	public function __construct(){
 		$CI = &get_instance();
@@ -26,6 +27,7 @@ class My_config {
 		$this->index_page = $config->index_page;
 		$this->registration_allowed = $config->registration_allowed;
 		$this->force_vendor_PGP = $config->force_vendor_PGP;
+		$this->captcha_length = $config->captcha_length;
 
 		// Load the number of items to display.
 		if($CI->session->userdata('items_per_page')){
@@ -61,6 +63,10 @@ class My_config {
 
 	public function force_vendor_PGP(){
 		return $this->force_vendor_PGP;
+	}
+
+	public function captcha_length(){
+		return $this->captcha_length;
 	}
 
 };

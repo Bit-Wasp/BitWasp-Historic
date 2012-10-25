@@ -145,7 +145,7 @@ class Users extends CI_Controller {
 			// form not submitted, or unsuccessful
                         $data['title'] = 'Login';
 			$data['page'] = 'users/login';
-			$data['captcha'] = $this->my_captcha->generateCaptcha();
+			$data['captcha'] = $this->my_captcha->generateCaptcha($this->my_config->captcha_length());
                 } else  {
 			// form submitted, check details are authentic
 
@@ -192,7 +192,7 @@ class Users extends CI_Controller {
         	                $data['title'] = 'Login';
                         	$data['page'] = 'users/login'; 
 				$data['returnMessage'] = "Your details were incorrect, try again.";
-				$data['captcha'] = $this->my_captcha->generateCaptcha();
+				$data['captcha'] = $this->my_captcha->generateCaptcha($this->my_config->captcha_length());
 
 			}
 
@@ -230,7 +230,7 @@ class Users extends CI_Controller {
 			// Show the register form.
                 	$data['title'] = 'Register';
                    	$data['page'] = 'users/register'; 
-			$data['captcha'] = $this->my_captcha->generateCaptcha();
+			$data['captcha'] = $this->my_captcha->generateCaptcha($this->my_config->captcha_length());
 		} else {
 			// Form validation successful
 
@@ -257,7 +257,7 @@ class Users extends CI_Controller {
 				$data['title'] = 'Registration Successful';
 	                        $data['login'] = false;
 				$data['returnMessage'] = 'Your account has been created, please login below.';
-				$data['captcha'] = $this->my_captcha->generateCaptcha();
+				$data['captcha'] = $this->my_captcha->generateCaptcha($this->my_config->captcha_length());
         	                $data['page'] = 'users/login'; 
 
 			} else {

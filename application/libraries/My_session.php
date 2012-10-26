@@ -48,6 +48,8 @@ class My_session extends CI_Session {
 		$CI->load->model('sessions_model');
 		$CI->load->model('pages_model');
 		$CI->load->library('my_config');
+		$CI->load->library('general');
+
 
 		$login_timeout = $CI->my_config->login_timeout()*60;	// Convert timeout to seconds.
 

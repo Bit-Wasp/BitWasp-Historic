@@ -55,11 +55,8 @@ class Accounts_model extends CI_Model {
 				// Check if the public key is meant to be changed.
 	                        if($key == 'pubKey'){
 
-					// Initialize GnuPG
-	                                $gpg = gnupg_init();
-
 					// Import the public key, return information about the import and key.
-	                                $keyInfo = gnupg_import($gpg,$changes['pubKey']);
+	                                $keyInfo = $this->general->importPGPkey($changes['pubKey']);
 
 					// If import fails, the fingerprint array is unset. 
 					// Check that the key is valid.

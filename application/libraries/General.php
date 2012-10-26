@@ -2,6 +2,40 @@
 
 class General {
 
+	public function importPGPkey($ascii){
+		$CI = &get_instance();
+		$gpg = $this->initPGP();
+		if(function_exists('gnupg_init')){
+			$info = gnupg_import($gpg,$ascii);
+		} else if(class_exists('gnupg')){
+			$info = $gpg->import($ascii);
+		}
+		return $info;
+	}
+
+	public function initPGP(){
+                if(function_exists('gnupg_init')){
+                        $gpg = gnupg_init();
+                } else if(class_exists('gnupg')){
+                        $gpg = new gnupg();
+                }
+		return $gpg;
+	}
+
+	public function encryptPGPmessage($fingerprint,$messageText){
+		$gpg = $this->initPGP();
+		if(function_exists('gnupg_init')){
+	                gnupg_addencryptkey($gpg, $fingerprint);
+	                $messageText = gnupg_encrypt($gpg, "$messageText\n");
+		} else if(class_exists('gnupg')){
+			$gpg->addencryptkey($fingerprint);
+			$messageText = $gpg->encrypt($gpg, "$messageText\n");
+		}
+
+                $messageText = "-----BEGIN PGP MESSAGE-----\nComment: Server Side Encryption\n".substr($messageText,28);
+		return $messageText;
+        }
+
 	// Determine the required authorization for a page based on first URI segment.
 	public function getAuthLevel($URI){
 		$CI = &get_instance();

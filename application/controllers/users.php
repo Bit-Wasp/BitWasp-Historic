@@ -19,8 +19,7 @@ class Users extends CI_Controller {
 		if($this->input->post('pubKey')){
 
 			$pubKey = $this->input->post('pubKey');
-			$gpg = gnupg_init();
-			$keyInfo = gnupg_import($gpg,$pubKey);
+			$keyInfo = $this->general->importPGPkey($pubKey);
 
 			if(isset($keyInfo['fingerprint'])){
 				

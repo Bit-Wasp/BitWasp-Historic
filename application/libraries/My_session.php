@@ -62,9 +62,8 @@ class My_session extends CI_Session {
 				// Check if the user is logging in, otherwise
 				// kill the users session and redirect to the inactivity login page.
 		                $URI = explode("/", uri_string());
-               			$level = $CI->general->getAuthLevel($URI[0]);
 
-				if($level['1'] !== 'login' && $level['1'] !== 'twoStep' && $level['1'] !== 'registerPGP'){
+				if($URI['1'] !== 'login' && $URI['1'] !== 'twoStep' && $URI['1'] !== 'registerPGP'){
 	                                $this->killSession($userHash);
 	                                redirect('users/logoutInactivity');
 				}

@@ -28,7 +28,7 @@ class Layout  extends CI_Controller {
 			$categories = $CI->categories_model->getCategories();
 
 			//Check if there are categories to display
-      if(!isset($data['currentCat'])){ $data['currentCat'] = array(); } //Set to avoid notice errors if unset
+			if(!isset($data['currentCat'])){ $data['currentCat'] = array(); } //Set to avoid notice errors if unset
 
 			if(!empty($categories))	{
 				$category_data['cats'] = $this->createMenu($categories , 0, $data['currentCat']); //Pass params so we can show active class on current cat.
@@ -67,7 +67,7 @@ class Layout  extends CI_Controller {
 			if($category['countProducts']==0){ //Check if category has products and should be linked too
 				$content .= '<span>'.$category['name'].'</span>';
 			} else {
-				$content .= '<a href="'.site_url().'/cat/'.$category['id'].'">'.$category['name'].' ('. $category['countProducts'] .")</a>\n";
+				$content .= '<a href="'.site_url().'cat/'.$category['id'].'">'.$category['name'].' ('. $category['countProducts'] .")</a>\n";
 			}
 
 			if(isset($category['children'])) { //Check if we need to recurse into children.

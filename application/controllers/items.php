@@ -25,7 +25,6 @@ class Items extends CI_Controller {
 	// URI: items
 	// Auth: Login
 	public function index()	{
-
 		//Load the latest items, default is 20.
 		$data['title'] = 'Items';
 		$data['page'] = 'items/index';

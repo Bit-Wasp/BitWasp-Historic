@@ -55,7 +55,7 @@
                 <?php } else {
 	                // check if two-step is enabled.
 	                if($account['forcePGPmessage'] === '1'){?>
-                    Enabled.<br /><br />
+                    Enabled.
                   <?php	} else {?>
                     Edit your profile to enable this feature.
                   <?php	} 

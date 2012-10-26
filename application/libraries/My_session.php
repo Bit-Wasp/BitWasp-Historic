@@ -56,11 +56,16 @@ class My_session extends CI_Session {
 			$userHash = $CI->session->userdata('userHash');
                         $sessionInfo = $CI->sessions_model->getInfo($userHash);
 			// Check if the user's session has timed out.
-                        if(time()-$sessionInfo['last_activity'] > $login_timeout){		// activity - should be globalized
-                                // half an hour before time out 
-				// Kill session and redirect to the inactivity login page.
-                                $this->killSession($userHash);
-                                redirect('users/logoutInactivity');
+                        if(time()-$sessionInfo['last_activity'] > $login_timeout){
+				// Check if the user is logging in, otherwise
+				// kill the users session and redirect to the inactivity login page.
+		                $URI = explode("/", uri_string());
+               			$level = $CI->general->getAuthLevel($URI[0]);
+
+				if($level['1'] !== 'login' && $level['1'] !== 'twoStep' && $level['1'] !== 'registerPGP'){
+	                                $this->killSession($userHash);
+	                                redirect('users/logoutInactivity');
+				}
                         } else {
 				// Otherwise, update the session in the table, will create the entry if needed.
                                 $CI->sessions_model->updateSession($userHash);

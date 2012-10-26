@@ -98,7 +98,7 @@ class Users extends CI_Controller {
 		// Load the login page, advising the user they allowed the previous session to time out. 
 		$data['title'] = 'Logout';
 		$data['page'] = 'users/login';
-		$data['captcha'] = $this->my_captcha->generateCaptcha();
+		$data['captcha'] = $this->my_captcha->generateCaptcha($this->my_config->captcha_length());
 		$data['returnMessage'] = "Your previous session has timed out due to inactivity, or you did not log out correctly. The old session has now timed out. Please log in again to continue.";
 		$this->load->library('layout',$data);
 	}

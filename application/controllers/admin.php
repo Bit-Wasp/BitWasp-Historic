@@ -74,7 +74,7 @@ class Admin extends CI_Controller {
 		if($this->input->post('captcha_length') !== $data['config']['captcha_length']){
 			$newConfig['captcha_length'] = $this->input->post('captcha_length');
 		} else {
-			$newConfig['captcha_length'] = $data['config']['index_page'];
+			$newConfig['captcha_length'] = $data['config']['captcha_length'];
 		}
 
 		// Build the json string

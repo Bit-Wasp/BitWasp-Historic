@@ -52,7 +52,7 @@ class Sessions_Model extends CI_Model {
 		}
 	}
 
-	// Store the session_id, userHash, and last activity.
+	// Store the session_id, userHash, and last activity.	
 	public function updateSession($userHash){
 		// Build an array with the entries to update with.
 		$sessionData = array( 	'session_id' => $this->session->userdata('session_id'),
@@ -62,6 +62,7 @@ class Sessions_Model extends CI_Model {
 		$this->db->where('userHash',$userHash);
 		$query = $this->db->update('sessions',$sessionData);
 		if($query){
+			$this->users_model->updateActivity($userHash);
 			// Successful; return TRUE.
 			return TRUE;
 		} else {

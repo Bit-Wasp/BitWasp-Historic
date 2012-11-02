@@ -104,6 +104,26 @@ class General {
 		return $hash;
 	}
 
+	public function currentURI(){
+		// Count the number of entries in the base_url's URI
+		$baseUrl = base_url();
+		$separateBaseUrl = explode('//',$baseUrl);
+		$baseURI = explode('/',$separateBaseUrl[1]);
+		$baseURIcount = count($baseURI)-2;
+	
+		// Load the current requests URI
+		$request = substr($_SERVER['REQUEST_URI'],1); 
+		$reqURI = explode('/',$request);
+	
+		$URI = array();
+		$pos = 0;
+		// Begin after the entries in the base_url's URI
+		for($i = $baseURIcount; $i < count($reqURI); $i++){
+			$URI[$pos++] = $reqURI[$i];
+		}
+		return $URI;
+	}
+
 	// Format time into a readable format.
 	public function displayTime($timestamp){
 		// Load the current time, and check the difference between the times in seconds.
@@ -122,8 +142,11 @@ class General {
 			return 'about ' . round($difference / 3600) . ' hours ago';
 		} else if($difference < (48*60*60)) {		// Just over a day.
 			return '1 day ago';
-		} else {					// Otherwise just return the basic date.
-			return date('j F Y');
+		} else {					// Otherwise just return the basic date.		
+			if($timestamp == '0'){
+				return '0';
+			}
+			return date('j F Y',$timestamp);
 		}
 	}
 };

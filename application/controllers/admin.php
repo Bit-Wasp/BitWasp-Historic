@@ -17,6 +17,17 @@ class Admin extends CI_Controller {
 		$this->load->library('layout',$data);
 	}
 
+	public function users($userHash = NULL){
+		$this->load->model('users_model');
+
+		$data['userHash'] = $userHash;		
+		$data['users'] = $this->users_model->users($userHash);
+
+		$data['title'] = 'Users';
+		$data['page'] = 'admin/users';
+		$this->load->library('layout',$data);
+	}
+
 	public function editConfig(){
 		$this->load->library('form_validation');
 		$data['page'] = 'admin/editConfig';

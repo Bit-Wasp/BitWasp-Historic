@@ -20,7 +20,7 @@ class My_session extends CI_Session {
 		if($level == 'vendor'){
 			// Page requires a vendor, check the userRole for admin/vendor
 			if( 	strtolower($CI->session->userdata('userRole')) == 'admin' ||
-				strtolower($CI->session->userdata('userRole')) == 'vendor' 	)
+				strtolower($CI->session->userdata('userRole')) == 'vendor' )
 				return true;
 		}
 		if($level == 'admin'){ 
@@ -32,7 +32,7 @@ class My_session extends CI_Session {
 			// Page requires a buyer, allow admin/buyer by role.
 			if(	strtolower($CI->session->userdata('userRole')) == "admin" ||
 				strtolower($CI->session->userdata('userRole')) == "buyer" )
-			return true;
+				return true;
 		}	
 		if($level == FALSE)	// Default: allow the user onto the page.  - should be globalized.
 			return true;
@@ -53,6 +53,8 @@ class My_session extends CI_Session {
 
 		$login_timeout = $CI->my_config->login_timeout()*60;	// Convert timeout to seconds.
 
+		$URI = $CI->general->currentURI();
+
 		if($CI->session->userdata('logged_in') === TRUE){
 			// User logged in, load the info for the session.
 			$userHash = $CI->session->userdata('userHash');
@@ -61,7 +63,6 @@ class My_session extends CI_Session {
                         if(time()-$sessionInfo['last_activity'] > $login_timeout){
 				// Check if the user is logging in, otherwise
 				// kill the users session and redirect to the inactivity login page.
-		                $URI = explode("/", uri_string());
 
 				if($URI['1'] !== 'login' && $URI['1'] !== 'twoStep' && $URI['1'] !== 'registerPGP'){
 	                                $this->killSession($userHash);
@@ -69,6 +70,7 @@ class My_session extends CI_Session {
 				}
                         } else {
 				// Otherwise, update the session in the table, will create the entry if needed.
+				
                                 $CI->sessions_model->updateSession($userHash);
                         }
 		}

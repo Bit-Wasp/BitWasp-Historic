@@ -40,6 +40,15 @@
               </noscript>
 	      <?php } ?>
 	
+	<?php /*      <div class="control-group">
+		<label class="control-label" for="burn_after_reading">Delete After Reading?</label>
+		<div class="controls">
+		  <label class="checkbox inline">
+		    <input type='checkbox' name='burn_after_reading' value='1' />
+		  </label>
+		</div>
+	      </div>	*/ ?>
+
               <textarea style="display:none;" name="pubkey"><?=$publickey; ?></textarea><br />
 
               <div class="form-actions">

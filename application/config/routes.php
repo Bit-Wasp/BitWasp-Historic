@@ -117,6 +117,9 @@ $route['admin/category/fixOrphans'] = 'admin/fixOrphans';
 $route['admin/siteConfig'] = 'admin/siteConfig';
 $route['admin/editConfig'] = 'admin/editConfig';
 $route['admin/updateConfig'] = 'admin/updateConfig';
+$route['admin/users'] = 'admin/users';
+$route['admin/user'] = 'admin/users';
+$route['admin/user/(:any)'] = 'admin/users/$1';
 
 //Redirect pages as default
 $route['default_controller'] = 'users/login';

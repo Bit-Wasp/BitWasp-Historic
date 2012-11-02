@@ -112,7 +112,37 @@ class Users_Model extends CI_Model {
 		}
 	}
 
+	public function updateActivity($userHash){
+		$this->db->where('userHash',$userHash);
+		$query = $this->db->update('users', array('last_activity' => time()));
+		if($query){
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
 
+	public function users($userHash = NULL){
+		$this->db->select('userName, userHash, userRole, location, timeRegistered, last_activity');
+		if($userHash !== NULL){
+			$this->db->where('userHash',$userHash);
+		}
+	
+		$query = $this->db->get('users');
+		if($query->num_rows() > 1){
+			return $query->result_array();
+		} else if($query->num_rows() == '1' || $userHash !== NULL){
+			$res = $query->row_array();
+			return array(	'userName' => $res['userName'],
+					'userHash' => $res['userHash'],
+					'userRole' => $res['userRole'],
+					'location' => $res['location'],
+					'last_activity' => $this->general->displayTime($res['last_activity']),
+					'timeRegistered' => $this->general->displayTime($res['timeRegistered']) );
+		} else {
+			return NULL;
+		}
+	}
 
         //Load the requested user from the database by their the specified field.
         public function get_user($user = FALSE)

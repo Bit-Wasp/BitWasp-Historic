@@ -42,6 +42,7 @@
 
           <div class="form-actions">
             <?=anchor('admin/editConfig','Edit Configuration', 'class="btn btn-primary"');?>
+            <?=anchor('admin/users','User Management', 'class="btn btn-primary"');?>
           </div>
         </div>
 

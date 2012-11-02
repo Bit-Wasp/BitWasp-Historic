@@ -26,17 +26,17 @@
 	    </div>
 
 	    <div class="row-fluid">
-              <div class="span4">Role</div>
+              <div class="span4"><strong>Role</strong></div>
               <div class="span7"><?=$users['userRole'];?></div>
             </div>
 
 	    <div class="row-fluid">
-              <div class="span4">Registered</div>
+              <div class="span4"><strong>Registered</strong></div>
               <div class="span7"><?=$users['timeRegistered'];?></div>
             </div>
 
 	    <div class="row-fluid">
-              <div class="span4">Last Activity</div>
+              <div class="span4"><strong>Last Activity</strong></div>
               <div class="span7"><?=$users['last_activity'];?></div>
             </div>
 		

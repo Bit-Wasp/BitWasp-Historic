@@ -13,7 +13,7 @@ And then visit the installer page to set up the marketplace.
 
 # Support Bitwasp Development
 All money from donations, supporter and sponsor accounts go to fund BitWasp Development & Operation. 
-Bitcoin Address: 1FVrHdXJBr6Z9uhtiQKy4g7c7yHtGKjyLy
+Bitcoin Address: 19wXXScUGcpTUZUYo4kaevoLZKczE8G7q
 
 All help and contributions in getting Bitwasp completed are very much appreciated as the time of the lead developers is currently very limited.
 

@@ -58,7 +58,7 @@
               <div class="control-group">
                 <label class="control-label" for="hidden">Private / Hidden Listing</label>
                 <div class="controls">
-                  <input name="hidden" type="checkbox" >
+                  <input name="hidden" type="checkbox" value='on' >
                   <span class="help-inline"><?php echo form_error('hidden'); ?></span>
                 </div>
               </div>

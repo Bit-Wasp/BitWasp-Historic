@@ -395,12 +395,12 @@ class Listings extends CI_Controller {
 						$data['images'] = $this->items_model->get_item_images($itemHash);
 
 						// Remove any remaining image files.
-				//		if(file_exists($cleanImage['destination']))
-				//			unlink($cleanImage['destination']);
-				//		if(file_exists($cleanImage['thumb_destination']))
-				//			unlink($cleanImage['thumb_destination']);
-				//		if(file_exists($cleanImage['old_path']))
-				//		 	unlink($cleanImage['old_path']);
+						if(file_exists($cleanImage['destination']))
+							unlink($cleanImage['destination']);
+						if(file_exists($cleanImage['thumb_destination']))
+							unlink($cleanImage['thumb_destination']);
+						if(file_exists($cleanImage['old_path']))
+						 	unlink($cleanImage['old_path']);
 					} else {
 						// Unable to add image to the table.
 		             			$this->load->library('form_validation');
@@ -474,33 +474,33 @@ class Listings extends CI_Controller {
 			$data['currencies'] = $this->currency_model->getList();
 			$data['categories'] = $this->categories_model->getList();
 
-      //Check if this product should be hidden
-      if($this->input->post('hidden')=='on'){
-        $hidden = 1;
-      } else {
-        $hidden = 0;
-      }
+      			//Check if this product should be hidden
+      			if($this->input->post('hidden')=='on'){
+      				$hidden = 1;
+      			} else {
+      			  	$hidden = 0;
+      			}
 
 		} else {
 			// Form submission successful, add product to database.
 
-      //Check if this product should be hidden
-      if($this->input->post('hidden')=='on'){
-        $hiddenItem = 1;
-      } else {
-        $hiddenItem = 0;
-      }
-			
+		      	//Check if this product should be hidden
+      			if($this->input->post('hidden')=='on'){
+        			$hiddenItem = 1;
+      			} else {
+        			$hiddenItem = 0;
+      			}
+
 			$hash = $this->general->uniqueHash('items','itemHash');
-			$itemInfo = array(	
-            'name' 		=> $this->input->post('name'),
+			$itemInfo = array(
+					    	'name' 		=> $this->input->post('name'),
 						'description' 	=> $this->input->post('description'),
 						'category'	=> $this->input->post('categoryID'),
 						'itemHash'	=> $hash,
 						'sellerID' 	=> $this->my_session->userdata('userHash'),
 						'price'		=> $this->input->post('price'),
 						'currency'	=> $this->input->post('currency'),
-            'hidden' => $hiddenItem
+				            	'hidden' => "$hiddenItem"
       );
 
 			$submitProduct = $this->listings_model->addItem($itemInfo);

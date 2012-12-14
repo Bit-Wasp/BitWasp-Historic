@@ -17,8 +17,9 @@ class Items extends CI_Controller {
 		$count = $this->input->post('items_per_page');
 		if($count == '25' || $count == '50' || $count = '75' || $count = '100'){
 			$this->my_session->set_userdata('items_per_page',$count);
-		} 
-		redirect('items');
+		}
+		redirect('items');	
+		
 	}
 
 	// View item listings

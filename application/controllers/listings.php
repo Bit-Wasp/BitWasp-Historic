@@ -1,5 +1,6 @@
 <?php
 
+
 class Listings extends CI_Controller {
 
 	public function __construct(){
@@ -16,7 +17,7 @@ class Listings extends CI_Controller {
 	// Auth: Vendor
 	public function edit($itemHash){
 		$this->load->model('categories_model');
-    $this->load->library('form_validation');
+    		$this->load->library('form_validation');
 
 		// Check the item exists.
 		$query = $this->db->get_where('items',array('itemHash' => $itemHash));
@@ -28,10 +29,10 @@ class Listings extends CI_Controller {
 			if($itemInfo['sellerID'] == $this->my_session->userdata('userHash')){
 
 				// Finally check that the form validates correctly.
-		  if ($this->form_validation->run('editItem') == FALSE){			
+		  		if ($this->form_validation->run('editItem') == FALSE){			
 					// Form not submitted, or unsuccessful
-		      $data['title'] = 'Edit Item';
-					$data['page'] = 'items/editItem';
+		      			$data['title'] = 'Edit Item';
+					$data['page'] = 'listings/editItem';
 					$data['categories'] = $this->categories_model->getList();
 					$data['currencies'] = $this->currency_model->getList();
 					$data['item'] = $this->items_model->getInfo($itemHash);
@@ -39,44 +40,40 @@ class Listings extends CI_Controller {
 
 					// Submission successful, update the item.
 
-          //Check if this product should be hidden
-          if($this->input->post('hidden')=='on'){
-            $hiddenItem = 1;
-          } else {
-            $hiddenItem = 0;
-          }
+          				//Check if this product should be hidden
+          				if($this->input->post('hidden')=='on'){
+            					$hiddenItem = 1;
+          				} else {
+            					$hiddenItem = 0;
+          				}
 
-					$itemInfo = array(	
-                'name' => $this->input->post('name'),
-								'description' => $this->input->post('description'),
-								'category' => $this->input->post('categoryID'),
-								'price' => $this->input->post('price'),
-								'currency' => $this->input->post('currency'),
-                'hidden' => $hiddenItem
-							);
-					
+					$itemInfo = array(
+				                'name' => $this->input->post('name'),
+						'description' => $this->input->post('description'),
+						'category' => $this->input->post('categoryID'),
+						'price' => $this->input->post('price'),
+						'currency' => $this->input->post('currency'),
+				                'hidden' => "$hiddenItem"
+					);
+
 					$updateProduct = $this->listings_model->updateItem($itemHash,$itemInfo);
 					// Try to update the product with the new image
 					if($updateProduct === TRUE){
 
 						// Item has been updated
 						$data['title'] = 'Item Updated';
-						$data['returnMessage'] = "Your item has been updated. ";
+						$data['returnMessage'] = "Your item has been updated.";
 
 						// Get userHash from the session.
 						$hash = $this->my_session->userdata('userHash');
 						// Load the current users items.
 						$data['items'] = $this->items_model->userListings($hash);
-						// Load unconfirmed orders for the current user.
-						$data['newOrders'] = $this->orders_model->ordersByStep($hash,1);
-						// Load orders for dispatch
-						$data['dispatchOrders'] = $this->orders_model->ordersByStep($hash,2); 
 
 						$data['page'] = 'listings/manage';
 					} else {
 						// Update has failed. 
 						$data['title'] = 'Edit Item';
-						$data['page'] = 'items/editItem';
+						$data['page'] = 'listings/editItem';
 						$data['currencies'] = $this->currency_model->getList();
 						$data['categories'] = $this->categories_model->getList();
 						$data['returnMessage'] = "Unable to update your listing.";
@@ -92,10 +89,6 @@ class Listings extends CI_Controller {
 				$hash = $this->my_session->userdata('userHash');
 				// Load the current users items.
 				$data['items'] = $this->items_model->userListings($hash);
-				// Load unconfirmed orders for the current user.
-				$data['newOrders'] = $this->orders_model->ordersByStep($hash,1);
-				// Load orders for dispatch
-				$data['dispatchOrders'] = $this->orders_model->ordersByStep($hash,2); 
 
 				$data['page'] = 'listings/manage';
 			}
@@ -123,7 +116,6 @@ class Listings extends CI_Controller {
 	// URI: listings/
 	// Auth: Vendor
 	public function manage(){
-
 		$data['title'] = 'Manage Listings';
 		$data['page'] = 'listings/manage';
 
@@ -156,7 +148,7 @@ class Listings extends CI_Controller {
 			$data['returnMessage'] = 'This item does not exist.';
 			// Load unconfirmed orders for the current user.
 			$data['newOrders'] = $this->orders_model->ordersByStep($sellerHash,1);
-	
+
 			// Load orders for dispatch
 			$data['dispatchOrders'] = $this->orders_model->ordersByStep($sellerHash,2); 
 
@@ -224,7 +216,7 @@ class Listings extends CI_Controller {
 				// Check the user can delete this image.
 				if($itemInfo['sellerID'] == $this->my_session->userdata('userHash')){
 					// Try update the main photo.
-					if($this->items_model->fixMainPhoto($itemInfo['itemHash'],$imageInfo['imageHash'])){
+					if($this->listings_model->fixMainPhoto($itemInfo['itemHash'],$imageInfo['imageHash'])){
 						// Successful; item has been updated with new photo.
 						$data['title'] = 'Item Images';
 						$data['page'] = 'listings/images';
@@ -262,31 +254,31 @@ class Listings extends CI_Controller {
 
 	// Remove image from an item.
 	// URI: listings/imageRemove/
-	public function imageRemove($imageHash){
+	public function imageRemove($itemHash,$imageHash){
                 $this->load->library('form_validation');
 		$this->load->model('images_model');
+		$itemInfo = $this->items_model->getInfo($itemHash);
 
-		// Load information about the image.
-		$imageInfo = $this->items_model->getImageInfo($imageHash);
-		if($imageInfo === NULL){
-			// Image cannot be found.
-			$data['title'] = 'Item Images';
-			$data['page'] = 'listings/images';
-			$data['item'] = $this->items_model->getInfo($imageInfo['itemHash']);
-			$data['images'] = $this->items_model->get_item_images($imageInfo['itemHash']);
-			$data['returnMessage'] = 'This image does not exist.';		
+		if($itemInfo === NULL){
+			$data['title'] = 'Listings';
+			$data['page'] = 'listings/manage';
+			$data['returnMessage'] = 'This item does not exist.';
+			// Get userHash from the session.
+			$hash = $this->my_session->userdata('userHash');
+			// Load the current users items.
+			$data['items'] = $this->items_model->userListings($hash);	
 		} else {
-			// Load information about the item.
-			$itemInfo = $this->items_model->getInfo($imageInfo['itemHash']);
-
-			// Check the item exists
-			if($itemInfo === NULL){
-				// Item does not exist.
-				$data['title'] = 'Item Images';
-				$data['page'] = 'listings/images';
-				$data['returnMessage'] = 'Item does not exist.';
-				$data['item'] = $this->items_model->getInfo($imageInfo['itemHash']);
-				$data['images'] = $this->items_model->get_item_images($imageInfo['itemHash']);
+			// Load information about the image.
+			$imageInfo = $this->items_model->getImageInfo($imageHash);
+			if($imageInfo === NULL){
+				// Image cannot be found.
+				$data['title'] = 'Listings';	
+				$data['page'] = 'listings/manage';
+				// Get userHash from the session.
+				$hash = $this->my_session->userdata('userHash');
+				// Load the current users items.
+				$data['items'] = $this->items_model->userListings($hash);	
+				$data['returnMessage'] = 'This image does not exist.';		
 			} else {
 
 				// Check the user can delete this image.
@@ -295,17 +287,17 @@ class Listings extends CI_Controller {
 					$removeItemPhoto = FALSE;
 					$removeImage = FALSE;
 
-					// Remove the image from the item. 
+					// Remove the image from the item.
 					if($this->listings_model->removeImage($imageHash) === TRUE)
 						$removeItemPhoto = TRUE;
-						
+					
 					// Remove the image data from the table.
 					if($this->images_model->removeImage($imageHash) === TRUE)
 						$removeImage = TRUE;	
 
 					// Check if this image is the main photo, and add a new one.
-					if($itemInfo['mainPhotoHash'] == $imageHash)		
-						$this->items_model->fixMainPhoto($itemInfo['itemHash']);
+					if($itemInfo['mainPhotoHash'] == $imageHash)
+						$this->listings_model->fixMainPhoto($itemInfo['itemHash']);
 
 					$data['title'] = 'Item Images';
 					$data['page'] = 'listings/images';
@@ -330,7 +322,7 @@ class Listings extends CI_Controller {
 					$data['images'] = $this->items_model->get_item_images($imageInfo['itemHash']);
 				}
 			} 
-		} 
+		}
 		$this->load->library('layout',$data);
 	}
 
@@ -339,7 +331,7 @@ class Listings extends CI_Controller {
 	// Auth: Vendor
 	public function imageUpload($itemHash){
 		$this->load->model('images_model');
-    $this->load->library('form_validation');
+   	 	$this->load->library('form_validation');
 
 		// Check that the specified product exists.
 		$query = $this->db->get_where('items',array('itemHash' => $itemHash));
@@ -352,9 +344,9 @@ class Listings extends CI_Controller {
 				// Build the config file for the upload library.
 				$config['upload_path'] = './assets/images/';    // Path to upload to. 
 				$config['allowed_types'] = 'gif|jpg|jpeg|png';  // Allowed file types
-				$config['max_size']	= '200';
-				$config['max_width']  = '1024';
-				$config['max_height']  = '768';
+				$config['max_size']	= '1024';
+				$config['max_width']  = '2000';
+				$config['max_height']  = '2000';
 				$config['encrypt_name'] = true;			// Obfuscate filenames.
 				$this->load->library('upload', $config);	// Build upload class.
 		
@@ -372,14 +364,14 @@ class Listings extends CI_Controller {
 					$results = array('upload_data' => $this->upload->data());
 					
 					// Build the default file path to insert into the database.
-					$source = $results['upload_data']['file_path'].$results['upload_data']['raw_name'].".png";
+					$source = $results['upload_data']['file_path'].$results['upload_data']['raw_name'];
 
-					// Strip the EXIF info from the image, and return the data for the cleaned image.
-					$stripExif = array(	'full_path' => $results['upload_data']['full_path'],
+					// Resize the image and strip EXIF data, and return the data for the cleaned image.
+					$imgData = array(	'full_path' => $results['upload_data']['full_path'],
 								'raw_name' => $results['upload_data']['raw_name'],
 								'file_ext' => $results['upload_data']['file_ext'] );
 					// Returns the new file path info
-					$cleanImage = $this->my_image->stripEXIF($stripExif,$source);
+					$cleanImage = $this->my_image->resizeImage($imgData,$source);
 
 					// Get information about the item.
 					$itemInfo = $this->items_model->getInfo($itemHash);
@@ -387,7 +379,8 @@ class Listings extends CI_Controller {
 					// Build an array to add the image to the tables.
 					$imgInfo = array('item' => $itemInfo,
 							 'mainPhoto' => $this->input->post('mainPhoto'),
-							 'encoded' => $this->my_image->simpleImageEncode($cleanImage['file_name']),
+							 'encodedFull' => $this->my_image->simpleImageEncode($cleanImage['full_name']),
+							 'encodedThumb' => $this->my_image->simpleImageEncode($cleanImage['thumb_name']),
 							 'imageHash' => $this->general->uniqueHash('images','imageHash')
 							 );		
 					// Associate image with item, and add to the image table.
@@ -402,10 +395,12 @@ class Listings extends CI_Controller {
 						$data['images'] = $this->items_model->get_item_images($itemHash);
 
 						// Remove any remaining image files.
-						if(file_exists($cleanImage['destination']))
-							unlink($cleanImage['destination']);
-						if(file_exists($cleanImage['old_path']))
-						 	unlink($cleanImage['old_path']);
+				//		if(file_exists($cleanImage['destination']))
+				//			unlink($cleanImage['destination']);
+				//		if(file_exists($cleanImage['thumb_destination']))
+				//			unlink($cleanImage['thumb_destination']);
+				//		if(file_exists($cleanImage['old_path']))
+				//		 	unlink($cleanImage['old_path']);
 					} else {
 						// Unable to add image to the table.
 		             			$this->load->library('form_validation');

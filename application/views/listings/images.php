@@ -41,7 +41,7 @@
 		            <img class="productImg" src="data:image/jpeg;base64,<?=$image['encoded'];?>" title="<?=$item['name']; ?>" width="<?=$image['width'];?>" />
                 <div class="caption">
                   <?=anchor('listings/mainImage/'.$image['imageHash'],'Main', 'class="btn btn-mini"');?>
-                  <?=anchor('listings/imageRemove/'.$image['imageHash'], "<i class='icon-trash icon-white'></i> Delete", 'class="btn btn-danger btn-mini"');?>
+                  <?=anchor('listings/imageRemove/'.$item['itemHash'].'/'.$image['imageHash'], "<i class='icon-trash icon-white'></i> Delete", 'class="btn btn-danger btn-mini"');?>
                 </div>
               </div>
             </li>

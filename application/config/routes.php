@@ -64,7 +64,7 @@ $route['listings/remove/(:any)'] = 'listings/remove/$1';
 $route['listings/edit/(:any)'] = 'listings/edit/$1';
 $route['listings/images/(:any)'] = 'listings/images/$1';
 $route['listings/imageUpload/(:any)'] = 'listings/imageUpload/$1';
-$route['listings/imageRemove/(:any)'] = 'listings/imageRemove/$1';
+$route['listings/imageRemove/(:any)/(:any)'] = 'listings/imageRemove/$1/$2';
 $route['listings/mainImage/(:any)'] = 'listings/mainImage/$1';
 
 // Control a buyers orders

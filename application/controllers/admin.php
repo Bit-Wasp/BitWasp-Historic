@@ -127,7 +127,8 @@ class Admin extends CI_Controller {
 			if($this->categories_model->moveCatItems($oldCat,$destination) === TRUE){
 				$data['title'] = "Fixed Orphan Items";
 				$data['returnMessage'] = 'The orphaned items have now been reassigned.';
-				$data['page'] = 'admin/index';
+				$data['config'] = $this->my_config->loadAll();
+				$data['page'] = 'admin/siteConfig';
 			} else {
 				// Not completed properly, refer back to Category Removed page with the form.
 				$data['title'] = 'Category Removed';
@@ -189,7 +190,8 @@ class Admin extends CI_Controller {
 			if($this->categories_model->addCategory($categoryArray) === TRUE){
 				$data['title'] = 'Category Added';
 				$data['returnMessage'] = 'Your category has been created!';
-				$data['page'] = 'admin/index';
+				$data['config'] = $this->my_config->loadAll();
+				$data['page'] = 'admin/siteConfig';
 				// success!
 			} else {
 				$data['title'] = 'Add Category';
@@ -214,9 +216,6 @@ class Admin extends CI_Controller {
 	public function check_category_exists($id){
 		return  $this->categories_model->checkCategoryExists($id);
 	}
-	
-	
-
-	
+		
 };
 

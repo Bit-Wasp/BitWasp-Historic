@@ -20,7 +20,7 @@
               <li class="span2 productBox" id="prod_<?=$item['itemHash']; ?>">
                 <div class="thumbnail">
                   <div class="itemImg">
-                    <?=anchor('item/'.$item['itemHash'], "<img src='data:image/jpeg;base64,{$item['itemImgs']['encoded']}' title='{$item['name']}' height='{$item['itemImgs']['height']}' width='{$item['itemImgs']['width']}'>"); ?>
+                    <?=anchor('item/'.$item['itemHash'], "<img src='data:image/jpeg;base64,{$item['itemImgs']['encoded']}' title='{$item['name']}' width='200'>"); ?>
                   </div>
                   <div class="caption">
                     <h3><?=anchor('item/'.$item['itemHash'], $item['name']);?></h3>

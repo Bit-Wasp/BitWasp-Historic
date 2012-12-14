@@ -8,13 +8,14 @@
             <li class="span2 productBox" id="prod_<?=$item['itemHash']; ?>">
               <div class="thumbnail">
 	              <div class="itemImg">
-	                <?=anchor('item/'.$item['itemHash'], "<img src='data:image/jpeg;base64,{$item['itemImgs']['encoded']}' title='{$item['name']}' height='{$item['itemImgs']['height']}' width='{$item['itemImgs']['width']}'>"); ?>
+	                <?=anchor('item/'.$item['itemHash'], "<img src='data:image/jpeg;base64,{$item['itemImgs']['encoded']}' title='{$item['name']}' width='400'>"); ?>
 	              </div>
                 <div class="caption">
 			            <h3><?=anchor('item/'.$item['itemHash'], $item['name']);?></h3>
-			            <?=anchor("listings/edit/".$item['itemHash'], 'Edit');?> | 
-			            <?=anchor("listings/remove/".$item['itemHash'], 'Remove');?> |
-			            <?=anchor("listings/images/".$item['itemHash'], 'Images');?>
+			            <?=anchor("listings/edit/".$item['itemHash'], 'Edit');?>  | 
+			            <?=anchor("listings/images/".$item['itemHash'], 'Images');?><br />
+			            <?=anchor("listings/remove/".$item['itemHash'], 'Remove');?>
+
                   <?php if($item['hidden']) { ?>Hidden<? } ?>
 			            <!--<div class="rating">item Rating: <?=$item['rating'];?>/5</div>-->
                 </div>

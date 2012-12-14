@@ -17,7 +17,7 @@
             <?php foreach ($item['itemImgs'] as $image): ?>
             <li class="span2 productBox" id="prod_<?=$item['itemHash']; ?>">
               <div class="thumbnail">
-		            <img class="productImg" src="data:image/jpeg;base64,<?=$image['encoded'];?>" title="<?=$item['name']; ?>" width="<?=$image['width'];?>" />
+		            <img class="productImg" src="data:image/jpeg;base64,<?=$image['encoded'];?>" title="<?=$item['name']; ?>" width="500" />
               </div>
             </li>
 			      <?php endforeach ?>

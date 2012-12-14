@@ -22,7 +22,7 @@ if(isset($_GET['step'])){
 		if(!$insert){
 			echo "Unable to set up your configuration.<br />";echo mysql_error();
 		} else {
-			echo "Site configuration set up. Be sure to chmod ./assets/images and ./assets/images/captchas to writable before use.<br />";
+			echo "Site configuration set up. Be sure to chmod ./assets/images and ./assets/images/captchas to writable before use. If you wish to use mod_rewrite, be sure to update the folder in .htaccess<br />";
 		}
 
 

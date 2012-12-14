@@ -9,10 +9,13 @@ class Listings_model extends CI_Model {
 	public function removeImage($imageHash){
 		// Select the image
 		$this->db->where('imageHash',$imageHash);
-
 		// Delete image from the table.
 		$delete = $this->db->delete('itemPhotos');
-		if($delete){
+		// Repeat for the thumbnail
+		$this->db->where('imageHash',$imageHash.'thumb');
+		$deleteThumb = $this->db->delete('itemPhotos');
+
+		if($delete && $deleteThumb){
 			// Image deleted.
 			return TRUE;
 		} else {
@@ -43,15 +46,15 @@ class Listings_model extends CI_Model {
 		$query = $this->db->get_where('itemPhotos',array('itemHash' => $array['item']['itemHash']));
 		$count = $query->num_rows();
 
+                $thumbHash = $array['imageHash'].'thumb';
+                $fullHash = substr($thumbHash,0,16);
+
 		// Add image to itemPhotos
 		$imagePhoto = array(	'itemHash' => $array['item']['itemHash'],
-					'imageHash' => $array['imageHash']);
-	
-		// If unable to insert update the item with the image, return FALSE
-		if(!$this->db->insert('itemPhotos',$imagePhoto)){
-			return FALSE;
-		}
+					'imageHash' => $fullHash);
+		
 
+		$this->db->insert('itemPhotos',$imagePhoto);
 		// Check if this image is the new main image, or if there are no other images.
 		if($array['mainPhoto'] == '1' || $count == 0){
 			// Update the items table to store the mainPhoto
@@ -60,13 +63,18 @@ class Listings_model extends CI_Model {
 		}
 
 		// Encode the image and store it in the DB.
-		$image = array( 'encoded' => $array['encoded'],
-				'imageHash' => $array['imageHash'],
-				'height' => '120',
-				'width' => '160' );
+		$imageFull = array(	'encoded' => $array['encodedFull'],
+					'imageHash' => $fullHash,
+					'height' => '300',
+					'width' => '400' );
+
+		$imageThumb = array(	'encoded' => $array['encodedThumb'],
+					'imageHash' => $thumbHash,
+					'height' => '90',
+					'width' => '120' );
 
 		// Insert the image content into the table.
-		if($this->db->insert('images',$image)){
+		if($this->db->insert('images',$imageFull) && $this->db->insert('images',$imageThumb)){
 			// Success; image has been added.
 			return TRUE;
 		} else {		

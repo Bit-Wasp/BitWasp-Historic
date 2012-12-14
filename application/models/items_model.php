@@ -170,7 +170,7 @@ class Items_model extends CI_Model {
 		                	$array = $itemPhotos->row_array();
 
 					// Extract the base64 image.
-		                	$variable = $this->my_image->displayImage($array['imageHash']);
+		                	$variable = $this->my_image->displayImage($array['imageHash'].'thumb');
 				} else {
 					// Load the default image.
 					$defaultImage = $this->db->get_where('images', array('imageHash' => 'default'));

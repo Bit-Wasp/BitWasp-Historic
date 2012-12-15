@@ -8,6 +8,16 @@ class Categories_model extends CI_Model {
 		$this->load->model('items_model');
 	}
 
+	public function moveCats($oldParent,$newParent){
+		$this->db->where('parentID',$oldParent);
+		$array = array('parentID' => $newParent);
+		if($this->db->update('categories',$array)){
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
 	// Move items from one category to another.
 	public function moveCatItems($source,$destination){
 		// Select the items by the source category.
@@ -42,6 +52,13 @@ class Categories_model extends CI_Model {
 		$this->db->where('category', $catID);
 		$this->db->from('items');
 		// Return the number of items in the response.
+		return $this->db->count_all_results();
+	}
+
+	public function countSubCategories($catID){
+		$this->db->where('parentID',$catID);
+		$this->db->from('categories');
+		// Return the number of sub categories.
 		return $this->db->count_all_results();
 	}
 

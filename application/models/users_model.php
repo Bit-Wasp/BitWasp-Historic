@@ -7,6 +7,42 @@ class Users_Model extends CI_Model {
 		$this->load->library('session');
 	}
 
+	public function checkRegistrationToken($token){
+		$query = $this->db->get_where('registrationTokens',array('content' => $token));
+		if($query->num_rows() > 0){
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function removeRegistrationToken($hash){
+		$this->db->where('hash', "$hash");
+		if($this->db->delete('registrationTokens')){
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function listRegistrationTokens(){
+		$this->db->select('hash, content');
+		$query = $this->db->get('registrationTokens');
+		if($query->num_rows() > 0){
+			return $query->result_array();
+		} else {
+			return NULL;
+		}
+	}
+
+	public function addRegistrationToken($array){
+		if($this->db->insert('registrationTokens',$array)){
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
 	// Check the submitted PGP two step token against whats on record.
 	public function checkTwoStepChallenge($userID,$solution){
 		$this->db->where('userID',$userID);
@@ -70,14 +106,20 @@ class Users_Model extends CI_Model {
 	}
 	
 
-	public function addUser($userData){
+	public function addUser($userData,$token){
 		// Insert the array into the users table.
 		$query = $this->db->insert('users',$userData);
-		if($query){
-			return TRUE;
-		} else {
+		if(!$query){
 			return FALSE;
 		}
+
+		// If the user had a registration token, remove it.
+		if($token !== NULL){
+			$this->db->where('content',"$token");
+			if(!$this->db->delete('registrationTokens'))
+				return FALSE;
+		}
+		return TRUE;
 	}
 
 	// Update the last login time.

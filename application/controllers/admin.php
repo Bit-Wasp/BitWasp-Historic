@@ -10,10 +10,10 @@ class Admin extends CI_Controller {
 	public function index(){
 		$data['title'] = 'Admin Panel';
 		$data['page'] = 'admin/siteConfig';
-	
+
 		// Load the site configuration
 		$data['config'] = $this->my_config->loadAll();
-		
+
 		$this->load->library('layout',$data);
 	}
 
@@ -25,6 +25,59 @@ class Admin extends CI_Controller {
 
 		$data['title'] = 'Users';
 		$data['page'] = 'admin/users';
+		$this->load->library('layout',$data);
+	}
+
+	public function removeRegistrationToken($hash){
+		$this->load->library('form_validation');
+		if($this->users_model->removeRegistrationToken($hash)){
+			$data['returnMessage'] = 'The selected token has been removed.';
+		} else {
+			$data['returnMessage'] = 'Unable to delete the token.';
+		}
+		$data['title'] = 'Delete Token';
+		$data['page'] = 'admin/registrationTokens';
+		$data['tokens'] = $this->users_model->listRegistrationTokens();
+		$this->load->library('layout',$data);
+	}
+
+	public function registrationTokens(){
+		$this->load->library('form_validation');
+		$this->load->model('users_model');
+
+		if($this->input->post('newToken') == 'Generate'){
+			$random = $this->general->randHash('64');
+			$c = 0;		$inc = 0;
+			$newtoken = '';
+
+			while($c < 64){
+				$inc = mt_rand(5,20);
+				$oldc = $c;
+				$c += $inc;
+
+				if($c < 64)
+					$newtoken .=substr($random,$oldc,$c).'-';
+			}
+			$token = substr($newtoken,0,(count($newtoken)-2));
+
+			$array = array(	'content'	=> $token,
+					'hash'		=> $this->general->uniqueHash('registrationTokens','hash')
+				);
+
+			if($this->users_model->addRegistrationToken($array)){
+				$data['returnMessage'] = "Your token has been created.";
+			} else {
+				$data['returnMessage'] = "Unable to create the new token.";
+			}
+
+			$data['page'] = 'admin/registrationTokens';
+			$data['title'] = 'Registration Token';
+		} else {
+			$data['page'] = 'admin/registrationTokens';
+			$data['title'] = 'Registration Token';
+		}
+
+		$data['tokens'] = $this->users_model->listRegistrationTokens();
 		$this->load->library('layout',$data);
 	}
 
@@ -106,8 +159,10 @@ class Admin extends CI_Controller {
 	}
 
 	public function fixOrphans(){
+		$data['config'] = $this->my_config->loadAll();
+
 		$this->load->library('form_validation');
-			
+
 		if($this->form_validation->run('fixOrphanCategories') == FALSE){
 			// Not completed properly, refer back to Category Removed page with the form.
 			$data['title'] = 'Category Removed';
@@ -118,31 +173,61 @@ class Admin extends CI_Controller {
 			$categoryID = $this->input->post('oldCat');
 			$data['oldCat'] = $categoryID;
 			$data['currentCats'] = $this->categories_model->getList();
-			$data['countSpare'] = $this->categories_model->countCategoryItems($categoryID);
+			$data['countSpareItems'] = $this->categories_model->countCategoryItems($categoryID);
+                        $data['countSpareCats'] = $this->categories_model->countSubCategories($categoryID);
 
 		} else {
-			// Form submission successful
-			$destination = $this->input->post('categoryID');
-			$oldCat = $this->input->post('oldCat');
-			if($this->categories_model->moveCatItems($oldCat,$destination) === TRUE){
-				$data['title'] = "Fixed Orphan Items";
-				$data['returnMessage'] = 'The orphaned items have now been reassigned.';
-				$data['config'] = $this->my_config->loadAll();
-				$data['page'] = 'admin/siteConfig';
-			} else {
-				// Not completed properly, refer back to Category Removed page with the form.
-				$data['title'] = 'Category Removed';
-				$data['page'] = 'admin/removeCategorySuccess';
+			
+			if($this->input->post('move_items')=='Move'){
+
+				// Form submission successful
+				$destination = $this->input->post('categoryID');
+				$oldCat = $this->input->post('oldCat');
+				if($this->categories_model->moveCatItems($oldCat,$destination) === TRUE){
+					$data['title'] = "Fixed Orphan Items";
+					$data['returnMessage'] = 'The orphaned items have now been reassigned.';
+					$data['page'] = 'admin/siteConfig';
+				} else {
+					// Not completed properly, refer back to Category Removed page with the form.
+					$data['title'] = 'Category Removed';
+					$data['page'] = 'admin/removeCategorySuccess';
+					
+					// Need to see how many orphaned products there are.
+					$categoryID = $this->input->post('oldCat');	
+					$data['oldCat'] = $categoryID;
+					$data['currentCats'] = $this->categories_model->getList();
+					$data['countSpareItems'] = $this->categories_model->countCategoryItems($categoryID);
+	                                $data['countSpareCats'] = $this->categories_model->countSubCategories($categoryID);
 	
-				// Need to see how many orphaned products there are.
-				$categoryID = $this->input->post('oldCat');	
-				$data['oldCat'] = $categoryID;
-				$data['currentCats'] = $this->categories_model->getList();
-				$data['countSpare'] = $this->categories_model->countCategoryItems($categoryID);
+				}
+			} else if($this->input->post('move_cats')=='Move'){
+
+                                // Form submission successful
+                                $destination = $this->input->post('categoryID');
+                                $oldCat = $this->input->post('oldCat');
+                                if($this->categories_model->moveCats($oldCat,$destination) === TRUE){
+                                        $data['title'] = "Fixed Orphan Categories";
+                                        $data['returnMessage'] = 'The orphaned categories items have been assigned to a new parent.';
+                                        $data['page'] = 'admin/siteConfig';
+					$data['config'] = $this->my_config->loadAll();
+                                } else {
+                                        // Not completed properly, refer back to Category Removed page with the form.
+                                        $data['title'] = 'Category Removed';
+                                        $data['page'] = 'admin/removeCategorySuccess';
+
+                                        // Need to see how many orphaned products there are.
+                                        $categoryID = $this->input->post('oldCat');     
+                                        $data['oldCat'] = $categoryID;
+                                        $data['currentCats'] = $this->categories_model->getList();
+                                        $data['countSpareItems'] = $this->categories_model->countCategoryItems($categoryID);
+                                        $data['countSpareCats'] = $this->categories_model->countSubCategories($categoryID);
+        
+                                }
+
+
 			}
 		}
 		$this->load->library('layout',$data);
-
 	}
 
 	public function removeCategory(){
@@ -163,7 +248,8 @@ class Admin extends CI_Controller {
 				// Need to see how many orphaned products there are.
 				$data['oldCat'] = $categoryID;
 				$data['currentCats'] = $this->categories_model->getList();
-				$data['countSpare'] = $this->categories_model->countCategoryItems($categoryID);
+				$data['countSpareItems'] = $this->categories_model->countCategoryItems($categoryID);
+				$data['countSpareCats'] = $this->categories_model->countSubCategories($categoryID);
 			} else {
 				// Problem removing category.
 				$data['title'] = 'Remove Category';

@@ -209,8 +209,13 @@ class Users extends CI_Controller {
 
 
 	// Register function
-	public function register(){
-		if($this->my_config->registration_allowed() == 'Disabled')
+	public function register($token = NULL){
+		// Check if registration is disallowed, and if there isn't a token: redirect back to the login page.
+		if($this->my_config->registration_allowed() == 'Disabled' && $token == NULL)
+			redirect('users/login');
+
+		// Check if the token is set, and is invalid: redirect to the login page.
+		if(	$token !== NULL && $this->check_registration_token($token) == FALSE)
 			redirect('users/login');
 
 		// Check if the user is currently logged in.
@@ -223,6 +228,7 @@ class Users extends CI_Controller {
 		//Set some defaults for forms etc.
 		$this->form_validation->set_error_delimiters('<span class="form-error">', '</span>');
 		$data['force_vendor_PGP'] = $this->my_config->force_vendor_PGP();
+		$data['token'] = $token;
 
 		// Run form validation
 		if ($this->form_validation->run('register') == FALSE){
@@ -231,7 +237,7 @@ class Users extends CI_Controller {
                    	$data['page'] = 'users/register'; 
 			$data['captcha'] = $this->my_captcha->generateCaptcha($this->my_config->captcha_length());
 		} else {
-			// Form validation successful
+			// Form validation successful 
 
 			// Generate the password
 			$salt = $this->general->generateSalt();
@@ -248,7 +254,7 @@ class Users extends CI_Controller {
 						'userHash' => $this->general->uniqueHash('users','userHash'),
 						'userRole' => $userRole );						
 			// Call addUser() function in the model to add the user.
-			$register = $this->users_model->addUser($registerInfo);
+			$register = $this->users_model->addUser($registerInfo,$token);
 
 			// Check the submission
 			if($register){
@@ -282,8 +288,11 @@ class Users extends CI_Controller {
 
 	// Check the captcha is correct.
 	public function check_captcha($string){
-		$result = $this->my_captcha->checkCode($string);
-		return $result;
+		return $this->my_captcha->checkCode($string);
+	}
+
+	public function check_registration_token($content){
+		return $this->users_model->checkRegistrationToken($content);
 	}
 
 	// Check the role is valid.

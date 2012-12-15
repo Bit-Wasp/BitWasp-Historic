@@ -75,8 +75,11 @@ class General {
         }
 
 	// Generate an identifying hash for users, items, etc.
-	public function randHash(){
-		return substr($this->hashFunction($this->generateSalt(),$this->generateSalt()),0,16);
+	public function randHash($length = '16'){
+		if($length > '64')
+			return false;
+
+		return substr($this->hashFunction($this->generateSalt(),$this->generateSalt()),0,$length);
 	}
 
 	// Generate a unique hash for the specified table/column.

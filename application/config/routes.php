@@ -44,6 +44,7 @@ $route['users'] = 'users/login';
 $route['users/login'] = 'users/login';
 $route['users/logout'] = 'users/logout';
 $route['users/register'] = 'users/register';
+$route['users/register/(:any)'] = 'users/register/$1';
 $route['users/logoutInactivity'] = 'users/logoutInactivity';
 $route['users/twoStep'] = 'users/twoStep';
 $route['users/registerPGP'] = 'users/registerPGP';
@@ -120,6 +121,10 @@ $route['admin/updateConfig'] = 'admin/updateConfig';
 $route['admin/users'] = 'admin/users';
 $route['admin/user'] = 'admin/users';
 $route['admin/user/(:any)'] = 'admin/users/$1';
+$route['admin/regTokens'] = 'admin/registrationTokens';
+$route['admin/regTokens/create'] = 'admin/registrationTokens';
+$route['admin/regTokens/delete'] = 'admin/registrationTokens';
+$route['admin/regTokens/delete/(:any)'] = 'admin/removeRegistrationToken/$1';
 
 //Redirect pages as default
 $route['default_controller'] = 'users/login';

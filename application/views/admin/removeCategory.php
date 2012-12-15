@@ -1,24 +1,30 @@
-<div class='mainContent'>
-Complete the form to remove the category.
+        <div class="span9 mainContent" id="remove_Menu_Category">
+          <h2>Remove Category</h2>
+          <p>Complete the form to remove a category.</p>
+          <?php echo form_open('admin/category/remove', array('class' => 'form-horizontal')); ?>
+            <fieldset>
+              <?php if(isset($returnMessage)) echo '<div class="alert">' . $returnMessage . '</div>'; ?>
 
-<?php echo form_open('admin/category/remove'); ?>
+              <div class="control-group">
+                <label class="control-label" for="category">Category</label>
+                <div class="controls">
+		  <select name='categoryID'>
+        	  <?php foreach ($subCats as $subCat): ?>
+                    <option value='<?=$subCat['id'];?>'><?=$subCat['name'];?></option>
+        	  <?php endforeach ?>
+		  </select><br />
 
-<fieldset>
-<?php echo validation_errors(); ?>
+                  <span class="help-inline"><?php echo form_error('catID'); ?></span>
+		</div>
+	      </div>
 
-<label for='parent'>Category</label> 
-<select name='categoryID'>
-	<?php foreach ($subCats as $subCat): ?>
-		<option value='<?=$subCat['id'];?>'><?=$subCat['name'];?></option>
-	<?php endforeach ?>
-</select><br />
-
-<br /><br />
-<label for="submit"><input type='submit' value='Submit' /></label><br />
-</form>
-</fieldset>
+              <div class="form-actions">
+                <input type='submit' class="btn btn-primary" value="Remove" />
+                <?=anchor('admin', 'Cancel', 'class="btn"');?>
+              </div>
+            </fieldset>
+          </form>
+        </div>
 
 
-
-</div>
 

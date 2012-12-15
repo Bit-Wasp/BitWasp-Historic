@@ -9,7 +9,7 @@
                 <label class="control-label" for="name">Name</label>
                 <div class="controls">
                   <input type='text' name='name' value="<?php echo set_value('name'); ?>" />
-                  <span class="help-inline"><?php echo form_error('password'); ?></span>
+                  <span class="help-inline"><?php echo form_error('name'); ?></span>
                 </div>
               </div>
 

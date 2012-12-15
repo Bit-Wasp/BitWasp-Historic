@@ -1,6 +1,11 @@
           <div class="offset3 span6">
             <h2>Register</h2>
-            <?php echo form_open('users/register', array('class' => 'form-horizontal')); ?>
+            <?php 
+	    $registerPage = 'users/register';
+   	    if($token !== NULL)
+		$registerPage .= "/$token";
+	    echo form_open($registerPage, array('class' => 'form-horizontal')); ?>
+
               <fieldset>
                 <?php if(isset($returnMessage)) echo $returnMessage; ?>
                 <div class="control-group">

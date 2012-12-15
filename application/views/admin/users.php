@@ -1,4 +1,5 @@
         <div class="span9 mainContent" id="admin-users">
+	<?=anchor('admin/regTokens','Registration Tokens','class="btn btn-primary"');?><br /><br />
 	<div class="container-fluid">
 	<?php
 	if($userHash == NULL){

@@ -70,9 +70,9 @@ class General {
 	}
 
 	// Hash a string with a salt.
-        public function hashFunction($pass,$salt){
-                return hash('sha256',$pass.hash('sha256',$salt));
-        }
+	public function hashFunction($pass,$salt){
+			 return hash('sha256',$pass.hash('sha256',$salt));
+	}
 
 	// Generate an identifying hash for users, items, etc.
 	public function randHash($length = '16'){

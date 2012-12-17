@@ -5,19 +5,19 @@
 	        <?php if(count($items) > 0){ ?>
           <ul id="item_listing" class="thumbnails">
 		        <? foreach ($items as $item): ?>
-            <li class="span2 productBox" id="prod_<?=$item['itemHash']; ?>">
+            <li class="span2 productBox" id="prod_<?php echo $item['itemHash']; ?>">
               <div class="thumbnail">
 	              <div class="itemImg">
-	                <?=anchor('item/'.$item['itemHash'], "<img src='data:image/jpeg;base64,{$item['itemImgs']['encoded']}' title='{$item['name']}' width='400'>"); ?>
+	                <?php echo anchor('item/'.$item['itemHash'], "<img src='data:image/jpeg;base64,{$item['itemImgs']['encoded']}' title='{$item['name']}' width='400'>"); ?>
 	              </div>
                 <div class="caption">
-			            <h3><?=anchor('item/'.$item['itemHash'], $item['name']);?></h3>
-			            <?=anchor("listings/edit/".$item['itemHash'], 'Edit');?>  | 
-			            <?=anchor("listings/images/".$item['itemHash'], 'Images');?><br />
-			            <?=anchor("listings/remove/".$item['itemHash'], 'Remove');?>
+			            <h3><?php echo anchor('item/'.$item['itemHash'], $item['name']);?></h3>
+			            <?php echo anchor("listings/edit/".$item['itemHash'], 'Edit');?>  | 
+			            <?php echo anchor("listings/images/".$item['itemHash'], 'Images');?><br />
+			            <?php echo anchor("listings/remove/".$item['itemHash'], 'Remove');?>
 
                   <?php if($item['hidden']) { ?>Hidden<? } ?>
-			            <!--<div class="rating">item Rating: <?=$item['rating'];?>/5</div>-->
+			            <!--<div class="rating">item Rating: <?php echo $item['rating'];?>/5</div>-->
                 </div>
               </div>
 		        </li>
@@ -27,6 +27,6 @@
 		        You have no listings!
 	        <? } ?>
 	        <div class="form-actions">
-            <?=anchor("listings/create","Create a new listing", 'class="btn btn-primary"'); ?>
+            <?php echo anchor("listings/create","Create a new listing", 'class="btn btn-primary"'); ?>
           </div>
         </div>

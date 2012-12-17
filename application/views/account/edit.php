@@ -8,7 +8,7 @@
               <div class="control-group">
                 <label class="control-label" for='profileMessage'>Profile Message</label>
                 <div class="controls">
-                  <textarea name='profileMessage' cols='50'><?=$account['profileMessage'];?></textarea>
+                  <textarea name='profileMessage' cols='50'><?php echo $account['profileMessage'];?></textarea>
                   <span class="help-inline"><?php echo form_error('profileMessage'); ?></span>
                 </div>
               </div>
@@ -18,9 +18,9 @@
                 <label class="control-label" for="pubKey">PGP Public Key</label>
                 <div class="controls">
                   <?php if($account['pubKey'] == 'No Public Key found.'){?>
-                    <textarea class="span10" name='pubKey' rows="10"><?=$account['pubKey'];?></textarea><br />
+                    <textarea class="span10" name='pubKey' rows="10"><?php echo $account['pubKey'];?></textarea><br />
                   <?php } else { ?>
-                    <?=$account['displayFingerprint'];?>
+                    <?php echo $account['displayFingerprint'];?>
                   <?php } ?>
                   <span class="help-inline"><?php echo form_error('pubKey'); ?></span>
                 </div>
@@ -86,7 +86,7 @@
 		  $unit = 25;
 		  for($i = 1; $i < 5; $i++){?>
 		  <label class="radio inline">
-                    <input type='radio' name='items_per_page' value='<?=$unit*$i;?>' <?php if($account['items_per_page']==($unit*$i)) echo "CHECKED";?> /> <?=$unit*$i;?>
+                    <input type='radio' name='items_per_page' value='<?php echo $unit*$i;?>' <?php if($account['items_per_page']==($unit*$i)) echo "CHECKED";?> /> <?php echo $unit*$i;?>
                   </label>
 		  <?php } ?>
                   <span class='help-inline'><?php echo form_error('items_per_page'); ?></span>
@@ -122,7 +122,7 @@
 
               <div class="form-actions">
                 <input type='submit' class="btn btn-primary" value="Update" />
-                <?=anchor('account', 'Cancel', 'class="btn"');?>
+                <?php echo anchor('account', 'Cancel', 'class="btn"');?>
               </div>
             </fieldset>
           </form>

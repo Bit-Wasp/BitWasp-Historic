@@ -4,7 +4,7 @@
               <fieldset>
                 <?php if(isset($returnMessage)) echo '<div class="alert">' . $returnMessage . '</div>'; ?>
                 <p>Decrypt the following PGP text and enter it below:</p>
-                <pre class="well"><?=$challenge;?></pre>
+                <pre class="well"><?php echo $challenge;?></pre>
 
                 <div class="control-group">
                   <label class="control-label" for="solution">Token</label>
@@ -16,7 +16,7 @@
 
                 <div class="form-actions">
                   <button type='submit' class="btn btn-primary">Proceed</button>
-                  <?=anchor('users/login', 'Cancel', 'title="Cancel" class="btn"');?>
+                  <?php echo anchor('users/login', 'Cancel', 'title="Cancel" class="btn"');?>
                 </div>
               <fieldset>
             </form>

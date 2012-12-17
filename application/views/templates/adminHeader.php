@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title><?php echo $title ?> | <?=$site_name;?></title>
-    <link rel="stylesheet" type="text/css" href="<?=base_url(); ?>assets/css/bootstrap.min.css">
+    <title><?php echo $title ?> | <?php echo $site_name;?></title>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -13,7 +13,7 @@
         padding: 9px 0;
       }
     </style>
-    <?=$header_meta; ?>
+    <?php echo $header_meta; ?>
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -24,15 +24,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="<?=site_url(); ?>"><?=$site_name;?></a>
+          <a class="brand" href="<?php echo site_url(); ?>"><?php echo $site_name;?></a>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
-              <li><?=anchor('home', 'Home', 'title="Home"');?></li>
-              <li><?=anchor('items', 'Items', 'title="Items"');?></li>
-              <li><?=anchor('admin', 'Admin Panel', 'title="Admin Panel"');?></li>
-              <li><?=anchor('messages', 'Messages ('.$unreadMessages.')', 'title="Messages"');?></li>
-              <li><?=anchor('account', 'Account', 'title="Account"');?></li>
-              <li><?=anchor('users/logout', 'Logout', 'title="Logout"');?></li>
+              <li><?php echo anchor('home', 'Home', 'title="Home"');?></li>
+              <li><?php echo anchor('items', 'Items', 'title="Items"');?></li>
+              <li><?php echo anchor('admin', 'Admin Panel', 'title="Admin Panel"');?></li>
+              <li><?php echo anchor('messages', 'Messages ('.$unreadMessages.')', 'title="Messages"');?></li>
+              <li><?php echo anchor('account', 'Account', 'title="Account"');?></li>
+              <li><?php echo anchor('users/logout', 'Logout', 'title="Logout"');?></li>
             </ul>
           </div>
         </div>

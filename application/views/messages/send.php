@@ -7,7 +7,7 @@
               <div class="control-group">
                 <label class="control-label" for="recipient">Recipient</label>
                 <div class="controls">
-                  <input type='text' name='recipient' value="<?=$to?>" />
+                  <input type='text' name='recipient' value="<?php echo $to?>" />
                   <span class="help-inline"><?php echo form_error('recipient'); ?></span>
                 </div>
               </div>
@@ -23,7 +23,7 @@
               <div class="control-group">
                 <label class="control-label" for="message">Message</label>
                 <div class="controls">
-                  <textarea name="message"><?=set_value('message'); ?></textarea>
+                  <textarea name="message"><?php echo set_value('message'); ?></textarea>
                   <span class="help-inline"><?php echo form_error('message'); ?></span>
                 </div>
               </div>
@@ -49,11 +49,11 @@
 		</div>
 	      </div>	*/ ?>
 
-              <textarea style="display:none;" name="pubkey"><?=$publickey; ?></textarea><br />
+              <textarea style="display:none;" name="pubkey"><?php echo $publickey; ?></textarea><br />
 
               <div class="form-actions">
                 <input type='submit' class="btn btn-primary" value="Send" onclick='messageEncrypt()' />
-                <?=anchor('messages', 'Cancel', 'class="btn"');?>
+                <?php echo anchor('messages', 'Cancel', 'class="btn"');?>
               </div>
             </fieldset>
           </form>

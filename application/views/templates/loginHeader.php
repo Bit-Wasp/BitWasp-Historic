@@ -2,15 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title><?php echo $title ?> | <?=$site_name;?></title>
+    <title><?php echo $title ?> | <?php echo $site_name;?></title>
     <style type="text/css">
       body {
         padding-top: 60px;
         padding-bottom: 40px;
       }
     </style>
-    <link rel="stylesheet" type="text/css" href="<?=base_url(); ?>assets/css/bootstrap.min.css">
-    <?=$header_meta; ?>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
+    <?php echo $header_meta; ?>
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -21,12 +21,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="<?=site_url(); ?>"><?=$site_name;?></a>
+          <a class="brand" href="<?php echo site_url(); ?>"><?php echo $site_name;?></a>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
-              <li><?=anchor('users/login', 'Login', 'title="Login"');?></li>
+              <li><?php echo anchor('users/login', 'Login', 'title="Login"');?></li>
 		<?php if($allow_reg == 'Enabled'){?>
-              <li><?=anchor('users/register', 'Register', 'title="Register"');?></li>
+              <li><?php echo anchor('users/register', 'Register', 'title="Register"');?></li>
 		<?php } ?>
             </ul>
           </div>

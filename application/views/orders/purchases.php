@@ -6,11 +6,11 @@
 	        $countNew = count($newOrders);
 	        $countSend = count($dispatchOrders);	
 	        if($countNew > 0){	// If we're waiting on payment, how the link and the number. ?>
-	        <a href="#payment">Waiting Payment (<?=$countNew;?>)</a> 
+	        <a href="#payment">Waiting Payment (<?php echo $countNew;?>)</a> 
 	        <?php  }
 	        if($countSend > 0){ 	// If we're waiting for the vendor to dispatch, show it. 
 		        if($countNew > 0){ echo " | "; }?>
-		        <a href="#dispatch">For Dispatch (<?=$countSend;?>)</a> 
+		        <a href="#dispatch">For Dispatch (<?php echo $countSend;?>)</a> 
 	        <?php } 
 
 	        if($countSend == 0 && $countNew == 0){?>
@@ -33,20 +33,20 @@
               </thead>
 			        <?php foreach($newOrders as $order): // Loop through the orders?>
 			        <tr>
-				        <td><?=anchor("user/".$order['buyer']['userHash'], $order['buyer']['userName']); ?></td>
+				        <td><?php echo anchor("user/".$order['buyer']['userHash'], $order['buyer']['userName']); ?></td>
 				        <td>
 					        <ul><?php foreach($order['items'] as $item): // Loop through items in the order ?>
-						        <li><?=$item['quantity'];?></li>
+						        <li><?php echo $item['quantity'];?></li>
 					        <?php endforeach; ?></ul>
 				        </td>
 				        <td>
 					        <ul><?php foreach($order['items'] as $item): // Loop through items in the order ?>
-						        <li><?=$item['name'];?></li>
+						        <li><?php echo $item['name'];?></li>
 					        <?php endforeach; ?></ul>
 				        </td>
-				        <td><?=$order['currencySymbol'].$order['totalPrice'];?></td>
-				        <td><?=$order['dispTime'];?></td>
-				        <td><?=anchor('payment/confirm/'.$order['buyer']['userHash'], 'Click to confirm payment.');?></td>
+				        <td><?php echo $order['currencySymbol'].$order['totalPrice'];?></td>
+				        <td><?php echo $order['dispTime'];?></td>
+				        <td><?php echo anchor('payment/confirm/'.$order['buyer']['userHash'], 'Click to confirm payment.');?></td>
 			        </tr>
 			        <?php endforeach; ?>
 		        </table>
@@ -68,20 +68,20 @@
 			        </thead>
 			        <?php foreach($dispatchOrders as $order): // Loop through each order ?>
 			        <tr>
-				        <td><?=anchor("user/".$order['buyer']['userHash'], $order['buyer']['userName']); ?></td>
+				        <td><?php echo anchor("user/".$order['buyer']['userHash'], $order['buyer']['userName']); ?></td>
 				        <td>
 					        <ul><?php foreach($order['items'] as $item): // Loop through items in the order ?>
-						        <li><?=$item['quantity'];?></li>
+						        <li><?php echo $item['quantity'];?></li>
 					        <?php endforeach; ?></ul>
 				        </td>
 				        <td>
 					        <ul><?php foreach($order['items'] as $item): // Loop through items in the order ?>
-						        <li><?=$item['name'];?></li>
+						        <li><?php echo $item['name'];?></li>
 					        <?php endforeach; ?></ul>
 				        </td>
-				        <td><?=$order['currencySymbol'].$order['totalPrice'];?></td>
-				        <td><?=$order['dispTime'];?></td>
-				        <td><?=anchor('dispatch/confirm/'.$order['buyer']['userHash'], 'Click to confirm dispatch.');?></td>
+				        <td><?php echo $order['currencySymbol'].$order['totalPrice'];?></td>
+				        <td><?php echo $order['dispTime'];?></td>
+				        <td><?php echo anchor('dispatch/confirm/'.$order['buyer']['userHash'], 'Click to confirm dispatch.');?></td>
 			        </tr>
 			        <?php endforeach; ?>
 		        </table>

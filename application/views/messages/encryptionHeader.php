@@ -1,10 +1,10 @@
-<script language="Javascript" src="<?=base_url(); ?>assets/js/rsa.js" type="text/javascript"></script>
-<script language="Javascript" src="<?=base_url(); ?>assets/js/aes-enc.js" type="text/javascript"></script>
-<script language="Javascript" src="<?=base_url(); ?>assets/js/sha1.js" type="text/javascript"></script>
-<script language="Javascript" src="<?=base_url(); ?>assets/js/base64.js" type="text/javascript"></script>
-<script language="Javascript" src="<?=base_url(); ?>assets/js/PGpubkey.js" type="text/javascript"></script>
-<script language="Javascript" src="<?=base_url(); ?>assets/js/mouse.js" type="text/javascript"></script>
-<script language="Javascript" src="<?=base_url(); ?>assets/js/PGencode.js" type="text/javascript"></script>
+<script language="Javascript" src="<?php echo base_url(); ?>assets/js/rsa.js" type="text/javascript"></script>
+<script language="Javascript" src="<?php echo base_url(); ?>assets/js/aes-enc.js" type="text/javascript"></script>
+<script language="Javascript" src="<?php echo base_url(); ?>assets/js/sha1.js" type="text/javascript"></script>
+<script language="Javascript" src="<?php echo base_url(); ?>assets/js/base64.js" type="text/javascript"></script>
+<script language="Javascript" src="<?php echo base_url(); ?>assets/js/PGpubkey.js" type="text/javascript"></script>
+<script language="Javascript" src="<?php echo base_url(); ?>assets/js/mouse.js" type="text/javascript"></script>
+<script language="Javascript" src="<?php echo base_url(); ?>assets/js/PGencode.js" type="text/javascript"></script>
 <script language="Javascript" type="text/javascript">
 //Encrypt the user's message with the recipients PGP key
 function messageEncrypt()

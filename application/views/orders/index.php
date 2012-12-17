@@ -19,7 +19,7 @@
 			          $recount = 0;			
 			          foreach($orders as $order): ?>
 		          <tr>
-			          <td><?=anchor('user/'.$order['seller']['userHash'], $order['seller']['userName']);?></td>
+			          <td><?php echo anchor('user/'.$order['seller']['userHash'], $order['seller']['userName']);?></td>
 			          <td><?php
 				
 				          if($order['step'] == '0'){
@@ -28,7 +28,7 @@
 					          <?php foreach($order['items'] as $item){
 						          echo "<select name='quantity[{$order['seller']['userHash']}][{$item['itemHash']}]' autocomplete=\"off\">\n";
 						          for($i = 0; $i < 11; $i++){?>
-							          <option value="<?=$i;?>" <?php if($i == $item['quantity']){ echo "selected=\"selected\""; }?>><?=$i;?></option>
+							          <option value="<?php echo $i;?>" <?php if($i == $item['quantity']){ echo "selected=\"selected\""; }?>><?php echo $i;?></option>
 						          <?php }		
 						          echo "</select><br/>";
 					          }?>
@@ -36,7 +36,7 @@
 				          <?php } else {
 					          foreach($order['items'] as $item):?>
 				
-					          <?=$item['quantity'];?><br />
+					          <?php echo $item['quantity'];?><br />
 				
 					          <?php endforeach;
 				          } ?>
@@ -45,16 +45,16 @@
 			          <td><ul><?php foreach($order['items'] as $item): ?>
 				          <li>
 					          <?php if($item['itemHash'] == 'removed'){?>
-						          <?=$item['name'];?>
+						          <?php echo $item['name'];?>
 					          <?php } else { ?>
-						          <?=anchor('item/'.$item['itemHash'], $item['name']);?>
+						          <?php echo anchor('item/'.$item['itemHash'], $item['name']);?>
 					
 						
 					          <?php } ?>
 				          </li>
 			          <?php endforeach; ?></ul>
-			          <td><?=$order['currencySymbol'].$order['totalPrice'];?></td>
-			          <td><?=$order['progress']?></td>
+			          <td><?php echo $order['currencySymbol'].$order['totalPrice'];?></td>
+			          <td><?php echo $order['progress']?></td>
 		          </tr>
 		          <?php endforeach; ?>
 	          </table>

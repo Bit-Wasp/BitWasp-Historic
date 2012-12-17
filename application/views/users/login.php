@@ -23,7 +23,7 @@
              <div class="control-group">
                 <label class="control-label" for="captcha">Captcha</label>
                 <div class="controls">
-                  <div class="captcha-img"><?=$captcha['image'];?></div>
+                  <div class="captcha-img"><?php echo $captcha['image'];?></div>
                 </div>
               </div>
               <div class="control-group">
@@ -36,7 +36,7 @@
 
               <div class="form-actions">
                 <button type='submit' class="btn btn-primary">Login</button>
-                <?=anchor('users/register', 'Register?', 'title="Register" class="btn"');?>
+                <?php echo anchor('users/register', 'Register?', 'title="Register" class="btn"');?>
               </div>
             </fieldset>
           </form>

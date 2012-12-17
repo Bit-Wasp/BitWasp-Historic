@@ -19,7 +19,7 @@
                   <select name='parentID'>
 		                <option value='0'>Root Category</option>
 	                  <?php foreach ($subCats as $subCat): ?>
-		                <option value='<?=$subCat['id'];?>'><?=$subCat['name'];?></option>
+		                <option value='<?php echo $subCat['id'];?>'><?php echo $subCat['name'];?></option>
 	                  <?php endforeach ?>
                   </select>
                   <span class="help-inline"><?php echo form_error('parentID'); ?></span>
@@ -36,7 +36,7 @@
 
               <div class="form-actions">
                 <input type='submit' class="btn btn-primary" value="Add" />
-                <?=anchor('admin', 'Cancel', 'class="btn"');?>
+                <?php echo anchor('admin', 'Cancel', 'class="btn"');?>
               </div>
             </fieldset>
           </form>

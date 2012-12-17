@@ -7,7 +7,7 @@
 <pre>
 		<?php if(count($tokens) > 0) { 
 			foreach ($tokens as $token): ?>
-			<br /><?=	anchor('users/register/'.$token['content'],$token['content']).'  '.
+			<br /><?php echo 	anchor('users/register/'.$token['content'],$token['content']).'  '.
 					anchor('admin/regTokens/delete/'.$token['hash'], 'Delete'); ?>
 		<?php 	endforeach; } ?>
 </pre>

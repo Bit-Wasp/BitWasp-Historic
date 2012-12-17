@@ -25,7 +25,7 @@
                 <div class="controls">
                   <select name='categoryID'>
 	                  <?php foreach ($categories as $subCat): ?>
-		                  <option value='<?=$subCat['id'];?>'><?=$subCat['name'];?></option>
+		                  <option value='<?php echo $subCat['id'];?>'><?php echo $subCat['name'];?></option>
 	                  <?php endforeach ?>
                   </select>
                   <span class="help-inline"><?php echo form_error('categoryID'); ?></span>
@@ -48,7 +48,7 @@
                 <div class="controls">
                   <select name='currency'>
 	                  <?php foreach ($currencies as $currency): ?>
-		                  <option value='<?=$currency['id'];?>'><?=$currency['name'];?> (<?=$currency['symbol'];?>)</option>
+		                  <option value="<?php echo $currency['id'];?>"><?php echo $currency['name'];?> (<?php echo $currency['symbol'];?>)</option>
 	                  <?php endforeach ?>
                   </select>
                   <span class="help-inline"><?php echo form_error('currency'); ?></span>
@@ -65,7 +65,7 @@
 
 	            <div class="form-actions">
                 <input type="submit" value="Create" class="btn btn-primary" />
-                <?=anchor("listings","Cancel", 'class="btn"'); ?>
+                <?php echo anchor("listings","Cancel", 'class="btn"'); ?>
               </div>
             </fieldset>
           </form>

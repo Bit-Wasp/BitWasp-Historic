@@ -4,7 +4,7 @@
 		<?php if($countSpareItems > 0){ ?>
 	  <p>Some items were orphaned as a result, you need to move them to a new category.</p>
 	  <?php echo form_open('admin/category/fixOrphans'); ?>
-	  <input type='hidden' name='oldCat' value='<?=$oldCat;?>' />
+	  <input type='hidden' name='oldCat' value='<?php echo $oldCat;?>' />
           <fieldset>
 
               <div class="control-group">
@@ -12,7 +12,7 @@
                 <div class="controls">
 		  <select name='categoryID'>
 		  <?php foreach ($currentCats as $subCat): ?>
-		    <option value='<?=$subCat['id'];?>'><?=$subCat['name'];?></option>
+		    <option value="<?php echo $subCat['id'];?>"><?php echo $subCat['name'];?></option>
 		<?php endforeach ?>
 		  </select><br /><br />
 
@@ -22,7 +22,7 @@
 
               <div class="form-actions">
                 <input type='submit' class="btn btn-primary" name='move_items' value="Move" />
-                <?=anchor('admin', 'Cancel', 'class="btn"');?>
+                <?php echo anchor('admin', 'Cancel', 'class="btn"');?>
               </div>
             </fieldset>
           </form>
@@ -32,7 +32,7 @@
 
           <p>Several categories were orphaned as a result, you need to define a new parent.</p>
           <?php echo form_open('admin/category/fixOrphans'); ?>
-          <input type='hidden' name='oldCat' value='<?=$oldCat;?>' />
+          <input type='hidden' name='oldCat' value='<?php echo $oldCat;?>' />
           <fieldset>
               <?php if(isset($returnMessage)) echo '<div class="alert">' . $returnMessage . '</div>'; ?>
 
@@ -41,7 +41,7 @@
                 <div class="controls">
                   <select name='categoryID'>
                   <?php foreach ($currentCats as $subCat): ?>
-                    <option value='<?=$subCat['id'];?>'><?=$subCat['name'];?></option>
+                    <option value='<?php echo $subCat['id'];?>'><?php echo $subCat['name'];?></option>
                 <?php endforeach ?>
                   </select><br /><br />
 
@@ -51,7 +51,7 @@
 
               <div class="form-actions">
                 <input type='submit' class="btn btn-primary" name='move_cats' value="Move" />
-                <?=anchor('admin', 'Cancel', 'class="btn"');?>
+                <?php echo anchor('admin', 'Cancel', 'class="btn"');?>
               </div>
             </fieldset>
           </form>

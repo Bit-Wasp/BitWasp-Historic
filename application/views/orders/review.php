@@ -8,22 +8,22 @@
               <div class="container-fluid">
                 <div class="row-fluid">
                   <div class="span2"><strong>Vendor</strong></div>
-                  <div class="span7"><?=$order['seller']['userName'];?></div>
+                  <div class="span7"><?php echo $order['seller']['userName'];?></div>
                 </div>
                 <div class="row-fluid">
                   <div class="span2"><strong>Order Number</strong></div>
-                  <div class="span7"><?=$order['id'];?></div>
+                  <div class="span7"><?php echo $order['id'];?></div>
                 </div>
                 <div class="row-fluid">
                   <div class="span2"><strong>Total Price</strong></div>
-                  <div class="span7"><?=$order['currencySymbol'].$order['totalPrice'];?></div>
+                  <div class="span7"><?php echo $order['currencySymbol'].$order['totalPrice'];?></div>
                 </div>
                 <div class="row-fluid">
                   <div class="span2"><strong>Items</strong></div>
                   <div class="span7">
                     <ul id="items">
                       <?php foreach($order['items'] as $item):?>
-                      <li><?=$item['quantity']." x ".$item['name'];?></li>
+                      <li><?php echo $item['quantity']." x ".$item['name'];?></li>
                       <?php endforeach; ?>
                     </ul>
                   </div>

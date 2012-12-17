@@ -10,7 +10,7 @@
                 <div class="controls">
 		  <select name='categoryID'>
         	  <?php foreach ($subCats as $subCat): ?>
-                    <option value='<?=$subCat['id'];?>'><?=$subCat['name'];?></option>
+                    <option value='<?php echo $subCat['id'];?>'><?php echo $subCat['name'];?></option>
         	  <?php endforeach ?>
 		  </select><br />
 
@@ -20,7 +20,7 @@
 
               <div class="form-actions">
                 <input type='submit' class="btn btn-primary" value="Remove" />
-                <?=anchor('admin', 'Cancel', 'class="btn"');?>
+                <?php echo anchor('admin', 'Cancel', 'class="btn"');?>
               </div>
             </fieldset>
           </form>

@@ -7,7 +7,7 @@
               <div class="control-group">
                 <label class="control-label" for="name">Item</label>
                 <div class="controls">
-                  <p><?=$item['name'];?></p>
+                  <p><?php echo $item['name'];?></p>
                 </div>
               </div>
 
@@ -29,7 +29,7 @@
 
  	            <div class="form-actions">
                 <input type="submit" value="Create" class="btn btn-primary" />
-                <?=anchor("listings","Cancel", 'class="btn"'); ?>
+                <?php echo anchor("listings","Cancel", 'class="btn"'); ?>
               </div>
             </fieldset>
           </form>
@@ -38,10 +38,10 @@
             <?php foreach ($images as $image): ?>
             <li class="span2 image_box">
               <div class="thumbnail">
-		            <img class="productImg" src="data:image/jpeg;base64,<?=$image['encoded'];?>" title="<?=$item['name']; ?>" width="<?=$image['width'];?>" />
+		            <img class="productImg" src="data:image/jpeg;base64,<?php echo $image['encoded'];?>" title="<?php echo $item['name']; ?>" width="<?php echo $image['width'];?>" />
                 <div class="caption">
-                  <?=anchor('listings/mainImage/'.$image['imageHash'],'Main', 'class="btn btn-mini"');?>
-                  <?=anchor('listings/imageRemove/'.$item['itemHash'].'/'.$image['imageHash'], "<i class='icon-trash icon-white'></i> Delete", 'class="btn btn-danger btn-mini"');?>
+                  <?php echo anchor('listings/mainImage/'.$image['imageHash'],'Main', 'class="btn btn-mini"');?>
+                  <?php echo anchor('listings/imageRemove/'.$item['itemHash'].'/'.$image['imageHash'], "<i class='icon-trash icon-white'></i> Delete", 'class="btn btn-danger btn-mini"');?>
                 </div>
               </div>
             </li>

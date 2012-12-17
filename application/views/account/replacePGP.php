@@ -7,7 +7,7 @@
 
 	      <div class="control-group">
                 <label class="control-label" for="pubKey"><strong>Current Fingerprint</strong></label>
-                <div class="span7"><?=$account['pubKeyFingerprint'];?></div>
+                <div class="span7"><?php echo $account['pubKeyFingerprint'];?></div>
               </div>
 
 		<div class="control-group">
@@ -31,7 +31,7 @@
 
               <div class="form-actions">
                 <input type='submit' class="btn btn-primary" value="Update" />
-                <?=anchor('account/replacePGP', 'Cancel', 'class="btn"');?>
+                <?php echo anchor('account/replacePGP', 'Cancel', 'class="btn"');?>
               </div>
             </fieldset>
           </form>

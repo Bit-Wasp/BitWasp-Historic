@@ -8,7 +8,7 @@
 
                 <div class="form-actions">
                   <button type='submit' class="btn btn-primary">Proceed</button>
-                  <?=anchor('users/registerPGP', 'Cancel', 'title="Cancel" class="btn"');?>
+                  <?php echo anchor('users/registerPGP', 'Cancel', 'title="Cancel" class="btn"');?>
                 </div>
               <fieldset>
             </form>

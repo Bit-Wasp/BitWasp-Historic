@@ -1,2 +1,2 @@
-<h2><?=$title; ?></h2>
-<?=$content; ?>
+<h2><?php echo $title; ?></h2>
+<?php echo $content; ?>

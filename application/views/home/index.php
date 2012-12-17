@@ -12,5 +12,5 @@
             <li><a href='https://plus.google.com/109479781028317238648'>google+</a></li>
             <li><a href='https://twitter.com/bitwasp'>twitter</a></li>
           </ul>
-          <?=anchor('items','View Items', 'class="btn-primary btn"');?>
+          <?php echo anchor('items','View Items', 'class="btn-primary btn"');?>
         </div>

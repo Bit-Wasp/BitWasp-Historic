@@ -125,10 +125,9 @@ class General {
 			return 'about ' . round($difference / 3600) . ' hours ago';
 		} else if($difference < (48*60*60)) {		// Just over a day.
 			return '1 day ago';
-		} else {					// Otherwise just return the basic date.		
-			if($timestamp == '0'){
-				return '0';
-			}
+		} else if($timestamp == '0' || $timestamp == NULL){ //The timestamp wasn't se which means it has never happened.
+			return 'Never';
+		} else { // Otherwise just return the basic date.
 			return date('j F Y',$timestamp);
 		}
 	}

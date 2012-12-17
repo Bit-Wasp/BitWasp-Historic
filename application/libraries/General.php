@@ -107,26 +107,6 @@ class General {
 		return $hash;
 	}
 
-	public function currentURI(){
-		// Count the number of entries in the base_url's URI
-		$baseUrl = base_url();
-		$separateBaseUrl = explode('//',$baseUrl);
-		$baseURI = explode('/',$separateBaseUrl[1]);
-		$baseURIcount = count($baseURI)-2;
-	
-		// Load the current requests URI
-		$request = substr($_SERVER['REQUEST_URI'],1); 
-		$reqURI = explode('/',$request);
-	
-		$URI = array();
-		$pos = 0;
-		// Begin after the entries in the base_url's URI
-		for($i = $baseURIcount; $i < count($reqURI); $i++){
-			$URI[$pos++] = $reqURI[$i];
-		}
-		return $URI;
-	}
-
 	// Format time into a readable format.
 	public function displayTime($timestamp){
 		// Load the current time, and check the difference between the times in seconds.

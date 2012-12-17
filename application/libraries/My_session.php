@@ -44,7 +44,7 @@ class My_session extends CI_Session {
                 parent::__construct();
                 $CI = &get_instance();
 		$CI->load->library('session');
-                $CI->load->model('users_model');
+      $CI->load->model('users_model');
 		$CI->load->model('sessions_model');
 		$CI->load->model('pages_model');
 		$CI->load->library('my_config');
@@ -53,7 +53,9 @@ class My_session extends CI_Session {
 
 		$login_timeout = $CI->my_config->login_timeout()*60;	// Convert timeout to seconds.
 
-		$URI = $CI->general->currentURI();
+		// This replaces the currentURI function in General.php. Needs to be test more - dsynth - 17/12/12
+		$URI = uri_string(); // Stores URI segments of current page in a string.
+		$URI = explode('/',$URI); //Explodes segments into an array to allow checking of current page.
 
 		if($CI->session->userdata('logged_in') === TRUE){
 			// User logged in, load the info for the session.

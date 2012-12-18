@@ -1,6 +1,9 @@
         <div class="span9 mainContent" id="admin-users">
-	<?php echo anchor('admin/regTokens','Registration Tokens','class="btn btn-primary"');?><br /><br />
+          <h2>Create Registration Token</h2>
 	<div class="container-fluid">
+	<?php echo anchor('admin/regTokens','Registration Tokens','class="btn btn-primary"');?>
+	<?php echo anchor('admin','Cancel','class="btn"');?><br /><br />
+
 	<?php
 	if($userHash == NULL){
 	  foreach($users as $user){ ?>

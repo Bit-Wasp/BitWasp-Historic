@@ -15,8 +15,10 @@
                 </div>
               </div>
 
-              <input type='submit' class="btn btn-primary" name='newToken' value="Generate" />
-	      <?php echo anchor('admin', 'Cancel', 'class="btn"');?><br /><br />
+              <div class="form-actions">
+                <input type='submit' class="btn btn-primary" name='newToken' value="Generate" />
+  	        <?php echo anchor('admin', 'Cancel', 'class="btn"');?>
+	      </div>
             </form>
 
 	      <?php if(count($tokens['Buyer']) > 0) { ?>
@@ -52,6 +54,4 @@
 	    </div>
 	    <?php } ?>
 
-
-          </form>
         </div>

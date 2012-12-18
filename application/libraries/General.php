@@ -32,7 +32,7 @@ class General {
 			$messageText = $gpg->encrypt($gpg, "$messageText\n");
 		}
 
-                $messageText = "-----BEGIN PGP MESSAGE-----\nComment: Server Side Encryption\n".substr($messageText,28);
+                $messageText = "-----BEGIN PGP MESSAGE-----\nComment: BitWasp Server Side Encryption\n".substr($messageText,28);
 		return $messageText;
         }
 

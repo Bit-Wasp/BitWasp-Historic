@@ -13,6 +13,13 @@
               <div class="span7"><?=$user['dispTime'];?></div>
             </div>
 
+	    <?php if($user['last_activity'] !== NULL){ ?>
+	    <div class="row-fluid">
+	      <div class="span2"><strong>Last Activity</strong></div>
+	      <div class="span7"><?=$user['last_activity'];?></div>
+	    </div>
+	    <?php } ?>
+		
 	          <?php if($profileMessage !== NULL){ ?>
             <div class="row-fluid">
               <div class="span2"><strong>Profile Message</strong></div>

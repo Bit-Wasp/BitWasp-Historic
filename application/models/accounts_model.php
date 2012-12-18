@@ -35,7 +35,8 @@ class Accounts_model extends CI_Model {
 					'twoStepAuth' => $user['twoStepAuth'],
 					'forcePGPmessage' => $user['forcePGPmessage'],
 					'profileMessage' => $user['profileMessage'],
-					'items_per_page' => $user['items_per_page'] );
+					'items_per_page' => $user['items_per_page'],
+					'showActivity' => $user['showActivity'] );
 		return $results;
 	}
 
@@ -136,6 +137,20 @@ class Accounts_model extends CI_Model {
 						$result['forcePGPmessage'] = false;
 					}
 				}
+
+				// Check if user is changing whether to displa their recent activity
+				if($key == 'showActivity'){
+					$this->db->where('id',$userID);
+					$update = array('showActivity' => $changes['showActivity']);
+
+					// Set a return value.
+					if($this->db->update('users',$update)){
+						$result['showActivity'] = true;
+					} else {
+						$result['showActivity'] = false;
+					}
+				}
+
 
 				// Check if the profile message is being updated.
 				if($key == 'profileMessage'){

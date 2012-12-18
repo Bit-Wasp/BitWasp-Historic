@@ -78,6 +78,27 @@
               </div>
               <br />
 
+              <div class="control-group">
+                <label class="control-label" for="showActivity">Show latest activity?</label>
+                <div class="controls">
+                    <?php if($account['showActivity'] === '1'){?>
+                      <label class="radio inline">
+                        <input type='radio' name='showActivity' value='0' /> Disabled
+                      </label>
+                      <label class="radio inline">
+                        <input type='radio' name='showActivity' value='1' checked/> Enabled
+                      </label>
+                    <?php } else { ?>
+                      <label class="radio inline">
+	                      <input type='radio' name='showActivity' value='0' checked/> Disabled
+                      </label>
+                      <label class="radio inline">
+	                      <input type='radio' name='showActivity' value='1' /> Enabled
+                      </label>
+	            <?php } ?>
+                </div>
+              </div>
+              <br />
 
 	      <div class='control-group'>
                 <label class='control-label' for='items_per_page'>Items Per Page</label>

@@ -7,6 +7,33 @@ class Users_Model extends CI_Model {
 		$this->load->library('session');
 	}
 
+	public function registrationTokenRole($token){
+		$this->db->select('role');
+		$query = $this->db->get_where('registrationTokens',array('content' => $token));
+		if($query->num_rows() > 0){
+			$res = $query->row_array();
+			$id = 0;
+			switch($res['role']){
+				case 'Admin':
+					$id = '3';
+					break;
+				case 'Vendor':
+					$id = '2';
+					break;
+				case 'Buyer':
+					$id = '1';
+					break;
+				default:
+					$id = '1';
+					break;
+			}
+			return array(	'int'	=> $id,
+					'str'	=> $res['role']);
+		} else {
+			return NULL;
+		}
+	}
+
 	public function checkRegistrationToken($token){
 		$query = $this->db->get_where('registrationTokens',array('content' => $token));
 		if($query->num_rows() > 0){
@@ -26,13 +53,31 @@ class Users_Model extends CI_Model {
 	}
 
 	public function listRegistrationTokens(){
+		$results = array(	'Admin' => null,
+					'Buyer' => null,
+					'Vendor' => null );		
+
+		$this->db->where('role','Admin');
 		$this->db->select('hash, content');
 		$query = $this->db->get('registrationTokens');
 		if($query->num_rows() > 0){
-			return $query->result_array();
-		} else {
-			return NULL;
+			$results['Admin'] = $query->result_array();
 		}
+
+		$this->db->where('role','Vendor');
+		$this->db->select('hash, content');
+		$query = $this->db->get('registrationTokens');
+		if($query->num_rows() > 0){
+			$results['Vendor'] = $query->result_array();
+		}
+
+		$this->db->where('role','Buyer');
+		$this->db->select('hash, content');
+		$query = $this->db->get('registrationTokens');
+		if($query->num_rows() > 0){
+			$results['Buyer'] = $query->result_array();
+		}
+		return $results;
 	}
 
 	public function addRegistrationToken($array){

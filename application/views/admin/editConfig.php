@@ -84,7 +84,7 @@
 
               <div class="form-actions">
                 <input type='submit' class="btn btn-primary" value="Update" />
-                <?php echo anchor('admin/siteConfig', 'Cancel', 'class="btn"');?>
+                <?php echo anchor('admin', 'Cancel', 'class="btn"');?>
               </div>
             </fieldset>
           </form>

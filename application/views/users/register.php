@@ -32,19 +32,36 @@
                   </div>
                 </div>
 
-                <div class="control-group">
-                  <label class="control-label" for="usertype">Role</label>
-                  <div class="controls">
-                    <select name='usertype' value='1'>
-                      <option value='1'>Buyer</option>
-                      <option value='2'>Seller</option>
-                    </select>
-		  <?php if($force_vendor_PGP == 'Enabled'){ ?>
-		    <span class="span7">If you are registering as a vendor, it is required to upload a PGP public key. Please have one ready on your first login.</span>
-		  <?php } ?>
-                    <span class="help-inline"><?php echo form_error('usertype'); ?></span>
-                  </div>
-                </div>
+		<?php
+		if($tokenRole !== NULL){?>
+	    <input type='hidden' name='usertype' value='<?php echo $tokenRole['int'];?>' />
+	    <div class="control-group">
+              <label class="control-label" for="usertype">Role</label>
+	      <div class="controls">
+		
+		<?php echo $tokenRole['str'];?>
+	        <?php if($force_vendor_PGP == 'Enabled' && $tokenRole == 'Vendor'){ ?>
+	        <span class="span8">If you are registering as a vendor, it is required you upload a PGP public key. Please have one ready on your first login.</span>
+	        <?php } ?>
+                <span class="help-inline"><?php echo form_error('usertype'); ?><br />
+	      </div>
+	    </div>
+	      <?php } else { ?>
+
+            <div class="control-group">
+              <label class="control-label" for="usertype">Role</label>
+              <div class="controls">
+                <select name='usertype' value='1'>
+                  <option value='1'>Buyer</option>
+                  <option value='2'>Seller</option>
+                </select>
+		<?php if($force_vendor_PGP == 'Enabled'){ ?>
+		<span class="span7">If you are registering as a vendor, it is required to upload a PGP public key. Please have one ready on your first login.</span>
+		<?php } ?>
+                <span class="help-inline"><?php echo form_error('usertype'); ?></span>
+              </div>
+            </div>
+		<?php } ?>
 
                 <!-- Captcha -->
                 <div class="control-group">

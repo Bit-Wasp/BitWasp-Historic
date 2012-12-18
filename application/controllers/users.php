@@ -229,6 +229,7 @@ class Users extends CI_Controller {
 		$this->form_validation->set_error_delimiters('<span class="form-error">', '</span>');
 		$data['force_vendor_PGP'] = $this->my_config->force_vendor_PGP();
 		$data['token'] = $token;
+		$data['tokenRole'] = $this->users_model->registrationTokenRole($token);
 
 		// Run form validation
 		if ($this->form_validation->run('register') == FALSE){
@@ -244,45 +245,50 @@ class Users extends CI_Controller {
 			$hash = $this->general->hashFunction($this->input->post('password0'),$salt);
 			
 			// Determine the user role from the submitted value.
-			$userRole = $this->find_role($this->input->post('usertype'));
+			$userRole = $this->general->showRole($this->input->post('usertype'));
 
-			// Build the array for the model.
-			$registerInfo = array(	'userName' => $this->input->post('username'),
-						'password' => $hash,
-						'timeRegistered' => time(),
-						'userSalt' => $salt,
-						'userHash' => $this->general->uniqueHash('users','userHash'),
-						'userRole' => $userRole );						
-			// Call addUser() function in the model to add the user.
-			$register = $this->users_model->addUser($registerInfo,$token);
+			// If a token is submitted, set the user role to this value.
+			if($data['tokenRole'] !== NULL)
+				$userRole = $data['tokenRole']['str'];
 
-			// Check the submission
-			if($register){
-				// Registration successful, show login page.
-				$data['title'] = 'Registration Successful';
-	                        $data['login'] = false;
-				$data['returnMessage'] = 'Your account has been created, please login below.';
-				$data['captcha'] = $this->my_captcha->generateCaptcha($this->my_config->captcha_length());
-        	                $data['page'] = 'users/login'; 
-
+			// Check a user isn't trying to register a user account without a token.
+			if($userRole == 'Admin' && $data['tokenRole']['str'] !== 'Admin'){
+				$data['title'] = 'Register';
+				$data['page'] = 'users/register';
+				$data['returnMessage'] = "Please select the correct role.";
 			} else {
-				// Unsuccessful submission, show form again.
-                        	$data['title'] = 'Register';
-				$data['returnMessage'] = 'Your registration was unsuccessful, please try again.';
-        	                $data['page'] = 'users/register'; 
+				// User is allowed to register.
+
+				// Build the array for the model.
+				$registerInfo = array(	'userName' => $this->input->post('username'),
+							'password' => $hash,
+							'timeRegistered' => time(),
+							'userSalt' => $salt,
+							'userHash' => $this->general->uniqueHash('users','userHash'),
+							'userRole' => $userRole );						
+				// Call addUser() function in the model to add the user.
+				$register = $this->users_model->addUser($registerInfo,$token);
+	
+				// Check the submission
+				if($register){
+					// Registration successful, show login page.
+					$data['title'] = 'Registration Successful';
+		                        $data['login'] = false;
+					$data['returnMessage'] = 'Your account has been created, please login below.';
+					$data['captcha'] = $this->my_captcha->generateCaptcha($this->my_config->captcha_length());
+	        	                $data['page'] = 'users/login'; 
+
+				} else {
+					// Unsuccessful submission, show form again.
+	                        	$data['title'] = 'Register';
+					$data['returnMessage'] = 'Your registration was unsuccessful, please try again.';
+	        	                $data['page'] = 'users/register'; 
+				}
 			}
 		}
                 $this->load->library('Layout',$data); 
 	}
 
-	// Return the role associated with the submitted role ID.
-	public function find_role($roleId) {
-		if($roleId==2) {
-			return 'Vendor';
-		} else {
-			return 'Buyer';
-		}			
-	}
 
 	// Callback functions
 
@@ -297,7 +303,7 @@ class Users extends CI_Controller {
 
 	// Check the role is valid.
 	public function register_check_role($role){
-		if($role == '1' || $role == '2'){
+		if($role == '1' || $role == '2' || $role == '3'){
 			return TRUE;
 		} else {
 			return FALSE;

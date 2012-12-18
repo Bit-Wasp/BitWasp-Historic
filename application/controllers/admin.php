@@ -61,7 +61,8 @@ class Admin extends CI_Controller {
 			$token = substr($newtoken,0,(count($newtoken)-2));
 
 			$array = array(	'content'	=> $token,
-					'hash'		=> $this->general->uniqueHash('registrationTokens','hash')
+					'hash'		=> $this->general->uniqueHash('registrationTokens','hash'),
+					'role'		=> $this->general->showUserRole($this->input->post('role'))
 				);
 
 			if($this->users_model->addRegistrationToken($array)){
@@ -70,12 +71,10 @@ class Admin extends CI_Controller {
 				$data['returnMessage'] = "Unable to create the new token.";
 			}
 
-			$data['page'] = 'admin/registrationTokens';
-			$data['title'] = 'Registration Token';
-		} else {
-			$data['page'] = 'admin/registrationTokens';
-			$data['title'] = 'Registration Token';
 		}
+
+		$data['page'] = 'admin/registrationTokens';
+		$data['title'] = 'Registration Token';
 
 		$data['tokens'] = $this->users_model->listRegistrationTokens();
 		$this->load->library('layout',$data);

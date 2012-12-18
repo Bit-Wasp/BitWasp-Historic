@@ -2,6 +2,29 @@
 
 class General {
 
+	// 1 - Buyer
+	// 2 - Vendor
+	// 3 - Admin
+	// Used in the registration token code.
+	public function showRole($id){
+		$result = null;
+		switch($id){
+			case '1':
+				$result = 'Buyer';
+				break;
+			case '2':
+				$result = 'Vendor';
+				break;
+			case '3':
+				$result = 'Admin';
+				break;
+			default:
+				$result = 'Buyer';
+				break;
+		}
+		return $result;
+	}
+
 	public function importPGPkey($ascii){
 		$CI = &get_instance();
 		$gpg = $this->initPGP();

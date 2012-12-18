@@ -62,7 +62,7 @@ class Admin extends CI_Controller {
 
 			$array = array(	'content'	=> $token,
 					'hash'		=> $this->general->uniqueHash('registrationTokens','hash'),
-					'role'		=> $this->general->showUserRole($this->input->post('role'))
+					'role'		=> $this->general->showRole($this->input->post('role'))
 				);
 
 			if($this->users_model->addRegistrationToken($array)){

@@ -58,7 +58,9 @@ if(isset($_GET['step'])){
 			fwrite($databaseFD, $databaseCfg);
 			fclose($databaseFD);
 		} else {
-			echo "Unable to write database.php!<br />";
+			echo "Unable to write database.php!<br />Save this file manually by pasting the code below:<br />
+<pre>$databaseCfg</pre>";
+
 		}
 
 

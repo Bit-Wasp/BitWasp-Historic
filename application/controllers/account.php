@@ -158,6 +158,13 @@ class Account extends CI_Controller {
 			$changes['forcePGPmessage'] = $forcePGPmessage;
 		}
 
+		// Show latest activity?
+		$showActivity = $this->input->post('showActivity');
+		if($showActivity !== $loginInfo['showActivity']){
+			$changes['showActivity'] = $showActivity;
+		}
+
+
 		$passFail = FALSE;
 		// Check if we are suppposed to update the password.
 		if(	strlen($this->input->post('password0') > 0)){

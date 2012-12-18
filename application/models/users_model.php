@@ -190,7 +190,7 @@ class Users_Model extends CI_Model {
         public function get_user($user = FALSE)
         {
 		//Select these fields from the database
-		$this->db->select('id, userName, userRole, userHash, rating, timeRegistered, twoStepAuth, forcePGPmessage, profileMessage, userSalt, items_per_page');
+		$this->db->select('id, userName, userRole, userHash, rating, timeRegistered, twoStepAuth, forcePGPmessage, profileMessage, userSalt, items_per_page, showActivity, last_activity');
 
                 //Check what field has been provided, and query database using that field.
                 if (isset($user['userHash'])) {
@@ -205,8 +205,20 @@ class Users_Model extends CI_Model {
 
 		//If there is a matching row, it is returned to the user
 		if($query->num_rows() > 0){
+			// Build the initial results array.
 			$results = $query->row_array();
+
+			// Make the time look nicer!
 			$results['dispTime'] = $this->general->displayTime($results['timeRegistered']);
+
+			// Check if the user has disabled their latest activity being displayed.
+			if($results['showActivity'] == '0'){
+				$results['last_activity'] = NULL;
+			} else {
+				// If it's enabled, make it look nicer before being displayed on the page.
+				$results['last_activity'] = $this->general->displayTime($results['last_activity']);
+			}
+	
 	                return $results;
 		} else {
 			return false;

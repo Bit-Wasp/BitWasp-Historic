@@ -189,6 +189,18 @@ CREATE TABLE IF NOT EXISTS `bw_orders` (
 
 
 --
+-- Table structure for table `bw_registrationTokens`
+--
+
+CREATE TABLE IF NOT EXISTS `bw_registrationTokens` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hash` varchar(16) NOT NULL,
+  `content` varchar(65) NOT NULL,
+  `role` varchar(8) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
+--
 -- Table structure for table `bw_pageAuthorization`
 --
 
@@ -318,6 +330,7 @@ CREATE TABLE IF NOT EXISTS `bw_users` (
   `forcePGPmessage` enum('0','1') NOT NULL,
   `items_per_page` enum('25','50','75','100') NOT NULL,
   `last_activity` varchar(20) NOT NULL,
+  `showActivity` ENUM('0','1') DEFAULT 0,
   `location` varchar(2) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)

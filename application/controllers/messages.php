@@ -100,11 +100,16 @@ class Messages extends CI_Controller {
 				$data['page'] = 'messages/read';
 
 				$data['fromUser'] = $this->users_model->get_user(array('id' => $messageInfo['fromId']));
+				$data['userHash'] = $this->my_session->userdata('userHash');
+				
 				$data['subject'] = $messageInfo['subject'];
 				$data['message'] = $messageInfo['message'];
 				$data['messageHash'] = $messageInfo['messageHash'];
 			
 				if($messageInfo['encrypted']==1){ $data['isEncrypted']=1; } else { $data['isEncrypted'] = 0; } //Check if message is encrypted.
+				
+				//Prepare data to show other messages in this thread
+				$data['theadMessages'] = $this->messages_model->getMessageByThread($messageInfo['threadHash']);
 
 			} else { //Otherwise the user should not be able to view this message
 				$data['title'] = 'Inbox';	
@@ -121,8 +126,7 @@ class Messages extends CI_Controller {
 	}
 
 	public function send($toHash = NULL){
-		//Include the required files for clientside encryption
-		$data['header_meta'] = $this->load->view('messages/encryptionHeader', NULL, true);
+		$data['header_meta'] = '';
 		$data['returnMessage'] = '';
 
 		$this->load->library('form_validation');
@@ -173,6 +177,8 @@ class Messages extends CI_Controller {
 		$data['publickey'] = $this->users_model->get_pubKey_by_id($recipient['id']);
 		$fingerprint = $this->users_model->get_pubKey_by_id($recipient['id'],1);
 		if($data['publickey']!=''){ 
+			//Include the required files for clientside encryption
+			$data['header_meta'] = $this->load->view('messages/encryptionHeader', NULL, true);
 			$data['returnMessage'] .= 'This message will be encrypted automatically if you have javascript enabled.<br />';  
 		} 
 
@@ -187,7 +193,7 @@ class Messages extends CI_Controller {
 			if($recipient!==FALSE){ //Check if recipient is found.
 
 				//Check if the message appears to be encrypted.
-				$checkEncrypt = stripos($this->input->post('message'), '-----BEGIN');
+				$checkEncrypt = stripos($this->input->post('message'), '-----BEGIN'); //It needs to be confirmed that this  is the correct header for all PGP/GPG type messages.
 				if ($checkEncrypt!== FALSE) {
 				    $isEncrypted = 1;
 				} else {  $isEncrypted = 0; }
@@ -238,7 +244,7 @@ class Messages extends CI_Controller {
 
 				$data['returnMessage'] = 'Message has been sent.';
 				$data['title'] = 'Message Sent';
-        $data['sentSuccess'] = 1;
+        			$data['sentSuccess'] = 1;
 			        $data['page'] = 'messages/inbox'; 
 			}
                 }

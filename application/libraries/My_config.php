@@ -20,6 +20,12 @@ class My_config {
 		// Load the site configuration
 		$config = $CI->general_model->siteConfig();
 
+		//Check if no config setting have been found in database		
+		if($config == NULL){
+			//Error no config found
+			//A message needs to go here to tell admin to fix the configuration in the database
+		}
+
 		// Set the object variables with the sites configuration
 		$this->site_title = $config->site_title;
 		$this->login_timeout = $config->login_timeout;

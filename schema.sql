@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS `bw_config` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
+INSERT INTO `bw_config` (id) VALUES ('1');
 --
 -- Table structure for table `bw_currencies`
 --

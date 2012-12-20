@@ -96,7 +96,7 @@ class Admin extends CI_Controller {
 
 		// Load the site configuration
 		$data['config'] = $this->my_config->loadAll();
-		$data['newConfig'] = $this->my_config->loadAll();
+		$newConfig = $this->my_config->loadAll();
 		
 
 		// Check which fields are being updated

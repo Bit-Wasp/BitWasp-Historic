@@ -178,7 +178,7 @@ class Users extends CI_Controller {
 				$this->my_session->createSession($getLoginInfo, 'twoStep');	// TRUE, enables a half-session for twostep
 				redirect('users/twoStep');
 			} else if($forcePGP == true){
-				$this->my_session->createSession($getLoginInfo, 'forcePGP');
+				$this->my_session->createSession($getLoginInfo, 'forcePGP');	// enable a half-session where the user registers a PGP key.
 				redirect('users/registerPGP');
 			} else	if($login == true){
 				// Success

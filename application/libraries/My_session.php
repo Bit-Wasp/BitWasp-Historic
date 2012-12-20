@@ -62,7 +62,8 @@ class My_session extends CI_Session {
 			$userHash = $CI->session->userdata('userHash');
                         $sessionInfo = $CI->sessions_model->getInfo($userHash);
 			// Check if the user's session has timed out.
-                        if(time()-$sessionInfo['last_activity'] > $login_timeout){
+                        if((	time()-$sessionInfo['last_activity'] > $login_timeout) && 
+				$CI->session->userdata('new_session') !== true){
 				// Check if the user is logging in, otherwise
 				// kill the users session and redirect to the inactivity login page.
 
@@ -72,7 +73,7 @@ class My_session extends CI_Session {
 				}
                         } else {
 				// Otherwise, update the session in the table, will create the entry if needed.
-				
+				$CI->session->unset_userdata('new_session');
                                 $CI->sessions_model->updateSession($userHash);
                         }
 		}
@@ -109,7 +110,8 @@ class My_session extends CI_Session {
                                 	        'userRole' => $user['userRole'],
                                         	'logged_in' => TRUE,
 						'items_per_page' => $user['items_per_page'],
-	                                        'last_activity' => time()
+	                                        'last_activity' => time(),
+						'new_session'	=> true
         	                            );
 		} 
                 $CI->session->set_userdata($sessionData);

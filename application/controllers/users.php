@@ -71,17 +71,16 @@ class Users extends CI_Controller {
 		// Show a new challenge.
 		// Load users PGP fingerprint.
 		$fingerprint = $this->users_model->get_pubKey_by_id($userID,1);
+
 		// Generate a unique challenge for the user.
-		$challenge = $this->general->uniqueHash('twoStep','twoStepChallenge');
-		
+		$challenge = $this->general->uniqueHash('twoStep','twoStepChallenge','32');
+
 		// Add the challenge to the DB.
 		$this->users_model->addTwoStepChallenge($userID, $challenge);
 
 		// Load GNUPG, add the users fingerprint, and encrypt the challenge text.
-		$gpg = gnupg_init();
-		gnupg_addencryptkey($gpg, $fingerprint);
-		$string = gnupg_encrypt($gpg, "Two Step Token: $challenge\n");
- 	
+		$string = $this->general->encryptPGPmessage($fingerprint,"Two Step Token: $challenge");
+
 		// Display the PGP text.
 		$data['challenge'] = $string;
 

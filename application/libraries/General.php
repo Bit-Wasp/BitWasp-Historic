@@ -106,7 +106,7 @@ class General {
 	}
 
 	// Generate a unique hash for the specified table/column.
-	public function uniqueHash($table, $column){
+	public function uniqueHash($table, $column, $length = 16){
 		// Load CodeIgniter class.
 		$CI = &get_instance();
 		$CI->load->model('general_model');
@@ -114,7 +114,7 @@ class General {
 		$found = FALSE;
 
 		// Generate a random hash. 
-		$hash = $this->randHash();
+		$hash = $this->randHash($length);
 		
 		// Test the DB, see if the hash is unique. 
 		$test = $CI->general_model->testUniqueHash($table, $column, $hash);

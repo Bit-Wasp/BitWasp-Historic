@@ -306,7 +306,7 @@ CREATE TABLE IF NOT EXISTS `bw_sessions` (
 CREATE TABLE IF NOT EXISTS `bw_twoStep` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userID` int(11) NOT NULL,
-  `twoStepChallenge` varchar(20) NOT NULL,
+  `twoStepChallenge` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `userID` (`userID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=44 ;

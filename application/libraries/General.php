@@ -25,6 +25,7 @@ class General {
 		return $result;
 	}
 
+	// Result of this function is an array. If the import is unsuccessful $info['fingerprint'] will not be set.
 	public function importPGPkey($ascii){
 		$CI = &get_instance();
 		$gpg = $this->initPGP();

@@ -59,21 +59,30 @@ class Account extends CI_Controller {
 		$data['title'] = 'Replace PGP key';
 		// If the pubKey POST value is set, try update it.
 		if($this->input->post('pubKey')){
+			$currentKey = $this->users_model->get_pubKey_by_id($loginInfo['id']);
 			$pubKey = $this->input->post('pubKey');
+			$newPubKey = NULL;
 
 			if($correctPass==TRUE){
-				// If the password is correct, delete any other public keys and add the new one.
-				if($this->users_model->drop_pubKey_by_id($loginInfo['id'])){
-					if($this->accounts_model->updateAccount($loginInfo['id'],array('pubKey' => $pubKey))){
-						$data['page'] = 'account/index';
-						$data['title'] = 'Account';		
-						$data['force_vendor_pgp'] = $this->my_config->force_vendor_pgp();
-						$data['returnMessage'] = 'Your PGP public key has been updated.';
+				$import = $this->general->importPGPkey($pubKey);
+		
+				if(isset($import['fingerprint'])){
+			
+					// If the password is correct, delete any other public keys and add the new one.
+					if($this->users_model->drop_pubKey_by_id($loginInfo['id'])){
+						if($this->accounts_model->updateAccount($loginInfo['id'],array('pubKey' => 	$pubKey))){
+							$data['page'] = 'account/index';
+							$data['title'] = 'Account';		
+							$data['force_vendor_pgp'] = $this->my_config->force_vendor_pgp();
+							$data['returnMessage'] = 'Your PGP public key has been updated.';
+						} else {
+							$data['returnMessage'] = 'Unable to update your public key.';
+						}
 					} else {
-						$data['returnMessage'] = 'Unable to update your public key.';
+						$data['returnMessage'] = 'Unable to remove your previous PGP key.';
 					}
 				} else {
-					$data['returnMessage'] = 'Unable to remove your previous PGP key.';
+					$data['returnMessage'] = "You must enter a valid PGP key";
 				}
 			} else {
 				$data['returnMessage'] = "Your password was incorrect.";
@@ -107,35 +116,29 @@ class Account extends CI_Controller {
 		// Check if the public Key is set.
 		if(	$this->input->post('pubKey') !== 'No Public Key found.' &&
 			$this->input->post('pubKey') !== NULL ){
-			// Load the sumitee
+			// Load the current key
 			$currentKey = $this->users_model->get_pubKey_by_id($loginInfo['id']);
+
+			$import = $this->general->importPGPkey($pubKey);
+
 			// Check if the current Key is empty
 			if($currentKey === NULL){
+
 				// Check the submission is not empty (in that case, do nothing).
-				if($pubKey !== NULL){
-					// Check the PGP Key is OK!
-					if(substr($pubKey,0,36) == '-----BEGIN PGP PUBLIC KEY BLOCK-----'){
-						// Add to the changes array.
-						$changes['pubKey'] = $pubKey;
-					} else {
-						// Got this far, but there was a problem. Incorrect heading.
-						$PGPfail = TRUE;
-					}
+				if(isset($import['fingerprint'])){
+					$changes['pubKey'] = $pubKey;
+				} else {
+					// Got this far, but there was a problem. Incorrect heading.
+					$PGPfail = TRUE;
 				}
 			// Check if there is currently a public Key.
-			} else if(substr($currentKey,0,36) == 'BEGIN PGP PUBLIC KEY BLOCK-----'){
-
-				// Check the POST data is also a PGP key, and that it's different to the current one. 
-				if((substr($pubKey,0,36) == '-----BEGIN PGP PUBLIC KEY BLOCK-----') &&
-				(sha2($pubKey) !== sha2($currentKey))){
-					// New one is different, make the change!
+			} else {
+				if(isset($import['fingerprint'])){
 					$changes['pubKey'] = $pubKey;
-				} else if(substr($pubKey,0,36) !== '-----BEGIN PGP PUBLIC KEY BLOCK-----' &&
-					$pubKey !== NULL){
+				} else {
 					// Heading is invalid!
 					$PGPfail = TRUE;
 				}	
-				// Do nothing if pubKey is empty. 
 			}				
 		}
 

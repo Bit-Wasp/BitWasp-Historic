@@ -108,16 +108,16 @@ class Users extends CI_Controller {
 		// Load the user info from the database.
                 $data['user'] = $this->users_model->get_user(array('userHash' => $userHash));
 
-		//Load users public key from the databsae
-		$data['user']['publicKey'] = $this->users_model->get_pubKey_by_id($data['user']['id']);
+		if($data['user'] !== FALSE){
+		
+			//Load users public key from the databsae
+			$data['user']['publicKey'] = $this->users_model->get_pubKey_by_id($data['user']['id']);
 
-		// Check the entry exists.
-		if($data['user'] !== null && $data['user'] !== false){
 			// user exists
 	                $data['title'] = $data['user']['userName'];
-			$data['page'] = 'user/individual';
+			$data['page'] = 'user/individual';				
 
-			$listReviews = array(	'reviewedID' => $data['user']['id'],
+			$listReviews = array(	'reviewedID' => $data['user']['id'],	
 					 	'type' => 'Vendor',
 						'count' => 5);
 
@@ -128,8 +128,8 @@ class Users extends CI_Controller {
 			// Success; display the user information
 		} else {
 			redirect('error/userNotFound');
-			// User not found, redirect to appropriate page.
-	        }
+		}
+			
 	}
 
         function login() {

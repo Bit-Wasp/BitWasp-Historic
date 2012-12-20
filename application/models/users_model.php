@@ -234,6 +234,9 @@ class Users_Model extends CI_Model {
         //Load the requested user from the database by their the specified field.
         public function get_user($user = FALSE)
         {
+		if($user === FALSE)
+			return FALSE;
+
 		//Select these fields from the database
 		$this->db->select('id, userName, userRole, userHash, rating, timeRegistered, twoStepAuth, forcePGPmessage, profileMessage, userSalt, items_per_page, showActivity, last_activity');
 
@@ -266,7 +269,7 @@ class Users_Model extends CI_Model {
 	
 	                return $results;
 		} else {
-			return false;
+			return FALSE;
 		}
         }
 

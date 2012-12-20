@@ -15,13 +15,13 @@ class Pages extends CI_Controller {
 		if ($data['page']==NULL)
 		{
 			// Whoops, we don't have a page for that!
-			show_404();
+			redirect('error/pageNotFound');
 		} else {
 		
-		$data['title'] = $data['page']['title']; //Display page title
-		$data['content'] = $data['page']['content']; //Display page title
-		$data['page'] = $page;
-		$this->load->library('layout',$data);
+			$data['title'] = $data['page']['title']; //Display page title
+			$data['content'] = $data['page']['content']; //Display page title
+			$data['page'] = $page;
+			$this->load->library('layout',$data);
 		}
 	}
 }

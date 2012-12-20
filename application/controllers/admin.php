@@ -96,49 +96,30 @@ class Admin extends CI_Controller {
 
 		// Load the site configuration
 		$data['config'] = $this->my_config->loadAll();
+		$data['newConfig'] = $this->my_config->loadAll();
+		
 
 		// Check which fields are being updated
-		if($this->input->post('site_title') !== $data['config']['site_title']){
+		if($this->input->post('site_title') !== $data['config']['site_title'])
 			$newConfig['site_title'] = $this->input->post('site_title');
-		} else {
-			$newConfig['site_title'] = $data['config']['site_title'];
-		}
 
-		if($this->input->post('login_timeout') !== $data['config']['login_timeout']){
+		if($this->input->post('login_timeout') !== $data['config']['login_timeout'])
 			$newConfig['login_timeout'] = $this->input->post('login_timeout');
-		} else {
-			$newConfig['login_timeout'] = $data['config']['login_timeout'];
-		}
 
-		if($this->input->post('base_url') !== $data['config']['base_url']){
+		if($this->input->post('base_url') !== $data['config']['base_url'])
 			$newConfig['base_url'] = $this->input->post('base_url');
-		} else {
-			$newConfig['base_url'] = $data['config']['base_url'];
-		}
 
-		if($this->input->post('registration_allowed') !== $data['config']['registration_allowed']){
+		if($this->input->post('registration_allowed') !== $data['config']['registration_allowed'])
 			$newConfig['registration_allowed'] = $this->input->post('registration_allowed');
-		} else {
-			$newConfig['registration_allowed'] = $data['config']['registration_allowed'];
-		}
 
-		if($this->input->post('force_vendor_PGP') !== $data['config']['force_vendor_PGP']){
+		if($this->input->post('force_vendor_PGP') !== $data['config']['force_vendor_PGP'])
 			$newConfig['force_vendor_PGP'] = $this->input->post('force_vendor_PGP');
-		} else { 
-			$newConfig['force_vendor_PGP'] = $data['config']['force_vendor_PGP'];
-		}
 
-		if($this->input->post('index_page') !== $data['config']['index_page']){
+		if($this->input->post('index_page') !== $data['config']['index_page'])
 			$newConfig['index_page'] = $this->input->post('index_page');
-		} else {
-			$newConfig['index_page'] = $data['config']['index_page'];
-		}
 
-		if($this->input->post('captcha_length') !== $data['config']['captcha_length']){
+		if($this->input->post('captcha_length') !== $data['config']['captcha_length'])
 			$newConfig['captcha_length'] = $this->input->post('captcha_length');
-		} else {
-			$newConfig['captcha_length'] = $data['config']['captcha_length'];
-		}
 
 		// Build the json string
 		$jsonConfig = json_encode($newConfig);
@@ -243,6 +224,7 @@ class Admin extends CI_Controller {
 				// Success!
 				$data['title'] = 'Category Removed';
 				$data['page'] = 'admin/removeCategorySuccess';
+				$data['returnMessage'] = "Your category has been removed.";
 
 				// Need to see how many orphaned products there are.
 				$data['oldCat'] = $categoryID;

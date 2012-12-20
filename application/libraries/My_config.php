@@ -41,6 +41,14 @@ class My_config {
 		$CI->config->set_item('index_page', $this->index_page);
 	}
 
+	public function bitcoinDURL(){
+		$CI = &get_instance();
+		return array('url'	=> 	'http://'.
+						$this->config->item('bitcoind_rpc_username') . ':' .
+						$this->config->item('bitcoin_rpc_password') . '@' . 
+						$this->config->item('bitcoin_rpc_host') );
+	}
+
 	public function loadAll(){
 		return get_object_vars($this);
 	}

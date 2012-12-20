@@ -42,7 +42,6 @@ class Items extends CI_Controller {
 	        $page = ($this->uri->segment(2)) ? $this->uri->segment(2) : 0;
 
 		$data['items'] = $this->items_model->getLatest($config["per_page"], $page);
-
 		$data['pagination_links'] = $this->pagination->create_links();
 		$data['items_per_page'] = $config['per_page'];
 		//Check if there are no matching items
@@ -79,6 +78,7 @@ class Items extends CI_Controller {
 			
 			$data['items'] = $this->items_model->getLatest($config["per_page"], $page);
 			$data['pagination_links'] = $this->pagination->create_links();		
+			$data['items_per_page'] = $config['per_page'];
 
 		} else {
 			$this->load->model('orders_model');

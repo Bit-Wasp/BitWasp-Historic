@@ -98,7 +98,7 @@ $route['message/(:any)'] = 'messages/read/$1';
 
 
 // Error class
-$route['error/(:any)'] = 'error/$1';
+$route['error/(:any)'] = 'errors/index/$1';
 
 // Display a particular user
 //$route['user'] = 'user/me';
@@ -130,8 +130,7 @@ $route['admin/regTokens/delete/(:any)'] = 'admin/removeRegistrationToken/$1';
 $route['default_controller'] = 'users/login';
 $route['(:any)'] = 'pages/view/$1';
 
-$route['404_override'] = '';
-
+$route['404_override'] = 'error/pageNotFound';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

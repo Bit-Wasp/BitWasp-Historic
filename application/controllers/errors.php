@@ -26,19 +26,28 @@ class Errors extends CI_Controller {
 
 	public function index($param) {
 	
-		$this->output->set_status_header("{$this->error[$param]['http']}");
+		if(isset($this->error[$param]) && is_array($this->error[$param])){
+			$errorInfo = $this->error[$param];
+			$this->output->set_status_header($errorInfo['http']);
+		} else {
+			$errorInfo = array(	'title'	=> 'Error',
+						'msg' => 'There was an error processing your request',
+						'http' => null);
+		}
+
+
 
 		$data['page'] = 'errors/index.php';
-		$data['title'] = 'Error '.$this->error[$param]['http'];
+		$data['title'] = "Error {$errorInfo['http']}";
 
 		// Set the default <div> container; for a logged out user.
 		$data['div'] = "<div class=\"offset3 span6\">";
 
 		if($this->session->userdata('logged_in') == TRUE){
-			$data['div'] = "<div class=\"span9 mainContent\" id=\"edit-account\">";
+			$data['div'] = "<div class=\"span9 mainContent\" id=\"error-".$errorInfo['msg']."\">";
 		}
 
-		$data['error'] = $this->error[$param];
+		$data['error'] = $errorInfo;
 		$this->load->library('Layout',$data);
 
 	}

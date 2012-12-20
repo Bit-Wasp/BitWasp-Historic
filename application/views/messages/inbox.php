@@ -21,7 +21,7 @@
 		          <td>
                   <?php echo anchor('message/'.$message['messageHash'], 'View', 'class="btn btn-mini"');?>
                   <?php echo anchor('message/reply/'.$message['messageHash'], 'Reply', 'class="btn btn-mini"');?>
-		              <?php echo anchor('message/delete/'.$message['messageHash'], 'Delete', 'class="btn btn-danger btn-mini"');?>
+		  <?php echo anchor('message/delete/'.$message['messageHash'], 'Delete', 'class="btn btn-danger btn-mini"');?>
               </td>
 		        </tr>
 	        <?php endforeach; ?>
@@ -29,8 +29,8 @@
           <? } ?>
 
           <div class="form-actions">
-	          <?php echo anchor('messages/send','Compose message', 'class="btn btn-primary"');?>
-            <?php echo anchor('messages/#','Mark all read', 'class="btn"');?>
-	          <?php	if(isset($messages)) { echo anchor('message/delete/all', 'Delete All!', 'class="btn btn-danger"'); }?>
+	        <?php echo anchor('messages/send','Compose message', 'class="btn btn-primary"');?>
+                <!-- <?php echo anchor('messages/#','Mark all read', 'class="btn"');?> -->
+	        <?php if(isset($messages)) { echo anchor('message/delete/all', 'Delete All!', 'class="btn btn-danger"'); }?>
           </div>
         </div>

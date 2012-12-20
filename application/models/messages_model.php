@@ -31,14 +31,26 @@ class Messages_model extends CI_Model {
 			// Return the number of results.
 			return $this->db->count_all_results();
 		} else {
-			// Just return the messages.
+		        // Check there are results to the query.
+		        if($query->num_rows() > 0){
+		                $array = array();
+			        // Loop through each message, and build up an array of results.
+			        foreach($query->result() as $result){ //Loop through messages
+				        $fromUser = $this->users_model->get_user(array('id' => $result->fromId));
+				        array_push($array,array('id' =>	$result->id,
+							        'messageHash' => $result->messageHash,
+							        'fromUser' => $fromUser, //Return info about sender
+							        'subject' => $result->subject,
+							        'message' => $result->message,
+							        'viewed' => $result->viewed,
+							        'time' => $result->time ));
+			        }
 
-			if($query->num_rows() > 0){
-				// If there are messages, return the query results.
-				return  $query->row_array();
-			} else {
-				// Otherwise return NULL.
-				return NULL;
+			        // Return results array.
+			        return $array;
+		        } else {
+			        // Otherwise return NULL.
+			        return NULL;
 			}
 		}
 	}

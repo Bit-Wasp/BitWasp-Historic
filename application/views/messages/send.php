@@ -1,6 +1,7 @@
         <div class="span9 mainContent" id="send-message">
           <h2>Create Message</h2>
-          <?php echo form_open('messages/send', array('name'=>'sendMessageForm', 'class' => 'form-horizontal')); ?>
+
+          <?php echo form_open('messages/send', array('name'=>'sendMessageForm', 'class' => 'form-horizontal'), $hiddenFields); ?>
             <fieldset>
               <?php if($returnMessage!='') echo '<div class="alert">' . $returnMessage . '</div>'; ?>
 

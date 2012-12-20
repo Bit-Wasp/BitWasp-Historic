@@ -343,7 +343,7 @@ CREATE TABLE IF NOT EXISTS `bw_users` (
   `forcePGPmessage` enum('0','1') NOT NULL,
   `items_per_page` enum('25','50','75','100') NOT NULL,
   `last_activity` varchar(20) NOT NULL,
-  `showActivity` ENUM('0','1') DEFAULT 0,
+  `showActivity` enum('0','1') DEFAULT '0',
   `location` varchar(2) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)

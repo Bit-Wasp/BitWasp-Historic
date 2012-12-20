@@ -8,7 +8,7 @@
               <div class="control-group">
                 <label class="control-label" for='profileMessage'>Profile Message</label>
                 <div class="controls">
-                  <textarea name='profileMessage' cols='50'><?php echo $account['profileMessage'];?></textarea>
+                  <textarea name='profileMessage' class="span10"><?php echo $account['profileMessage'];?></textarea>
                   <span class="help-inline"><?php echo form_error('profileMessage'); ?></span>
                 </div>
               </div>
@@ -76,7 +76,6 @@
                   <? } ?>
                 </div>
               </div>
-              <br />
 
               <div class="control-group">
                 <label class="control-label" for="showActivity">Show latest activity?</label>
@@ -98,22 +97,20 @@
 	            <?php } ?>
                 </div>
               </div>
-              <br />
 
-	      <div class='control-group'>
-                <label class='control-label' for='items_per_page'>Items Per Page</label>
-                <div class='controls'>
-		  <?php
-		  $unit = 25;
-		  for($i = 1; $i < 5; $i++){?>
-		  <label class="radio inline">
-                    <input type='radio' name='items_per_page' value='<?php echo $unit*$i;?>' <?php if($account['items_per_page']==($unit*$i)) echo "CHECKED";?> /> <?php echo $unit*$i;?>
-                  </label>
-		  <?php } ?>
-                  <span class='help-inline'><?php echo form_error('items_per_page'); ?></span>
-	        </div>
-	      </div>
-              <br />
+					<div class='control-group'>
+						 <label class='control-label' for='items_per_page'>Items Per Page</label>
+						 <div class='controls'>
+							<?php
+							$unit = 25;
+							for($i = 1; $i < 5; $i++){?>
+							<label class="radio inline">
+								<input type='radio' name='items_per_page' value='<?php echo $unit*$i;?>' <?php if($account['items_per_page']==($unit*$i)) echo "CHECKED";?> /> <?php echo $unit*$i;?>
+							</label>
+							<?php } ?>
+							<span class='help-inline'><?php echo form_error('items_per_page'); ?></span>
+				  		</div>
+					</div>
 
               <div class="control-group">
                 <label class="control-label" for="password0">New Password</label>
